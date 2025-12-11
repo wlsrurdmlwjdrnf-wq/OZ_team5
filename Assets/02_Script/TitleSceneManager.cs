@@ -44,7 +44,7 @@ public class TitleSceneManager : MonoBehaviour
         title.SetActive(true);
 
         //로비로 전환되는 씬 로더 인스턴스 저장
-        _AsyncOperation = SceneLoader.Instance.LoadSceneAsync(sceneType.Lobby);
+        _AsyncOperation = SceneLoader.Instance.LoadSceneAsync(sceneType.LobbyScene);
 
         if(_AsyncOperation == null)
         {
@@ -68,7 +68,7 @@ public class TitleSceneManager : MonoBehaviour
             loadingText.text = $"{(int)loadingBar.value * 100}%";
 
             //로딩작업이 끝나면 씬 전환
-            //추가 로직 필요시 수정
+            //추가 로직 필요시 수정 ex)특정버튼 클릭시 씬전환
             if(_AsyncOperation.progress >= 0.9f)
             {                
                 _AsyncOperation.allowSceneActivation = true;
