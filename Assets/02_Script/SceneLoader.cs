@@ -17,6 +17,7 @@ public class SceneLoader : Singleton<SceneLoader>
     public void LoadScene(sceneType sct)
     {
         // enum으로 정의된 씬 로드
+        // 씬 이동시 호출하시면 됩니다
 
         Time.timeScale = 1f;
         SceneManager.LoadScene(sct.ToString()); 
