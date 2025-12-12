@@ -8,8 +8,8 @@ public class TitleSceneManager : MonoBehaviour
 {
     //게임시작시 재생될 로고 애니메이션
     public Animation logoAnim;
-    //시작로고 텍스트
-    public TextMeshProUGUI logoText;
+    //시작로고
+    public TextMeshProUGUI logo;
 
     //타이틀로 사용할 게임오브젝트
     public GameObject title;
