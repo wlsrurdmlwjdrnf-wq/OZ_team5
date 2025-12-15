@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bomb : MonoBehaviour
+public class Bomb : ItemBase
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Activate(Player player)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            if(enemy.TryGetComponent<EnemyBase>(out EnemyBase em))
+            {
+                em.TakeDamage(999999);
+                Destroy(gameObject);
+            }
+        }
     }
 }

@@ -20,7 +20,7 @@ public class ItemBox : MonoBehaviour, IDamageable
     }
     private void ReturnPool()
     {
-        //풀매니저를 통한 리턴풀
+        PoolManager.Instance.ReturnPool(this);
         hp = 1;
     }
 }
