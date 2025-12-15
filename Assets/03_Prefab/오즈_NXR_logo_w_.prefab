@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5456389940680588072}
   - component: {fileID: 8185573391386400086}
+  - component: {fileID: 9080923241843497120}
   m_Layer: 0
   m_Name: "\uC624\uC988_NXR_logo_w_"
   m_TagString: Untagged
@@ -84,3 +85,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!111 &9080923241843497120
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803478562447319172}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 3a45a8c6805eda14d9114cd683af9d45, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 3a45a8c6805eda14d9114cd683af9d45, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
