@@ -46,8 +46,7 @@ public class DataManager : Singleton<DataManager>
                 
                 // 없으면 0으로 처리
                 data.atk = d.ContainsKey("Atk") ? Convert.ToInt32(d["Atk"]) : 0.0f;
-                data.hp = d.ContainsKey("Hp") ? Convert.ToInt32(d["Hp"]) : 0.0f;
-
+                data.hp = d.ContainsKey("Hp") ? Convert.ToInt32(d["Hp"]) : 0.0f;               
 
                 // 특수효과가 없는 장비는 0으로 처리
                 if (d.ContainsKey("Effect"))
@@ -62,11 +61,21 @@ public class DataManager : Singleton<DataManager>
                 // 없으면 false
                 if (d.ContainsKey("WeaponCheck"))
                 {
-                    data.WeaponCheck = Convert.ToBoolean(d["WeaponCheck"]);
+                    data.weaponCheck = Convert.ToBoolean(d["WeaponCheck"]);
                 }
                 else
                 {
-                    data.WeaponCheck = false;
+                    data.weaponCheck = false;
+                }
+
+                // 조합이 없으면 0
+                if (d.ContainsKey("PairID"))
+                {
+                    data.pairID = Convert.ToInt32(d["PairID"]);
+                }
+                else
+                {
+                    data.pairID = 0;
                 }
 
             }
