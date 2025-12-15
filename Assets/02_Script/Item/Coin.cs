@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Coin : ItemBase
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int amount;
+
+    public override void Activate(Player player)
     {
-        
+        player.PlayerStat().playerGold += amount;
+        Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //게임클리어나 오버 시 모은 골드 영구적으로 반영해야 함
 }

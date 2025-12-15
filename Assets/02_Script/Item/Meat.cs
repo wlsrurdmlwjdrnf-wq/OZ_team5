@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Meat : MonoBehaviour
+public class Meat : ItemBase
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Activate(Player player)
     {
-        
-    }
+        player.PlayerStat().playerCurrentHp += player.PlayerStat().playerMeatRestore;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (player.PlayerStat().playerCurrentHp > player.PlayerStat().playerMaxHp)
+            player.PlayerStat().playerCurrentHp = player.PlayerStat().playerMaxHp;
+
+        Destroy(gameObject);
     }
 }

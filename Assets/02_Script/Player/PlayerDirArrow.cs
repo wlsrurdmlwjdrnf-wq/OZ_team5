@@ -8,7 +8,10 @@ public class PlayerDirArrow : MonoBehaviour
     [SerializeField] private float radius;
 
     private Vector2 input;
-
+    private void Start()
+    {
+        joystick = FindObjectOfType<Joystick>();
+    }
     private void Update()
     {
         input = joystick.GetInput();

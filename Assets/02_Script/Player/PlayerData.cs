@@ -4,11 +4,13 @@ public class PlayerData
     public int playerAtk;
     public int playerDef;
     public int playerMaxHp;
+    public int playerCurrentHp;
     public int playerMeatRestore;
     public float playerSpeed;
     public float magnetRadius;
     public int playerLevel;
     public int playerExp;
+    public int playerGold;
 
     public static PlayerData GetDefault()
     {
@@ -21,7 +23,8 @@ public class PlayerData
             playerSpeed = 2.0f,
             magnetRadius = 0.4f,
             playerLevel = 1,
-            playerExp = 0
+            playerExp = 0,
+            playerGold = 0
         };
     }
 }

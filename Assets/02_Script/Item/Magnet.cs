@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Magnet : MonoBehaviour
+public class Magnet : ItemBase
 {
-    // Start is called before the first frame update
-    void Start()
+    private bool superPulling = false;
+   public override void Activate(Player player)
     {
-        
+        if(superPulling == false) StartCoroutine(MagnetForceSoar(player));
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator MagnetForceSoar(Player player)
     {
-        
+        superPulling = true;
+        player.PlayerStat().magnetRadius += 50f;
+
+        yield return new WaitForSeconds(1.0f);
+
+        player.PlayerStat().magnetRadius -= 50f;
+        superPulling = false;
+        Destroy(gameObject);
     }
 }

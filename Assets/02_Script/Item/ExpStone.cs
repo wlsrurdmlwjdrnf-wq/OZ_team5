@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExpStone : MonoBehaviour
+public class ExpStone : ItemBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private int amount;
 
-    // Update is called once per frame
-    void Update()
+    public override void Activate(Player player)
     {
-        
+        player.PlayerStat().playerExp += amount;
+        PoolManager.Instance.ReturnPool(this);
     }
 }
