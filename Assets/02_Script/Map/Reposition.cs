@@ -44,7 +44,7 @@ public class Reposition : MonoBehaviour
             return;
 
         //플레이어 위치
-        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 playerPos = GameManager.Instance.player.transform.position;
 
         //현재 Ground 위치
         Vector3 myPos = transform.position;
