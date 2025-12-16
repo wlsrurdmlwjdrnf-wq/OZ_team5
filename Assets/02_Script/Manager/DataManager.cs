@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-//ItemID ±ÔÄ¢
-//   Á¾·ù µî±Ş ³Ñ¹ö¸µ(2ÀÚ¸®)
+//ItemID ê·œì¹™
+//   ì¢…ë¥˜ ë“±ê¸‰ ë„˜ë²„ë§(2ìë¦¬)
 //ex)  1    1   0    0   1
 
 
@@ -22,30 +23,133 @@ public enum ItemType
 
 public class DataManager : Singleton<DataManager>
 {
-    private const string DATA_PATH = "06_Data"; // ¸ğµç csvÆÄÀÏ µ¥ÀÌÅÍµéÀÌ ¸ğ¿©ÀÖ´Â Æú´õ¸í
 
-
-    //private const string ITEM_DATA_PATH = "ItemData"; // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ csvÆÄÀÏ¸í
-    //private const string CHAPTER_DATA_PATH = "ChapterData"; // Ã©ÅÍ µ¥ÀÌÅÍ csvÆÄÀÏ¸í
-
-    //private List<ItemData> itemData = new List<ItemData>(); // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ ÄÁÅ×ÀÌ³Ê
-    //private List<ChapterData> chapterData = new List<ChapterData>(); // Ã©ÅÍ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ ÄÁÅ×ÀÌ³Ê
-
-
+    [Tooltip("ì¥ë¹„ì•„ì´í…œ, ì¸ê²Œì„ì•„ì´í…œ(ë¬´ê¸°ìŠ¤í‚¬/ì§€ì›í¼), ì¥ë¹„ì•„ì´í…œ íŠ¹ìˆ˜íš¨ê³¼SO ì»¨í…Œì´ë„ˆ")]
+    public Dictionary<int, EquipmentItemData> equimentItemDic = new Dictionary<int, EquipmentItemData>();
+    public Dictionary<int, IngameItemData> ingameItemDic = new Dictionary<int, IngameItemData>();
+    public Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
 
     protected override void Init()
     {
         base.Init();
+        LoadEquipmentItemData(); // ì¥ë¹„ì•„ì´í…œ ë°ì´í„° ë¡œë“œ
+        LoadIngameItemData(); // ì¸ê²Œì„ì•„ì´í…œ ë°ì´í„° ë¡œë“œ
+        LoadEffectSO(); // ì¥ë¹„ì— ë¶€ì—¬ëœ íŠ¹ìˆ˜íš¨ê³¼ ë°ì´í„° ë¡œë“œ
     }
 
-    private void LoadItemData()
+    private void LoadEffectSO()
     {
+        var effectSO = Resources.LoadAll<EquipmentEffectSO>("ItemEffect");
+        foreach (var effect in effectSO)
+        {
+            equipmentEffectDic.TryAdd(effect.ID, effect);
+        }
+    }
+
+    private void LoadEquipmentItemData()
+    {
+        var dataList = CSVReader.Read("Data/EquipmentData");
         
+        foreach (var d in dataList)
+        {
+            try
+            {
+                if (!d.ContainsKey("ID")) continue;
+                EquipmentItemData data = new EquipmentItemData();
+
+                data.id = Convert.ToInt32(d["ID"]);
+                data.name = Convert.ToString(d["Name"]);
+                data.type = (EnumData.EquipmentType)Enum.Parse(typeof(EnumData.EquipmentType), d["Type"].ToString(), true);
+                data.tier = (EnumData.EquipmentTier)Enum.Parse(typeof(EnumData.EquipmentTier), d["Tier"].ToString(), true);
+                
+                // ì—†ìœ¼ë©´ 0ìœ¼ë¡œ ì²˜ë¦¬
+                data.atk = d.ContainsKey("Atk") ? Convert.ToInt32(d["Atk"]) : 0.0f;
+                data.hp = d.ContainsKey("Hp") ? Convert.ToInt32(d["Hp"]) : 0.0f;               
+
+                // íŠ¹ìˆ˜íš¨ê³¼ê°€ ì—†ëŠ” ì¥ë¹„ëŠ” 0ìœ¼ë¡œ ì²˜ë¦¬
+                if (d.ContainsKey("Effect"))
+                {
+                    data.specialEffectID = Convert.ToInt32(d["Effect"]);
+                }
+                else
+                {
+                    data.specialEffectID = 0;
+                }
+
+                // ì—†ìœ¼ë©´ false
+                if (d.ContainsKey("WeaponCheck"))
+                {
+                    data.weaponCheck = Convert.ToBoolean(d["WeaponCheck"]);
+                }
+                else
+                {
+                    data.weaponCheck = false;
+                }
+
+                // ì¡°í•©ì´ ì—†ìœ¼ë©´ 0
+                if (d.ContainsKey("PairID"))
+                {
+                    data.pairID = Convert.ToInt32(d["PairID"]);
+                }
+                else
+                {
+                    data.pairID = 0;
+                }
+
+            }
+            catch
+            {
+                //ì˜¤ë¥˜ ë¡œê·¸
+                return;
+            }
+        }
+        //ë¡œë“œ ì™„ë£Œ
     }
 
-    private void LoadChapterData()
+    private void LoadIngameItemData()
     {
+        var dataList = CSVReader.Read("Data/IngameItemData");
 
+        foreach (var d in dataList)
+        {
+            try
+            {
+                if (!d.ContainsKey("ID")) continue;
+                
+                IngameItemData data = new IngameItemData();
+
+                data.id = Convert.ToInt32(d["ID"]);
+                data.name = Convert.ToString(d["Name"]);
+                data.type = (EnumData.IngameItemType)Enum.Parse(typeof(EnumData.IngameItemType), d["Type"].ToString() ,true);
+
+
+                // ì¡°í•©ì´ ì—†ìœ¼ë©´ 0
+                if (d.ContainsKey("PairID"))
+                {
+                    data.pairID = Convert.ToInt32(d["PairID"]);
+                }
+                else
+                {
+                    data.pairID = 0;
+                }
+
+                //ìµœì¢…ì§„í™” í˜•íƒœê°€ ì—†ë‹¤ë©´ 0
+                if (d.ContainsKey("EvID"))
+                {
+                    data.evolutionID = Convert.ToInt32(d["EvID"]);
+                }
+                else
+                {
+                    data.evolutionID = 0;
+                }
+            }
+            catch 
+            {
+                //ì—ëŸ¬ë¡œê·¸
+                return;
+            }
+        }
+        //ë¡œë“œ ì™„ë£Œ
     }
 }
 
