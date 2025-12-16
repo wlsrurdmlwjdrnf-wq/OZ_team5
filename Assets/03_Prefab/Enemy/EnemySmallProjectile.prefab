@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2781313294695518037}
   - component: {fileID: 538780808682235641}
   - component: {fileID: 1627709253344862737}
+  - component: {fileID: 2171676869689184288}
   m_Layer: 0
   m_Name: EnemySmallProjectile
   m_TagString: Enemy
@@ -114,9 +115,24 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.2
+--- !u!114 &2171676869689184288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6948928394342405569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32563fc4a8f1a8c40929f4b75f22d4b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 4
+  lifetime: 3
+  atk: 0

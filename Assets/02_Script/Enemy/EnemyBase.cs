@@ -28,7 +28,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
         animator.SetBool(isKilledHash, isKilled);
         hp = maxHp;
     }
-    protected void Update()
+    protected virtual void Update()
     {
         MoveToPlayer();
     }

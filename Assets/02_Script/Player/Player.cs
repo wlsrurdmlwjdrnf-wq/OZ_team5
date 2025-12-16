@@ -65,7 +65,10 @@ public class Player : MonoBehaviour
             }
         }
     }
-
+    public void TakeDamage(int damage)
+    {
+        playerData.playerCurrentHp -= damage;
+    }
     //임시적으로 데미지주는 코드
     private void OnTriggerEnter2D(Collider2D collision)
     {
