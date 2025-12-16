@@ -16,7 +16,7 @@ public class DataManager : Singleton<DataManager>
         base.Init();
         LoadEquipmentItemData(); // 장비아이템 데이터 로드
         LoadIngameItemData(); // 인게임아이템 데이터 로드
-        LoadEffectSO(); // 장비에 부여된 특수효과 로드
+        LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
     }
 
     private void LoadEffectSO()
@@ -32,7 +32,7 @@ public class DataManager : Singleton<DataManager>
     {
         var dataList = CSVReader.Read("Data/EquipmentData");
         
-        foreach (var  d in dataList)
+        foreach (var d in dataList)
         {
             try
             {
