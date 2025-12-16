@@ -3,10 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//ItemID ê·œì¹™
+//   ì¢…ë¥˜ ë“±ê¸‰ ë„˜ë²„ë§(2ìë¦¬)
+//ex)  1    1   0    0   1
+
+
+public enum ItemType
+{
+    Weapon = 1,
+    Armor = 2,
+    Pants = 3,
+    Gloves = 4,
+    Boots = 5
+    
+}
+
+
+
 public class DataManager : Singleton<DataManager>
 {
 
-    [Tooltip("Àåºñ¾ÆÀÌÅÛ, ÀÎ°ÔÀÓ¾ÆÀÌÅÛ(¹«±â½ºÅ³/Áö¿øÆû), Àåºñ¾ÆÀÌÅÛ Æ¯¼öÈ¿°úSO ÄÁÅ×ÀÌ³Ê")]
+    [Tooltip("ì¥ë¹„ì•„ì´í…œ, ì¸ê²Œì„ì•„ì´í…œ(ë¬´ê¸°ìŠ¤í‚¬/ì§€ì›í¼), ì¥ë¹„ì•„ì´í…œ íŠ¹ìˆ˜íš¨ê³¼SO ì»¨í…Œì´ë„ˆ")]
     public Dictionary<int, EquipmentItemData> equimentItemDic = new Dictionary<int, EquipmentItemData>();
     public Dictionary<int, IngameItemData> ingameItemDic = new Dictionary<int, IngameItemData>();
     public Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
@@ -14,9 +32,9 @@ public class DataManager : Singleton<DataManager>
     protected override void Init()
     {
         base.Init();
-        LoadEquipmentItemData(); // Àåºñ¾ÆÀÌÅÛ µ¥ÀÌÅÍ ·Îµå
-        LoadIngameItemData(); // ÀÎ°ÔÀÓ¾ÆÀÌÅÛ µ¥ÀÌÅÍ ·Îµå
-        LoadEffectSO(); // Àåºñ¿¡ ºÎ¿©µÈ Æ¯¼öÈ¿°ú µ¥ÀÌÅÍ ·Îµå
+        LoadEquipmentItemData(); // ì¥ë¹„ì•„ì´í…œ ë°ì´í„° ë¡œë“œ
+        LoadIngameItemData(); // ì¸ê²Œì„ì•„ì´í…œ ë°ì´í„° ë¡œë“œ
+        LoadEffectSO(); // ì¥ë¹„ì— ë¶€ì—¬ëœ íŠ¹ìˆ˜íš¨ê³¼ ë°ì´í„° ë¡œë“œ
     }
 
     private void LoadEffectSO()
@@ -44,11 +62,11 @@ public class DataManager : Singleton<DataManager>
                 data.type = (EnumData.EquipmentType)Enum.Parse(typeof(EnumData.EquipmentType), d["Type"].ToString(), true);
                 data.tier = (EnumData.EquipmentTier)Enum.Parse(typeof(EnumData.EquipmentTier), d["Tier"].ToString(), true);
                 
-                // ¾øÀ¸¸é 0À¸·Î Ã³¸®
+                // ì—†ìœ¼ë©´ 0ìœ¼ë¡œ ì²˜ë¦¬
                 data.atk = d.ContainsKey("Atk") ? Convert.ToInt32(d["Atk"]) : 0.0f;
                 data.hp = d.ContainsKey("Hp") ? Convert.ToInt32(d["Hp"]) : 0.0f;               
 
-                // Æ¯¼öÈ¿°ú°¡ ¾ø´Â Àåºñ´Â 0À¸·Î Ã³¸®
+                // íŠ¹ìˆ˜íš¨ê³¼ê°€ ì—†ëŠ” ì¥ë¹„ëŠ” 0ìœ¼ë¡œ ì²˜ë¦¬
                 if (d.ContainsKey("Effect"))
                 {
                     data.specialEffectID = Convert.ToInt32(d["Effect"]);
@@ -58,7 +76,7 @@ public class DataManager : Singleton<DataManager>
                     data.specialEffectID = 0;
                 }
 
-                // ¾øÀ¸¸é false
+                // ì—†ìœ¼ë©´ false
                 if (d.ContainsKey("WeaponCheck"))
                 {
                     data.weaponCheck = Convert.ToBoolean(d["WeaponCheck"]);
@@ -68,7 +86,7 @@ public class DataManager : Singleton<DataManager>
                     data.weaponCheck = false;
                 }
 
-                // Á¶ÇÕÀÌ ¾øÀ¸¸é 0
+                // ì¡°í•©ì´ ì—†ìœ¼ë©´ 0
                 if (d.ContainsKey("PairID"))
                 {
                     data.pairID = Convert.ToInt32(d["PairID"]);
@@ -81,11 +99,11 @@ public class DataManager : Singleton<DataManager>
             }
             catch
             {
-                //¿À·ù ·Î±×
+                //ì˜¤ë¥˜ ë¡œê·¸
                 return;
             }
         }
-        //·Îµå ¿Ï·á
+        //ë¡œë“œ ì™„ë£Œ
     }
 
     private void LoadIngameItemData()
@@ -105,7 +123,7 @@ public class DataManager : Singleton<DataManager>
                 data.type = (EnumData.IngameItemType)Enum.Parse(typeof(EnumData.IngameItemType), d["Type"].ToString() ,true);
 
 
-                // Á¶ÇÕÀÌ ¾øÀ¸¸é 0
+                // ì¡°í•©ì´ ì—†ìœ¼ë©´ 0
                 if (d.ContainsKey("PairID"))
                 {
                     data.pairID = Convert.ToInt32(d["PairID"]);
@@ -115,7 +133,7 @@ public class DataManager : Singleton<DataManager>
                     data.pairID = 0;
                 }
 
-                //ÃÖÁ¾ÁøÈ­ ÇüÅÂ°¡ ¾ø´Ù¸é 0
+                //ìµœì¢…ì§„í™” í˜•íƒœê°€ ì—†ë‹¤ë©´ 0
                 if (d.ContainsKey("EvID"))
                 {
                     data.evolutionID = Convert.ToInt32(d["EvID"]);
@@ -127,11 +145,11 @@ public class DataManager : Singleton<DataManager>
             }
             catch 
             {
-                //¿¡·¯·Î±×
+                //ì—ëŸ¬ë¡œê·¸
                 return;
             }
         }
-        //·Îµå ¿Ï·á
+        //ë¡œë“œ ì™„ë£Œ
     }
 }
 

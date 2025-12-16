@@ -34,9 +34,19 @@ public class GameManager : Singleton<GameManager>
     public float finalBossSpawnTime = 900.0f; // 최종보스 등장시간 (15분)
 
     public bool isMiddleBoss { get; private set; } = false;
-    public bool isFinalBoss { get; private set; } = false;    
+    public bool isFinalBoss { get; private set; } = false;
+    
+    /// <summary>
+    /// 승문추가
+    ///(플레이어가 이동하는거에 따라 맵을 재생성할거라 플레이어 정보를 받아야함)
+    public static GameManager instance;
+    public Player player;
+    void Awake()
+    {
+        instance = this;
 
-
+    }
+    /// </summary>
 
     protected override void Init()
     {
