@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChapterData_ : MonoBehaviour
+public class _PlayerInventory : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

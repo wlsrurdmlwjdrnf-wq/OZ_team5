@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterData_ : MonoBehaviour
+public class _PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
