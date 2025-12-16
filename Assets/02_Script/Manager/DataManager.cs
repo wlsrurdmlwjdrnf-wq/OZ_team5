@@ -1,41 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-
-
-//ItemID 규칙
-//   종류 등급 넘버링(2자리)
-//ex)  1    1   0    0   1
-
-
-public enum ItemType
-{
-    Weapon = 1,
-    Armor = 2,
-    Pants = 3,
-    Gloves = 4,
-    Boots = 5
-    
-}
-
-
 
 public class DataManager : Singleton<DataManager>
 {
 
-    [Tooltip("장비아이템, 인게임아이템(무기스킬/지원폼), 장비아이템 특수효과SO 컨테이너")]
-    public Dictionary<int, EquipmentItemData> equimentItemDic = new Dictionary<int, EquipmentItemData>();
-    public Dictionary<int, IngameItemData> ingameItemDic = new Dictionary<int, IngameItemData>();
+    [Tooltip("아이템, 특수효과SO 컨테이너")]
+    public Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
     public Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
 
     protected override void Init()
     {
         base.Init();
-        LoadEquipmentItemData(); // 장비아이템 데이터 로드
-        LoadIngameItemData(); // 인게임아이템 데이터 로드
+        LoadItemData(); // 아이템 데이터 로드
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
     }
+
+    #region 데이터 로드 함수
 
     private void LoadEffectSO()
     {
@@ -46,7 +29,7 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    private void LoadEquipmentItemData()
+    private void LoadItemData()
     {
         var dataList = CSVReader.Read("Data/EquipmentData");
         
@@ -55,7 +38,7 @@ public class DataManager : Singleton<DataManager>
             try
             {
                 if (!d.ContainsKey("ID")) continue;
-                EquipmentItemData data = new EquipmentItemData();
+                ItemData data = new ItemData();
 
                 data.id = Convert.ToInt32(d["ID"]);
                 data.name = Convert.ToString(d["Name"]);
@@ -66,34 +49,34 @@ public class DataManager : Singleton<DataManager>
                 data.atk = d.ContainsKey("Atk") ? Convert.ToInt32(d["Atk"]) : 0.0f;
                 data.hp = d.ContainsKey("Hp") ? Convert.ToInt32(d["Hp"]) : 0.0f;               
 
-                // 특수효과가 없는 장비는 0으로 처리
+                // 특수효과가 없는 장비는 -1로 처리
                 if (d.ContainsKey("Effect"))
                 {
                     data.specialEffectID = Convert.ToInt32(d["Effect"]);
                 }
                 else
                 {
-                    data.specialEffectID = 0;
+                    data.specialEffectID = -1;
                 }
 
-                // 없으면 false
-                if (d.ContainsKey("WeaponCheck"))
-                {
-                    data.weaponCheck = Convert.ToBoolean(d["WeaponCheck"]);
-                }
-                else
-                {
-                    data.weaponCheck = false;
-                }
-
-                // 조합이 없으면 0
+                // 조합이 없으면 -1
                 if (d.ContainsKey("PairID"))
                 {
                     data.pairID = Convert.ToInt32(d["PairID"]);
                 }
                 else
                 {
-                    data.pairID = 0;
+                    data.pairID = -1;
+                }
+
+                //최종진화 형태가 없다면 -1
+                if (d.ContainsKey("EvID"))
+                {
+                    data.evolutionID = Convert.ToInt32(d["EvID"]);
+                }
+                else
+                {
+                    data.evolutionID = -1;
                 }
 
             }
@@ -106,50 +89,33 @@ public class DataManager : Singleton<DataManager>
         //로드 완료
     }
 
-    private void LoadIngameItemData()
+    #endregion
+
+
+    // 아이템 정보 리턴함수
+    public ItemData GetEquipItemData(int id)
     {
-        var dataList = CSVReader.Read("Data/IngameItemData");
-
-        foreach (var d in dataList)
+        if (itemDataDic.ContainsKey(id))
         {
-            try
-            {
-                if (!d.ContainsKey("ID")) continue;
-                
-                IngameItemData data = new IngameItemData();
-
-                data.id = Convert.ToInt32(d["ID"]);
-                data.name = Convert.ToString(d["Name"]);
-                data.type = (EnumData.IngameItemType)Enum.Parse(typeof(EnumData.IngameItemType), d["Type"].ToString() ,true);
-
-
-                // 조합이 없으면 0
-                if (d.ContainsKey("PairID"))
-                {
-                    data.pairID = Convert.ToInt32(d["PairID"]);
-                }
-                else
-                {
-                    data.pairID = 0;
-                }
-
-                //최종진화 형태가 없다면 0
-                if (d.ContainsKey("EvID"))
-                {
-                    data.evolutionID = Convert.ToInt32(d["EvID"]);
-                }
-                else
-                {
-                    data.evolutionID = 0;
-                }
-            }
-            catch 
-            {
-                //에러로그
-                return;
-            }
+            return itemDataDic[id];
         }
-        //로드 완료
+        else
+        {
+            return null;
+        }
+    }
+
+    //장비 특수효과 리턴함수
+    public EquipmentEffectSO GetEquipEffectData(int id)
+    {
+        if (equipmentEffectDic.ContainsKey(id))
+        {
+            return equipmentEffectDic[id];
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 
