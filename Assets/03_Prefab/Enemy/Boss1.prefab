@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2572738784788197793}
   - component: {fileID: 7513875683924081426}
   - component: {fileID: 5776178105788206719}
+  - component: {fileID: -8607502709663906957}
+  - component: {fileID: -5277927822361928927}
   m_Layer: 0
   m_Name: Boss1
   m_TagString: Enemy
@@ -120,3 +122,45 @@ CapsuleCollider2D:
   m_Offset: {x: 0.1, y: -0.05}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!95 &-8607502709663906957
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164712086741004692}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5ec5bb65cfb0ae74fb6449e2b7dc2344, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5277927822361928927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164712086741004692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b84905d4b8316224db3c1f6279173842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 1000
+  atk: 0
+  moveSpeed: 0.5
+  expStone: {fileID: 6277145758167594058, guid: d23b4aa6273bc66439651eaf7d59db8d, type: 3}
+  smallPjt: {fileID: 2171676869689184288, guid: b9f1f9091fe1b7a4f8b52bafc83406cc, type: 3}
+  bigPjt: {fileID: 4826377625875770024, guid: 1bb2d1ccee85603428957bcc920973d5, type: 3}
+  pattern1Interval: 4
+  pattern2Interval: 2
+  shootInterval: 0.5
