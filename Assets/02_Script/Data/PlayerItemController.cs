@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerItemController: MonoBehaviour
 {
-    [SerializeField] private _PlayerInventory inven;
+    //[SerializeField] private _PlayerInventory inven;
     
     
 }
