@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7634590579518030588}
   m_Layer: 0
   m_Name: WallMonster
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 1000000000
-  atk: 1
+  atk: 0
   moveSpeed: 0
   expStone: {fileID: 6277145758167594058, guid: d23b4aa6273bc66439651eaf7d59db8d, type: 3}
 --- !u!95 &7634590579518030588

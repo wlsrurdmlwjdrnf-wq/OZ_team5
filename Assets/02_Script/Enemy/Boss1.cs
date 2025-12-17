@@ -15,8 +15,6 @@ public class Boss1 : EnemyBase
     private WaitForSeconds shootPattern2;
     private WaitForSeconds shooting;
 
-    private bool isInit = false;
-
     private void Start()
     {
         shootPattern1 = new WaitForSeconds(pattern1Interval);
@@ -68,14 +66,12 @@ public class Boss1 : EnemyBase
             }
         }
     }
-    private void OnDisable()
+    protected override IEnumerator DieCo()
     {
-        if (!isInit)
-        {
-            isInit = true;
-            return;
-        }
         //타이머 다시 작동
         //벽몬스터 사라지고 이어서 플레이
+        Spawner.Instance.KillBoss1();
+        yield return null;
+        StartCoroutine(base.DieCo());
     }
 }

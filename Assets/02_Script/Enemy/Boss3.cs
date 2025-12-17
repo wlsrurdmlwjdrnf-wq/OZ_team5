@@ -11,7 +11,6 @@ public class Boss3 : EnemyBase
     private WaitForSeconds angryShooting;
 
     private bool isAngry = false;
-    private bool isInit = false;
 
     private static readonly int isAngryHash = Animator.StringToHash("IsAngry");
     private void Start()
@@ -74,13 +73,10 @@ public class Boss3 : EnemyBase
             yield return angryShooting;
         }
     }
-    private void OnDisable()
+    protected override IEnumerator DieCo()
     {
-        if (!isInit)
-        {
-            isInit = true;
-            return;
-        }
         //게임 클리어 호출
+        yield return null;
+        StartCoroutine(base.DieCo());
     }
 }

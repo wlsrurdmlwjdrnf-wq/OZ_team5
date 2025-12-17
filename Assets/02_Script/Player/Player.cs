@@ -3,11 +3,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private Joystick joystick;
+    [SerializeField] private HpBar hpBarPrefab;
 
     private Rigidbody2D rb;
     private Animator anim;
     private SpriteRenderer sr;
     private PlayerData playerData;
+    private HpBar hpBar;
     public PlayerData PlayerStat() => playerData;
 
     private Vector2 input;
@@ -24,6 +26,12 @@ public class Player : MonoBehaviour
 
         ApplyPlayerStat();
         playerData.playerCurrentHp = playerData.playerMaxHp;
+    }
+    private void Start()
+    {
+        hpBar = Instantiate(hpBarPrefab);
+        hpBar.Init(transform);
+        UpdateHpBar();
     }
     private void Update()
     {
@@ -44,7 +52,10 @@ public class Player : MonoBehaviour
     {
         rb.velocity = input * playerData.playerSpeed;
     }
-    
+    private void UpdateHpBar()
+    {
+        hpBar.UpdateHp(playerData.playerCurrentHp, playerData.playerMaxHp);
+    }
     private void ApplyPlayerStat()
     {
         playerData = PlayerData.GetDefault();
@@ -68,8 +79,14 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         playerData.playerCurrentHp -= damage;
-
-        //if(playerData.playerCurrentHp<0) 게임오버호출
+        UpdateHpBar();
+        if(playerData.playerCurrentHp<0)
+        {
+            //게임오버호출
+            hpBar.gameObject.SetActive(false);
+            joystick.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
     }
 
     //임시적으로 데미지주는 코드
