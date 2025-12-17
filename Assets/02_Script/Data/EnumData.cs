@@ -7,7 +7,8 @@ public static class EnumData
     //장비 아이템 Type
     public enum EquipmentType
     {
-        Weapon = 1,
+        Support = 1,
+        Weapon,
         Amor,
         Necklace,
         Gloves,
@@ -23,10 +24,12 @@ public static class EnumData
         Legendary
     }
 
-    //인게임 아이템 Type (무기스킬, 지원폼)
-    public enum IngameItemType
+    //인벤토리 종류
+    public enum InventoryType
     {
-        Weapon = 1,
-        Support
+        General = 1,
+        Equipment,
+        InGameWeapon,
+        InGamePassive
     }
 }
