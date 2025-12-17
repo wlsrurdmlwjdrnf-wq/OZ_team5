@@ -11,11 +11,16 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
     public Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
 
+    [Tooltip("등급별 분류 컨테이너")]
+    public Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarity = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
+
+
     protected override void Init()
     {
         base.Init();
         LoadItemData(); // 아이템 데이터 로드
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
+        LoadRarityItemData();
     }
 
     #region 데이터 로드 함수
@@ -87,6 +92,21 @@ public class DataManager : Singleton<DataManager>
             }
         }
         //로드 완료
+    }
+
+    private void LoadRarityItemData()
+    {
+        itemRarity.Add(EnumData.EquipmentTier.Rare, new List<ItemData>());
+        itemRarity.Add(EnumData.EquipmentTier.Epic, new List<ItemData>());
+        itemRarity.Add(EnumData.EquipmentTier.Legendary, new List<ItemData>());
+
+        foreach (var item  in itemDataDic.Values)
+        {
+            if (itemRarity.ContainsKey(item.tier))
+            {
+                itemRarity[item.tier].Add(item);
+            }
+        }
     }
 
     #endregion
