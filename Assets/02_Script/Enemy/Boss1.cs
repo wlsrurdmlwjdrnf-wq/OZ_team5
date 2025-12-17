@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Boss1 : EnemyBase
@@ -13,6 +14,8 @@ public class Boss1 : EnemyBase
     private WaitForSeconds shootPattern1;
     private WaitForSeconds shootPattern2;
     private WaitForSeconds shooting;
+
+    private bool isInit = false;
 
     private void Start()
     {
@@ -64,5 +67,15 @@ public class Boss1 : EnemyBase
                 yield return new WaitForSeconds(0.2f);
             }
         }
+    }
+    private void OnDisable()
+    {
+        if (!isInit)
+        {
+            isInit = true;
+            return;
+        }
+        //타이머 다시 작동
+        //벽몬스터 사라지고 이어서 플레이
     }
 }

@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -14,9 +12,9 @@ public class Spawner : MonoBehaviour
     [SerializeField] private EnemyBase suicideBomberPrefab;
     [SerializeField] private EnemyBase wallMonsterPrefab;
 
-    [SerializeField] private Boss1 boss1Prefab;
-    [SerializeField] private Boss2 boss2Prefab;
-    [SerializeField] private Boss3 boss3Prefab;
+    [SerializeField] private EnemyBase boss1Prefab;
+    [SerializeField] private EnemyBase boss2Prefab;
+    [SerializeField] private EnemyBase boss3Prefab;
 
     [SerializeField] private ItemBox itemBoxPrefab;
 
@@ -27,6 +25,7 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] private EnemyProjectile enemySmallPjtPrefab;
     [SerializeField] private EnemyProjectile enemyBigPjtPrefab;
+    [SerializeField] private EnemyProjectile enemyGlowPjtPrefab;
 
     private float posX;
     private float posY;
@@ -48,13 +47,18 @@ public class Spawner : MonoBehaviour
         PoolManager.Instance.CreatePool(suicideBomberPrefab, 20);
         PoolManager.Instance.CreatePool(wallMonsterPrefab, 100);
 
+        PoolManager.Instance.CreatePool(boss1Prefab, 2);
+        PoolManager.Instance.CreatePool(boss2Prefab, 2);
+        PoolManager.Instance.CreatePool(boss3Prefab, 2);
+
         PoolManager.Instance.CreatePool(expStone1Prefab, 100);
         PoolManager.Instance.CreatePool(expStone5Prefab, 100);
         PoolManager.Instance.CreatePool(expStone10Prefab, 100);
         PoolManager.Instance.CreatePool(expStone50Prefab, 50);
 
-        PoolManager.Instance.CreatePool(enemySmallPjtPrefab, 50);
-        PoolManager.Instance.CreatePool(enemyBigPjtPrefab, 30);
+        PoolManager.Instance.CreatePool(enemySmallPjtPrefab, 150);
+        PoolManager.Instance.CreatePool(enemyBigPjtPrefab, 100);
+        PoolManager.Instance.CreatePool(enemyGlowPjtPrefab, 20);
 
         StartCoroutine(SpawnItemBox());
         StartCoroutine(SpawnEnemy(zombiePrefab, 3f));
@@ -67,10 +71,33 @@ public class Spawner : MonoBehaviour
     private IEnumerator SpawnBoss()
     {
         yield return new WaitForSeconds(10f);
-        //보스 출현 경고 후 보스와 벽몬스터 스폰, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함
-        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 10f, 7f, 0.9f);
-        Instantiate(boss1Prefab, player.transform.position + Vector3.right, Quaternion.identity);
-        Instantiate(boss2Prefab, player.transform.position + Vector3.right, Quaternion.identity);
+        //보스 출현 경고 후 보스와 벽몬스터 스폰, 타이머 정지, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함.
+        //보스를 잡은 후에 타이머 다시 작동
+        ClearEnemy();
+
+        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 0.9f);
+
+        EnemyBase boss1 = PoolManager.Instance.GetFromPool(boss1Prefab);
+        boss1.transform.position = RandPos(3f, 3f, 2f) + player.transform.position; 
+
+        EnemyBase boss2 = PoolManager.Instance.GetFromPool(boss2Prefab);
+        boss2.transform.position = RandPos(3f, 3f, 2f) + player.transform.position;
+
+        EnemyBase boss3 = PoolManager.Instance.GetFromPool(boss3Prefab);
+        boss3.transform.position = RandPos(3f, 3f, 2f) + player.transform.position;
+
+        StopAllCoroutines();
+    }
+    public void ClearEnemy()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy.TryGetComponent<EnemyBase>(out EnemyBase em))
+            {
+                em.ReturnPool();
+            }
+        }
     }
     private IEnumerator SpawnItemBox()
     {
