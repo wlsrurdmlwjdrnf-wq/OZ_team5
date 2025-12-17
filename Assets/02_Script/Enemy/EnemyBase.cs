@@ -14,7 +14,12 @@ public class EnemyBase : MonoBehaviour, IDamageable
     protected Animator animator;
 
     protected bool isKilled = false;
+    protected bool isOverlapped = false;
     protected int hp;
+    protected int initAtk;
+    protected float initSpeed;
+    protected Vector3 initScale;
+    protected WaitForSeconds damageInterval;
 
     protected static readonly int isKilledHash = Animator.StringToHash("IsKilled");
     protected void Awake()
@@ -22,17 +27,24 @@ public class EnemyBase : MonoBehaviour, IDamageable
         player = GameObject.FindWithTag("Player").transform;
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        initAtk = atk;
+        initSpeed = moveSpeed;
+        initScale = transform.localScale;
+        damageInterval = new WaitForSeconds(0.5f);
     }
     protected void OnEnable()
     {
         animator.SetBool(isKilledHash, isKilled);
         hp = maxHp;
+        atk = initAtk;
+        moveSpeed = initSpeed;
+        transform.localScale = initScale;
     }
     protected virtual void Update()
     {
         MoveToPlayer();
     }
-    public void TakeDamage(int amount)
+    public virtual void TakeDamage(int amount)
     {
         hp -= amount;
         if (hp <= 0)
@@ -50,7 +62,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
         tmpStone.transform.position = transform.position;
         ReturnPool();
     }
-    protected void ReturnPool()
+    public void ReturnPool()
     {
         isKilled = false;
         GetComponent<Collider2D>().enabled = true;
@@ -74,6 +86,29 @@ public class EnemyBase : MonoBehaviour, IDamageable
         {
             spriteRenderer.flipX = false;
         }
-
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<Player>(out Player player))
+        {
+            isOverlapped = true;
+            StartCoroutine(DamageToPlayerCo(player));
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<Player>(out Player player))
+        {
+            isOverlapped = false;
+            StopCoroutine(DamageToPlayerCo(player));
+        }
+    }
+    private IEnumerator DamageToPlayerCo(Player player)
+    {
+        while (isOverlapped)
+        {
+            player.TakeDamage(atk);
+            yield return damageInterval;
+        }
     }
 }

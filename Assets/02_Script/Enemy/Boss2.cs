@@ -6,6 +6,8 @@ public class Boss2 : EnemyBase
     private bool isCharging = false;
     private WaitForSeconds chargetime;
     private WaitForSeconds jumptime;
+
+    private bool isInit = false;
     private void Start()
     {
         chargetime = new WaitForSeconds(1.5f);
@@ -28,6 +30,15 @@ public class Boss2 : EnemyBase
             transform.localScale *= 1.1f;
             atk += 10;
         }
-
+    }
+    private void OnDisable()
+    {
+        if (!isInit)
+        {
+            isInit = true;
+            return;
+        }
+        //타이머 다시 작동
+        //벽몬스터 사라지고 이어서 플레이
     }
 }
