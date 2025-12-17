@@ -12,7 +12,7 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
 
     [Tooltip("등급별 분류 컨테이너")]
-    public Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarity = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
+    public Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
 
 
     protected override void Init()
@@ -96,15 +96,15 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadRarityItemData()
     {
-        itemRarity.Add(EnumData.EquipmentTier.Rare, new List<ItemData>());
-        itemRarity.Add(EnumData.EquipmentTier.Epic, new List<ItemData>());
-        itemRarity.Add(EnumData.EquipmentTier.Legendary, new List<ItemData>());
+        itemRarityDic.Add(EnumData.EquipmentTier.Rare, new List<ItemData>());
+        itemRarityDic.Add(EnumData.EquipmentTier.Epic, new List<ItemData>());
+        itemRarityDic.Add(EnumData.EquipmentTier.Legendary, new List<ItemData>());
 
         foreach (var item  in itemDataDic.Values)
         {
-            if (itemRarity.ContainsKey(item.tier))
+            if (itemRarityDic.ContainsKey(item.tier))
             {
-                itemRarity[item.tier].Add(item);
+                itemRarityDic[item.tier].Add(item);
             }
         }
     }
@@ -115,27 +115,22 @@ public class DataManager : Singleton<DataManager>
     // 아이템 정보 리턴함수
     public ItemData GetItemData(int id)
     {
-        if (itemDataDic.ContainsKey(id))
-        {
-            return itemDataDic[id];
-        }
-        else
-        {
+        if (itemDataDic.ContainsKey(id)) return itemDataDic[id];
+            return null;        
+    }
+
+    // 등급별 아이템 리스트 리턴함수
+    public List<ItemData> GetItemRarityList(EnumData.EquipmentTier tier)
+    {
+        if (itemRarityDic.ContainsKey(tier)) return itemRarityDic[tier];
             return null;
-        }
     }
 
     //장비 특수효과 리턴함수
     public EquipmentEffectSO GetEquipEffectData(int id)
     {
-        if (equipmentEffectDic.ContainsKey(id))
-        {
-            return equipmentEffectDic[id];
-        }
-        else
-        {
-            return null;
-        }
+        if (equipmentEffectDic.ContainsKey(id)) return equipmentEffectDic[id];
+            return null;        
     }
 }
 

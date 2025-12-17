@@ -9,7 +9,7 @@ public class InventoryManager : Singleton<InventoryManager>
     [Tooltip("인벤토리별 아이템칸 설정")]
     [SerializeField] private int General = 10; //일반 인벤토리
     [SerializeField] private int Equipment = 6; // 장비칸
-    [SerializeField] private int IngameWeapon = 6; // 무기스킬칸
+    [SerializeField] private int IngameSkill = 6; // 무기스킬칸
     [SerializeField] private int IngamePassive = 6; // 패시브칸
 
 
@@ -20,7 +20,7 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             {EnumData.InventoryType.General, new Inventory(General) },
             {EnumData.InventoryType.Equipment, new Inventory(Equipment) },
-            {EnumData.InventoryType.InGameWeapon, new Inventory(IngameWeapon) },
+            {EnumData.InventoryType.InGameWeapon, new Inventory(IngameSkill) },
             {EnumData.InventoryType.InGamePassive, new Inventory(IngamePassive) }
         };
     }
