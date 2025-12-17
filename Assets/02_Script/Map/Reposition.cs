@@ -2,37 +2,44 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-///<summary>
-///범용 무한 Ground 재배치(리포지션)
-///동작 방식
-///-현재 Ground들의 중심점들을 보고
-/// 1) 열(cols)과 행(rows)을 자동 추정
-/// 2) 타일 간격(spacingX, spacingY)을 자동 추정
-/// 3) 전체 폭(width = cols*spacingX), 전체 높이(height = rows*spacingY)를 계산
-/// 각 타일에 대해:플레이어가 타일 중심에서 width/2 이상 멀어지면 타일을 width만큼 반대편으로 이동(y도 동일)
-///</summary>
+//범용 무한 Ground 재배치(리포지션)
+//동작 방식
+//- 현재 Ground들의 중심점들을 보고
+//   1) 열(cols)과 행(rows)을 자동 추정
+//   2) 타일 간격(spacingX, spacingY)을 자동 추정
+//   3) 전체 폭(width = cols*spacingX), 전체 높이(height = rows*spacingY)를 계산
+//- 각 타일에 대해 : 플레이어가 타일 중심에서 width/2 이상 멀어지면 타일을 width만큼 반대편으로 이동(y도 동일)
 public class Reposition : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform player;
     [SerializeField] private Transform[] grounds;
 
-    [Header("Auto Find (optional)")]
+    [Header("Auto Find")]
     [SerializeField] private bool autoFindPlayer = true;
 
     [Header("Tolerance")]
+    //Ground들의 중심 좌표를 "같은 열 / 같은 행"으로 묶을 때 사용하는 허용 오차
+    //프리팹 배치 시 약간의 오차가 있어도 정상적으로 격자를 인식하게 하기 위한 안전 장치
+    //있으면 미래의 버그를 미리 막아준다
     [Tooltip("타일 중심 x/y 값들을 같은 열/행으로 묶을 때 사용하는 허용 오차")]
     [SerializeField] private float clusterEpsilon = 0.2f;
 
     //계산된 값들
-    private int cols, rows;
-    private float spacingX, spacingY;   //타일 중심 간격(가로/세로)
-    private float width, height;        //전체 폭/높이 = cols*spacingX, rows*spacingY
-
+    private int cols;       //가로 방향 타일 개수
+    private int rows;       //세로 방향 타일 개수
+    private float spacingX; //타일 중심 간격(가로)
+    private float spacingY; //타일 중심 간격(세로)
+    private float width;    //전체 폭   = cols*spacingX
+    private float height;   //전체 높이 = rows*spacingY
+    
+    //초기화가 정상적으로 완료되었는지 여부
     private bool initialized;
 
     private void Awake()
     {
+        //인스펙터에서 player를 지정하지 않았고, autoFindPlayer가 켜져 있다면     
+        //씬에서 Player 컴포넌트를 자동으로 탐색한다
         if (autoFindPlayer && player == null)
         {
             var p = FindAnyObjectByType<Player>();
@@ -44,32 +51,34 @@ public class Reposition : MonoBehaviour
     {
         if (player == null)
         {
+            //플레이어가 끝까지 지정되지 않았다면 이 스크립트는 정상 동작할 수 없으므로 비활성화
             Debug.LogError("[Reposition] player가 비어 있습니다.");
             enabled = false;
             return;
         }
-
+        //Ground는 최소 2개 이상이어야 무한 재배치 의미가 있음
         if (grounds == null || grounds.Length < 2)
         {
             Debug.LogError("[Reposition] grounds는 최소 2개 이상 넣어주세요.");
             enabled = false;
             return;
         }
-
+        //현재 Ground 배치를 분석해서 열/행 개수, 타일 간격, 전체 폭/높이를 자동 계산한다.
         if (!TryComputeGridInfo())
         {
             Debug.LogError("[Reposition] 그리드 정보 계산 실패. Ground들이 격자 형태로 배치돼 있는지 확인하세요.");
             enabled = false;
             return;
         }
-
+        //여기오면 정상 초기화 완료
         initialized = true;
     }
 
     private void LateUpdate()
     {
+        //초기화가 끝나지 않았다면 재배치 로직을 절대 실행하지 않는다.
         if (!initialized) return;
-
+        //현재 플레이어의 월드 좌표
         Vector3 p = player.position;
 
         //각 타일을 검사해서, 플레이어가 너무 멀어지면 반대편으로 순간이동
