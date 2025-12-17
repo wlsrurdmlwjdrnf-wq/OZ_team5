@@ -11,6 +11,10 @@ public class TitleSceneManager : MonoBehaviour
     //시작로고 텍스트
     public TextMeshProUGUI logoText;
 
+    //로딩이 끝나면 나오는 오브젝트
+    public GameObject loadingDone;
+    
+
     //타이틀로 사용할 게임오브젝트
     public GameObject title;
     //로딩표시 슬라이더
@@ -19,6 +23,7 @@ public class TitleSceneManager : MonoBehaviour
     public TextMeshProUGUI loadingText;
 
     private AsyncOperation _AsyncOperation;
+    private bool lodingCheck;
 
     private void Awake()
     {
@@ -30,6 +35,14 @@ public class TitleSceneManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(LoadGame());    
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && lodingCheck == true)
+        {        
+            _AsyncOperation.allowSceneActivation = true;       
+        }
     }
 
     private IEnumerator LoadGame()
@@ -44,7 +57,7 @@ public class TitleSceneManager : MonoBehaviour
         title.SetActive(true);
 
         //로비로 전환되는 씬 로더 인스턴스 저장
-        _AsyncOperation = SceneLoader.Instance.LoadSceneAsync(sceneType.LobbyScene);
+        _AsyncOperation = SceneLoader.Instance.LoadSceneAsync(EnumData.sceneType.LobbyScene);
 
         if(_AsyncOperation == null)
         {
@@ -70,8 +83,11 @@ public class TitleSceneManager : MonoBehaviour
             //로딩작업이 끝나면 씬 전환
             //추가 로직 필요시 수정 ex)특정버튼 클릭시 씬전환
             if(_AsyncOperation.progress >= 0.9f)
-            {                
-                _AsyncOperation.allowSceneActivation = true;
+            {
+                loadingBar.value = 100;
+                loadingText.text = "100%";
+                loadingDone.SetActive(true);
+                lodingCheck = true;
                 yield break;
             }
             yield return null;
