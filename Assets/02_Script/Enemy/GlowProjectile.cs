@@ -15,8 +15,8 @@ public class GlowProjectile : MonoBehaviour
             return;
         }
 
-        float angleStep = 45f;
-        for (int i = 0; i < 8; i++)
+        float angleStep = 60f;
+        for (int i = 0; i < 6; i++)
         {
             float angle = i * angleStep;
             dir = Quaternion.Euler(0, 0, angle) * Vector2.right;

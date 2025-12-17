@@ -5,7 +5,7 @@ public class HpBar : MonoBehaviour
 {
     [SerializeField] private Image fillImage;
     private Transform target;
-    private Vector3 offset = new Vector3(0, -1.5f, 0);
+    private Vector3 offset = new Vector3(0, -0.5f, 0);
 
     public void Init(Transform targetTransform)
     {

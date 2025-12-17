@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PoolManager : Singleton<PoolManager>
 {
+    public bool isCreatePool = false;
     private Dictionary<string, object> pools = new Dictionary<string, object>();
     public void CreatePool<T>(T prefab, int initCount, Transform parent = null) where T : MonoBehaviour
     {

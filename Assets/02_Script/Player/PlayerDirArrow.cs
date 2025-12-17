@@ -6,6 +6,7 @@ public class PlayerDirArrow : MonoBehaviour
     [SerializeField] private Transform arrow;
     [SerializeField] private Transform player;
     [SerializeField] private float radius;
+    [SerializeField] private float rotateOffset;
 
     private Vector2 input;
     private void Start()
@@ -25,7 +26,7 @@ public class PlayerDirArrow : MonoBehaviour
             arrow.position = player.position + (Vector3)offset;
 
             // 화살표가 방향을 바라보도록 회전
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90f;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + rotateOffset;
             arrow.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
