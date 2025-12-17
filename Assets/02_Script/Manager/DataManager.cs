@@ -31,7 +31,7 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadItemData()
     {
-        var dataList = CSVReader.Read("Data/EquipmentData");
+        var dataList = CSVReader.Read("Data/DataTable");
         
         foreach (var d in dataList)
         {
