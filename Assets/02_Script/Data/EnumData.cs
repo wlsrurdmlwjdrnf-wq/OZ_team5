@@ -32,4 +32,12 @@ public static class EnumData
         InGameWeapon,
         InGamePassive
     }
+
+    //¾À Á¾·ù
+    public enum sceneType
+    {
+        TitleScene,
+        LobbyScene,
+        BattleScene
+    }
 }

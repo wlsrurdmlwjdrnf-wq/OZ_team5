@@ -3,18 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum sceneType
-{
-    TitleScene,
-    LobbyScene,
-    BattleScene
-}
-
 
 public class SceneLoader : Singleton<SceneLoader>
 {
 
-    public void LoadScene(sceneType sct)
+    public void LoadScene(EnumData.sceneType sct)
     {
         // enum으로 정의된 씬 로드
         // 씬 이동시 호출하시면 됩니다
@@ -33,7 +26,7 @@ public class SceneLoader : Singleton<SceneLoader>
 
 
     // 비동기 로드 함수
-    public AsyncOperation LoadSceneAsync(sceneType sct)
+    public AsyncOperation LoadSceneAsync(EnumData.sceneType sct)
     {
         Time.timeScale = 1f;
         return SceneManager.LoadSceneAsync(sct.ToString());

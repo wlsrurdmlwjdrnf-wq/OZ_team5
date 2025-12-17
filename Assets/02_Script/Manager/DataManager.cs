@@ -93,7 +93,7 @@ public class DataManager : Singleton<DataManager>
 
 
     // 아이템 정보 리턴함수
-    public ItemData GetEquipItemData(int id)
+    public ItemData GetItemData(int id)
     {
         if (itemDataDic.ContainsKey(id))
         {
