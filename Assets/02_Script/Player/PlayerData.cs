@@ -9,9 +9,12 @@ public class PlayerData
     public float playerSpeed;
     public float magnetRadius;
     public int playerLevel;
-    public int playerExp;
-    public int playerGold;
+    public float playerMaxExp; // ÃÖ´ë °æÇèÄ¡
+    public float playerCurExp; // ÇöÀç °æÇèÄ¡
+    public float playerExpPt; // °æÇèÄ¡ È¹µæ·®
+    public float playerGoldPt; // °ñµå È¹µæ·®
 
+    
     public static PlayerData GetDefault()
     {
         return new PlayerData
@@ -23,8 +26,8 @@ public class PlayerData
             playerSpeed = 2.0f,
             magnetRadius = 0.4f,
             playerLevel = 1,
-            playerExp = 0,
-            playerGold = 0
+            playerExpPt = 0,
+            playerGoldPt = 0
         };
     }
 }

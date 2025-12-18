@@ -8,7 +8,7 @@ public class ExpStone : ItemBase
 
     public override void Activate(Player player)
     {
-        player.PlayerStat().playerExp += amount;
+        player.PlayerStat().playerCurExp += amount;
         PoolManager.Instance.ReturnPool(this);
     }
 }
