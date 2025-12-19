@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private Player playerPrefab;
-
     [SerializeField] private EnemyBase zombiePrefab;
     [SerializeField] private EnemyBase bigZombiePrefab;
     [SerializeField] private EnemyBase zomPlantPrefab;
@@ -18,26 +16,35 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] private ItemBox itemBoxPrefab;
 
-    [SerializeField] private ExpStone expStone1Prefab;
-    [SerializeField] private ExpStone expStone5Prefab;
-    [SerializeField] private ExpStone expStone10Prefab;
-    [SerializeField] private ExpStone expStone50Prefab;
+    [SerializeField] private ItemBase bombPrefab;
+    [SerializeField] private ItemBase coin10Prefab;
+    [SerializeField] private ItemBase coin30Prefab;
+    [SerializeField] private ItemBase coin100Prefab;
+    [SerializeField] private ItemBase magnetPrefab;
+    [SerializeField] private ItemBase meatPrefab;
+
+    [SerializeField] private ItemBase expStone1Prefab;
+    [SerializeField] private ItemBase expStone5Prefab;
+    [SerializeField] private ItemBase expStone10Prefab;
+    [SerializeField] private ItemBase expStone50Prefab;
 
     [SerializeField] private EnemyProjectile enemySmallPjtPrefab;
     [SerializeField] private EnemyProjectile enemyBigPjtPrefab;
     [SerializeField] private EnemyProjectile enemyGlowPjtPrefab;
+
+    [SerializeField] private GameObject WarningPanel;
 
     public static Spawner Instance { get; private set; }
 
     private float posX;
     private float posY;
     private Vector3 tmpPos;
-    private Player player;
+    private Transform player;
 
     private void Awake()
     {
         Instance = this;
-        player = Instantiate(playerPrefab, Vector2.zero, Quaternion.identity);  
+        player = GameObject.FindWithTag("Player").transform;
     }
     private void Start()
     {
@@ -55,6 +62,13 @@ public class Spawner : MonoBehaviour
             PoolManager.Instance.CreatePool(boss1Prefab, 2);
             PoolManager.Instance.CreatePool(boss2Prefab, 2);
             PoolManager.Instance.CreatePool(boss3Prefab, 2);
+
+            PoolManager.Instance.CreatePool(bombPrefab, 10);
+            PoolManager.Instance.CreatePool(coin10Prefab, 10);
+            PoolManager.Instance.CreatePool(coin30Prefab, 10);
+            PoolManager.Instance.CreatePool(coin100Prefab, 10);
+            PoolManager.Instance.CreatePool(magnetPrefab, 10);
+            PoolManager.Instance.CreatePool(meatPrefab, 10);
 
             PoolManager.Instance.CreatePool(expStone1Prefab, 100);
             PoolManager.Instance.CreatePool(expStone5Prefab, 100);
@@ -76,24 +90,27 @@ public class Spawner : MonoBehaviour
     private IEnumerator SpawnBoss(EnemyBase boss, float waitBossTime)
     {
         yield return new WaitForSeconds(waitBossTime);
-        //보스 출현 경고 후 보스와 벽몬스터 스폰, 타이머 정지, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함.
-        //보스를 잡은 후에 타이머 다시 작동
+        WarningPanel.SetActive(true);
+        yield return new WaitForSeconds(2f);
         ClearField();
+        WarningPanel.SetActive(false);
 
-        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 0.9f);
+        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 1f);
 
         EnemyBase bossObj = PoolManager.Instance.GetFromPool(boss);
-        bossObj.transform.position = RandPos(3f, 3f, 2f) + player.transform.position; 
+        bossObj.transform.position = RandPos(4f, 4f, 4f) + player.position; 
 
         StopAllCoroutines();
+        //보스 출현 경고 후 보스와 벽몬스터 스폰, 타이머 정지, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함.
+        //보스를 잡은 후에 타이머 다시 작동
     }
     private void ClearField()
     {
-        Collider2D[] cols = Physics2D.OverlapCircleAll(player.transform.position, 30f);
+        Collider2D[] cols = Physics2D.OverlapCircleAll(player.position, 30f);
 
         foreach (Collider2D col in cols)
         {
-            if (col.gameObject.TryGetComponent<EnemyBase>(out EnemyBase target))
+            if (col.TryGetComponent<EnemyBase>(out EnemyBase target))
             {
                 PoolManager.Instance.ReturnPool(target);
             }
@@ -101,7 +118,11 @@ public class Spawner : MonoBehaviour
             {
                 PoolManager.Instance.ReturnPool(box);
             }
-            
+            if (col.TryGetComponent<ItemBase>(out ItemBase item))
+            {
+                PoolManager.Instance.ReturnPool(item);
+            }
+
         }
     }
     public void KillBoss1()
@@ -126,7 +147,7 @@ public class Spawner : MonoBehaviour
         while (true)
         {
             ItemBox itembox = PoolManager.Instance.GetFromPool(itemBoxPrefab);
-            itembox.transform.position = RandPos(5f, 5f, 5f) + player.transform.position;
+            itembox.transform.position = RandPos(6f, 6f, 5f) + player.position;
             yield return new WaitForSeconds(10f);
         }
     }
@@ -136,7 +157,7 @@ public class Spawner : MonoBehaviour
         while (true)
         {
             EnemyBase enemy = PoolManager.Instance.GetFromPool(prefab);
-            enemy.transform.position = RandPos(3f, 4f, 2f) + player.transform.position;
+            enemy.transform.position = RandPos(4f, 5f, 3f) + player.position;
             yield return wfs;
         }
     }
@@ -148,7 +169,7 @@ public class Spawner : MonoBehaviour
             posY = Random.Range(-yPos, yPos);
 
             tmpPos = new Vector3(posX, posY, 0f);
-            if (Vector3.Distance(tmpPos, playerPrefab.transform.position) > minDistance) break;
+            if (Vector3.Distance(tmpPos, player.position) > minDistance) break;
         }
         return tmpPos;
     }

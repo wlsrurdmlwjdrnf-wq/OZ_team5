@@ -145,12 +145,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefabs:
-  - {fileID: 4878572992252684618, guid: 8b76c21f0224e3d4c8446c47532c9f1d, type: 3}
-  - {fileID: 183029260290502740, guid: bd363a62cae53c14a8c2fa4fa9d06bf3, type: 3}
-  - {fileID: 1803644262136338411, guid: 0b68fbf88c4ec244eb6f782f001b6129, type: 3}
-  - {fileID: 5156148041833542079, guid: aa17ce39fb256904fbc392fa4e64b796, type: 3}
-  - {fileID: 5481049635100239090, guid: 95c188c4476e2704aa6b3ede1242bff6, type: 3}
-  - {fileID: 5541850378458422529, guid: 4ae566189e7a6f343afc7229593fa308, type: 3}
+  - {fileID: 3122430941582794525, guid: 8b76c21f0224e3d4c8446c47532c9f1d, type: 3}
+  - {fileID: 2088519944342968596, guid: bd363a62cae53c14a8c2fa4fa9d06bf3, type: 3}
+  - {fileID: 2844381981211151334, guid: 0b68fbf88c4ec244eb6f782f001b6129, type: 3}
+  - {fileID: 2602463144539143771, guid: aa17ce39fb256904fbc392fa4e64b796, type: 3}
+  - {fileID: 6246871203274802607, guid: 95c188c4476e2704aa6b3ede1242bff6, type: 3}
+  - {fileID: 7498250618793127212, guid: 4ae566189e7a6f343afc7229593fa308, type: 3}
 --- !u!50 &-2163441946953550577
 Rigidbody2D:
   serializedVersion: 4

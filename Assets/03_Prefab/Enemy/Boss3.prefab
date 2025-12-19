@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 200
-  atk: 0
+  atk: 2
   moveSpeed: 0.75
   expStone: {fileID: 6277145758167594058, guid: d23b4aa6273bc66439651eaf7d59db8d, type: 3}
   glowPjt: {fileID: 569821303758150229, guid: 2dc6c92410e5a284d80848e6af50b192, type: 3}

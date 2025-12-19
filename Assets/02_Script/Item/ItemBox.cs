@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class ItemBox : ForTargeting, IDamageable
 {
-    [SerializeField] private GameObject[] itemPrefabs;
+    [SerializeField] private ItemBase[] itemPrefabs;
 
     private int hp;
     private void OnEnable()
@@ -29,7 +30,8 @@ public class ItemBox : ForTargeting, IDamageable
     }
     private void Broken()
     {
-        Instantiate(itemPrefabs[Random.Range(0, itemPrefabs.Length)], transform.position, Quaternion.identity);
+        ItemBase tmpItem = PoolManager.Instance.GetFromPool(itemPrefabs[Random.Range(0, itemPrefabs.Length)]);
+        tmpItem.transform.position = transform.position;
         ReturnPool();
     }
     private void ReturnPool()
