@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6671349243224820922}
   - component: {fileID: 4271501300647881863}
   - component: {fileID: 5042040566675878007}
+  - component: {fileID: -8971077779261104640}
   m_Layer: 0
   m_Name: Kunai
   m_TagString: Untagged
@@ -102,3 +103,19 @@ MonoBehaviour:
   player: {fileID: 9132962160212396293, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
   radius: 0.2
   rotateOffset: -90
+--- !u!114 &-8971077779261104640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4092263063886262992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ea791238a9c8204d840c7ecdd4d27ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interval: 2
+  level: 0
+  count: 3
+  kunaiPrefab: {fileID: 7233763591715645819, guid: 7207d00ff8cb17a45b651e2ede8fb08c, type: 3}

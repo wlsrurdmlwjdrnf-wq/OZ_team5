@@ -1,13 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-public class ItemBox : MonoBehaviour, IDamageable
+public class ItemBox : ForTargeting, IDamageable
 {
     [SerializeField] private GameObject[] itemPrefabs;
 
-    private int hp = 1;
+    private int hp;
+    private void OnEnable()
+    {
+        hp = 1;
+        if (EnemyManager.Instance != null && EnemyManager.Instance.enemies != null)
+        {
+            EnemyManager.Instance.enemies.Add(this);
+        }
+    }
+    private void OnDisable()
+    {
+        if (EnemyManager.Instance != null && EnemyManager.Instance.enemies != null)
+        {
+            EnemyManager.Instance.enemies.Remove(this);
+        }
+    }
     public void TakeDamage(int amount)
     {
         hp -= amount;
@@ -21,6 +35,5 @@ public class ItemBox : MonoBehaviour, IDamageable
     private void ReturnPool()
     {
         PoolManager.Instance.ReturnPool(this);
-        hp = 1;
     }
 }
