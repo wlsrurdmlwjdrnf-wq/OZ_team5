@@ -7,5 +7,5 @@ public class PlayerManager : Singleton<PlayerManager>
     protected override void Init()
     {
         base.Init();
-    }
+    }    
 }

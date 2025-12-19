@@ -26,7 +26,7 @@ public class GachaController : MonoBehaviour
         
         if (item != null)
         {
-            //아이템을 얻었다고 알림
+            //아이템을 얻었다고 UI알림
             OnDrawItem.Invoke(item);
 
             //인벤토리에 해당 아이템 추가

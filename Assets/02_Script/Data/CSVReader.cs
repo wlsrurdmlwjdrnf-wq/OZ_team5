@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using System.Globalization;
 
 public class CSVReader
 {
@@ -36,7 +37,7 @@ public class CSVReader
                 {
                     finalvalue = n;
                 }
-                else if (float.TryParse(value, out f))
+                else if (float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out f))
                 {
                     finalvalue = f;
                 }

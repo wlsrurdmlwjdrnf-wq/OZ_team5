@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,6 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private int IngameSkill = 6; // 무기스킬칸
     [SerializeField] private int IngamePassive = 6; // 패시브칸
 
-
     protected override void Init()
     {          
         base.Init();
@@ -25,7 +25,7 @@ public class InventoryManager : Singleton<InventoryManager>
         };
     }
 
-    // 아이템 추가
+    // 아이템 추가 뽑기에서 아이템을 먹으면 알맞은 종류의 인벤토리에 아이템(ID)을 넣을때 호출함
     public void AddItem(EnumData.InventoryType type, int id)
     {
         Inventory inven = playerInven[type];
