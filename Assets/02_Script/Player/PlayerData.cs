@@ -13,7 +13,6 @@ public class PlayerData
     public float playerCurExp; // ÇöÀç °æÇèÄ¡
     public float playerExpPt; // °æÇèÄ¡ È¹µæ·®
     public float playerGoldPt; // °ñµå È¹µæ·®
-
     
     public static PlayerData GetDefault()
     {

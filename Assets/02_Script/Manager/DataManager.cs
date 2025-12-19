@@ -24,7 +24,7 @@ public class DataManager : Singleton<DataManager>
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
         LoadRarityItemData(); // 티어별 데이터 로드
-        LogData();
+        // LogData(); // 테스트용 로그함수
     }
 
     #region 데이터 로드 함수
@@ -222,7 +222,7 @@ public class DataManager : Singleton<DataManager>
             int key = data.Key;
             var value = data.Value;
 
-            Debug.Log($"{key}번째 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}");
+            Debug.Log($"{key}번째 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}, Tier : {value.tier}, AtkMtp : {value.atkMtp}, AtkPercent : {value.atkPercent}, HpPercent : {value.hpPercent}, Effect {value.specialEffectID}, EvID : {value.evolutionID}, PairID : {value.pairID.Length}");
         }
     }
 }
