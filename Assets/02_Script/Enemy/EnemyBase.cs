@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour, IDamageable
+public class EnemyBase : ForTargeting, IDamageable
 {
     [SerializeField] protected int maxHp;
     [SerializeField] protected int atk;
@@ -39,6 +39,17 @@ public class EnemyBase : MonoBehaviour, IDamageable
         atk = initAtk;
         moveSpeed = initSpeed;
         transform.localScale = initScale;
+        if (EnemyManager.Instance != null && EnemyManager.Instance.enemies != null)
+        {
+            EnemyManager.Instance.enemies.Add(this);
+        }
+    }
+    protected void OnDisable()
+    {
+        if (EnemyManager.Instance != null && EnemyManager.Instance.enemies != null)
+        {
+            EnemyManager.Instance.enemies.Remove(this);
+        }
     }
     protected virtual void Update()
     {

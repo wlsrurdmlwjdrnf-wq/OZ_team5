@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 5776178105788206719}
   - component: {fileID: -8607502709663906957}
   - component: {fileID: -5277927822361928927}
+  - component: {fileID: -7134731405120134623}
   m_Layer: 0
   m_Name: Boss1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,3 +165,30 @@ MonoBehaviour:
   pattern1Interval: 4
   pattern2Interval: 2
   shootInterval: 0.5
+--- !u!50 &-7134731405120134623
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164712086741004692}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

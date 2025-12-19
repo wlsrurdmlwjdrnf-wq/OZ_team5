@@ -69,16 +69,16 @@ public class Spawner : MonoBehaviour
         }
 
         StartCoroutine(SpawnItemBox());
-        StartCoroutine(SpawnEnemy(zombiePrefab, 2f));
-        StartCoroutine(SpawnEnemy(bigZombiePrefab, 9f));
-        StartCoroutine(SpawnBoss(boss1Prefab, 10f));
+        StartCoroutine(SpawnEnemy(zombiePrefab, 1f));
+        StartCoroutine(SpawnEnemy(bigZombiePrefab, 4f));
+        StartCoroutine(SpawnBoss(boss1Prefab, 20f));
     }
     private IEnumerator SpawnBoss(EnemyBase boss, float waitBossTime)
     {
         yield return new WaitForSeconds(waitBossTime);
         //보스 출현 경고 후 보스와 벽몬스터 스폰, 타이머 정지, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함.
         //보스를 잡은 후에 타이머 다시 작동
-        ClearEnemy();
+        ClearField();
 
         WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 0.9f);
 
@@ -87,41 +87,47 @@ public class Spawner : MonoBehaviour
 
         StopAllCoroutines();
     }
-    private void ClearEnemy()
+    private void ClearField()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (GameObject enemy in enemies)
+        Collider2D[] cols = Physics2D.OverlapCircleAll(player.transform.position, 30f);
+
+        foreach (Collider2D col in cols)
         {
-            if (enemy.TryGetComponent<EnemyBase>(out EnemyBase em))
+            if (col.gameObject.TryGetComponent<EnemyBase>(out EnemyBase target))
             {
-                em.ReturnPool();
+                PoolManager.Instance.ReturnPool(target);
             }
+            if (col.TryGetComponent<ItemBox>(out ItemBox box))
+            {
+                PoolManager.Instance.ReturnPool(box);
+            }
+            
         }
     }
     public void KillBoss1()
     {
-        ClearEnemy();
+        ClearField();
         StartCoroutine(SpawnItemBox());
         StartCoroutine(SpawnEnemy(zomPlantPrefab, 2f));
         StartCoroutine(SpawnEnemy(zomDogPrefab, 1f));
-        StartCoroutine(SpawnBoss(boss2Prefab, 10f));
+        StartCoroutine(SpawnBoss(boss2Prefab, 20f));
     }
     public void KillBoss2()
     {
-        ClearEnemy();
+        ClearField();
         StartCoroutine(SpawnItemBox());
         StartCoroutine(SpawnEnemy(zomPlantPrefab, 2f));
         StartCoroutine(SpawnEnemy(zomDogPrefab, 1f));
         StartCoroutine(SpawnEnemy(suicideBomberPrefab, 3f));
-        StartCoroutine(SpawnBoss(boss3Prefab, 10f));
+        StartCoroutine(SpawnBoss(boss3Prefab, 20f));
     }
     private IEnumerator SpawnItemBox()
     {
         while (true)
         {
             ItemBox itembox = PoolManager.Instance.GetFromPool(itemBoxPrefab);
-            itembox.transform.position = RandPos(4f, 5f, 4f) + player.transform.position;
-            yield return new WaitForSeconds(20f);
+            itembox.transform.position = RandPos(5f, 5f, 5f) + player.transform.position;
+            yield return new WaitForSeconds(10f);
         }
     }
     private IEnumerator SpawnEnemy(EnemyBase prefab,float spawnInterval)
