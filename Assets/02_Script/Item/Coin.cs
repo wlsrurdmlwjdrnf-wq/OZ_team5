@@ -8,7 +8,7 @@ public class Coin : ItemBase
 
     public override void Activate(Player player)
     {
-        player.PlayerStat().playerGold += amount;
+        //player.PlayerStat().playerGold += amount;
         Destroy(gameObject);
     }
 

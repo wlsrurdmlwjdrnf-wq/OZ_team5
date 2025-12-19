@@ -7,19 +7,20 @@ public static class EnumData
     //장비 아이템 Type
     public enum EquipmentType
     {
-        Support = 1,
-        Weapon,
+        Weapon = 1,
         Amor,
         Necklace,
-        Gloves,
         Belt,
-        Boots
+        Gloves,
+        Boots,
     }
 
     //장비 아이템 Tier
     public enum EquipmentTier
     {
-        Rare = 1,
+        Nice = 1,
+        Rare,
+        Elite,
         Epic,
         Legendary
     }
@@ -31,6 +32,12 @@ public static class EnumData
         Equipment,
         InGameWeapon,
         InGamePassive
+    }
+
+    public enum SkillType
+    {
+        Attack = 1,
+        Support
     }
 
     //씬 종류
