@@ -10,9 +10,11 @@ public class KunaiProjectile : MonoBehaviour
 
     private float spawntime;
     private Vector2 shootDirection;
+    private bool hasHit;
 
     private void OnEnable()
     {
+        hasHit = false;
         spawntime = Time.time;
     }
     private void Update()
@@ -30,9 +32,15 @@ public class KunaiProjectile : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (hasHit) return;
+        if(collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
+        {
+            DamageTextManager.Instance.ShowDamage(dmg, enemy.transform.position);
+        }
         if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obj))
         {
             obj.TakeDamage(dmg);
+            hasHit = true;
             PoolManager.Instance.ReturnPool(this);
         }
     }

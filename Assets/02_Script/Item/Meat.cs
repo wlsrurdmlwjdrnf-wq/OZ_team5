@@ -11,6 +11,6 @@ public class Meat : ItemBase
         if (player.PlayerStat().playerCurrentHp > player.PlayerStat().playerMaxHp)
             player.PlayerStat().playerCurrentHp = player.PlayerStat().playerMaxHp;
 
-        Destroy(gameObject);
+        PoolManager.Instance.ReturnPool(this);
     }
 }

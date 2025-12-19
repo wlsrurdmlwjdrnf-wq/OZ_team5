@@ -75,7 +75,7 @@ public class Boss3 : EnemyBase
     }
     protected override IEnumerator DieCo()
     {
-        //게임 클리어 호출
+        GameManager.Instance.GameClear();
         yield return null;
         StartCoroutine(base.DieCo());
     }

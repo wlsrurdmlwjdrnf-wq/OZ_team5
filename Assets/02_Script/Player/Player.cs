@@ -82,19 +82,28 @@ public class Player : MonoBehaviour
         UpdateHpBar();
         if(playerData.playerCurrentHp<0)
         {
-            //게임오버호출
             hpBar.gameObject.SetActive(false);
             joystick.gameObject.SetActive(false);
             gameObject.SetActive(false);
+            GameManager.Instance.GameOver();
         }
     }
 
-    //임시적으로 데미지주는 코드
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obj))
-        {
-            obj.TakeDamage(playerData.playerAtk);
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
+    //    {
+    //        if(input == Vector2.zero)
+    //        {
+    //            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    //            GetComponent<Collider2D>().isTrigger = false;
+    //        }
+    //        else
+    //        {
+    //            rb.constraints = RigidbodyConstraints2D.None;
+    //            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+    //            GetComponent<Collider2D>().isTrigger = true;
+    //        }
+    //    }
+    //} 플레이어 충돌판정 일단 보류
 }

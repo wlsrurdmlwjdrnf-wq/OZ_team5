@@ -314,6 +314,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9132962160212396293}
     m_Modifications:
+    - target: {fileID: -8971077779261104640, guid: 2ebe6f56a57eaaf4a9510040139b4f98, type: 3}
+      propertyPath: interval
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4092263063886262992, guid: 2ebe6f56a57eaaf4a9510040139b4f98, type: 3}
       propertyPath: m_Name
       value: Kunai

@@ -7,7 +7,7 @@ public class EnemyBase : ForTargeting, IDamageable
     [SerializeField] protected int maxHp;
     [SerializeField] protected int atk;
     [SerializeField] protected float moveSpeed;
-    [SerializeField] protected ExpStone expStone;
+    [SerializeField] protected ItemBase expStone;
 
     protected Transform player;
     protected SpriteRenderer spriteRenderer;
@@ -69,7 +69,7 @@ public class EnemyBase : ForTargeting, IDamageable
     {
         GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(0.2f);
-        var tmpStone = PoolManager.Instance.GetFromPool(expStone);
+        ItemBase tmpStone = PoolManager.Instance.GetFromPool(expStone);
         tmpStone.transform.position = transform.position;
         ReturnPool();
     }
