@@ -11,6 +11,8 @@ public class IngameItemData
     public int level;
     public int ptCount;
     public int ptSpeed;
-    public int[] pairID;
+    public int specialEffectID;
     public int EvID;
+    public int[] pairID;
+
 }

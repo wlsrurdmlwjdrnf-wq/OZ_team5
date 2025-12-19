@@ -13,6 +13,7 @@ public static class EnumData
         Belt,
         Gloves,
         Boots,
+        NONE
     }
 
     //장비 아이템 Tier
@@ -22,7 +23,9 @@ public static class EnumData
         Rare,
         Elite,
         Epic,
-        Legendary
+        Legendary,
+        NONE
+           
     }
 
     //인벤토리 종류
@@ -37,7 +40,8 @@ public static class EnumData
     public enum SkillType
     {
         Attack = 1,
-        Support
+        Support,
+        NONE
     }
 
     //씬 종류

@@ -24,6 +24,7 @@ public class DataManager : Singleton<DataManager>
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
         LoadRarityItemData(); // 티어별 데이터 로드
+        LogData();
     }
 
     #region 데이터 로드 함수
@@ -36,7 +37,7 @@ public class DataManager : Singleton<DataManager>
             equipmentEffectDic.TryAdd(effect.ID, effect);
         }
     }
-    
+
     private void LoadItemData()
     {
         var dataList = CSVReader.Read("Data/DataTable");
@@ -55,19 +56,18 @@ public class DataManager : Singleton<DataManager>
                 
                 if (itemDataDic.ContainsKey(data.id))
                 {
+                    //중복ID 로그
                     Debug.LogError($"ID : {data.id}는 이미 존재하는 ID 입니다."); 
                     continue;
                 }
                 data.name = Convert.ToString(d["Name"]);
-                data.type = (EnumData.EquipmentType)Enum.Parse(typeof(EnumData.EquipmentType), d["Type"].ToString(), true);
-                data.tier = (EnumData.EquipmentTier)Enum.Parse(typeof(EnumData.EquipmentTier), d["Tier"].ToString(), true);
-                
-                // 없으면 0으로 처리 음수처리에대한 예외?
-                data.atkMtp = d.ContainsKey("AtkMtp") ? Convert.ToSingle(d["AtkMtp"]) : 0.0f;
-                data.atkPercent = d.ContainsKey("AtkPercent") ? Convert.ToInt32(d["AtkPercent"]) : 0;
-                data.hpPercent = d.ContainsKey("HpPercent") ? Convert.ToInt32(d["HpPercent"]) : 0;
-                data.specialEffectID = d.ContainsKey("Effect") ? Convert.ToInt32(d["Effect"]) : -1;
-
+                data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.EquipmentType ety)) ? ety : EnumData.EquipmentType.NONE;
+                data.tier = (d.ContainsKey("Tier") && Enum.TryParse(d["Tier"].ToString(), out EnumData.EquipmentTier etr)) ? etr : EnumData.EquipmentTier.NONE;
+                data.atkMtp = (d.ContainsKey("AtkMtp") && float.TryParse(d["AtkMtp"].ToString(), out float atkmtp)) ? atkmtp : -1.0f;
+                data.atkPercent = (d.ContainsKey("AtkPercent") && int.TryParse(d["AtkPercent"].ToString(), out int atkper)) ? atkper : -1;
+                data.hpPercent = (d.ContainsKey("HpPercent") && int.TryParse(d["HpPercent"].ToString(), out int hpper)) ? hpper : -1;
+                data.specialEffectID = (d.ContainsKey("Effect") && int.TryParse(d["Effect"].ToString(), out int efc)) ? efc : -1;
+                data.evolutionID = (d.ContainsKey("EvID") && int.TryParse(d["EvID"].ToString(), out int eid)) ? eid : -1;
                 // 조합이 없으면 -1
                 // 조합이 여러개면 개수에 따라 배열로 받습니다
                 if (d.ContainsKey("PairID"))
@@ -86,22 +86,21 @@ public class DataManager : Singleton<DataManager>
                         for (int i = 0; i < tempData.Length; i++)
                         {
                             data.pairID[i] = int.Parse(tempData[i]);
-                        }                                                       
+                        }
                     }
                 }
-
-                //최종진화 형태가 없다면 -1
-                data.evolutionID = d.ContainsKey("EvID") ? Convert.ToInt32(d["EvID"]) : -1; 
 
                 itemDataDic.Add(data.id, data);
             }
             catch
             {
-                Debug.LogError($"DataTable 파일 {excelCount}번째 데이터 로드 실패 부적절한 데이터값");
+                //로드실패로그
+                Debug.LogError($"DataTable 파일 {excelCount}번째 데이터 로드 실패 잘못된 데이터값");
                 continue;
             }
         }
         //로드 완료
+        Debug.Log("장비 아이템 로드완료");
     }
 
     private void LoadRarityItemData()
@@ -141,22 +140,26 @@ public class DataManager : Singleton<DataManager>
 
                 if (itemDataDic.ContainsKey(data.id))
                 {
+                    //중복ID로그
                     Debug.LogError($"ID : {data.id}는 이미 존재하는 ID 입니다.");
                     continue;
                 }
 
                 data.name = Convert.ToString(d["Name"]);
-                data.type = (EnumData.SkillType)Enum.Parse(typeof(EnumData.SkillType), d["Type"].ToString(), true);
-                data.damage = d.ContainsKey("Damage") ? Convert.ToInt32(d["Damage"]) : 0;
-                data.level = d.ContainsKey("Level") ? Convert.ToInt32(d["Level"]) : 1;
-                data.ptCount = d.ContainsKey("PtCount") ? Convert.ToInt32(d["PtCount"]) : 0;
-                data.ptSpeed = d.ContainsKey("PtSpeed") ? Convert.ToInt32(d["PtSpeed"]) : 0;
+                data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.SkillType skty)) ? skty : EnumData.SkillType.NONE;
+                data.damage = (d.ContainsKey("Damage") && int.TryParse(d["Damage"].ToString(), out int dmg)) ? dmg : -1;
+                data.level = (d.ContainsKey("Level") && int.TryParse(d["Level"].ToString(), out int lv)) ? lv : 1;
+                data.ptCount = (d.ContainsKey("PtCount") && int.TryParse(d["PtCount"].ToString(), out int ptc)) ? ptc : -1;
+                data.ptSpeed = (d.ContainsKey("PtSpeed") && int.TryParse(d["PtSpeed"].ToString(), out int pts)) ? pts : -1;
+                data.specialEffectID = (d.ContainsKey("Effect") && int.TryParse(d["Effect"].ToString(), out int efso)) ? efso : -1;
+                data.EvID = (d.ContainsKey("EvID") && int.TryParse(d["EvID"].ToString(), out int ev)) ? ev : -1;
+
 
                 if (d.ContainsKey("PairID"))
                 {
                     string tempPair = d["PairID"].ToString();
 
-                    if(string.IsNullOrEmpty(tempPair))
+                    if (string.IsNullOrEmpty(tempPair))
                     {
                         data.pairID = new int[] { -1 };
                     }
@@ -167,28 +170,23 @@ public class DataManager : Singleton<DataManager>
 
                         for (int i = 0; i < tempData.Length; i++)
                         {
-                            data.pairID[i] =int.Parse(tempData[i]);
+                            data.pairID[i] = int.Parse(tempData[i]);
                         }
                     }
                 }
-
-                if (d.ContainsKey("EvID"))
-                {
-                    data.EvID = Convert.ToInt32(d["EvID"]);
-                }
-                else
-                {
-                    data.EvID = -1;
-                }
+                
 
                 ingameItemDataDic.Add(data.id, data);
             }
             catch
             {
-                Debug.LogError($"IngameItemData 파일 {excelCount}번째 데이터 로드 실패 부적절한 데이터값");
+                //로드실패로그
+                Debug.LogError($"IngameItemData 파일 {excelCount}번째 데이터 로드 실패 잘못된 데이터값");
                 continue;
             }
         }
+        //로드완료
+        Debug.Log("무기스킬 / 지원폼 데이터 로드완료");
     }
 
 
@@ -214,6 +212,18 @@ public class DataManager : Singleton<DataManager>
     {
         if (equipmentEffectDic.ContainsKey(id)) return equipmentEffectDic[id];
             return null;        
+    }
+
+    //테스트용 로그함수
+    public void LogData()
+    {
+        foreach (var data in itemDataDic)
+        {
+            int key = data.Key;
+            var value = data.Value;
+
+            Debug.Log($"{key}번째 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}");
+        }
     }
 }
 
