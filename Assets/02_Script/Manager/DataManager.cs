@@ -200,6 +200,12 @@ public class DataManager : Singleton<DataManager>
             return null;        
     }
 
+    public IngameItemData GetIngameItemData(int id)
+    {
+        if (ingameItemDataDic.ContainsKey(id)) return ingameItemDataDic[id];
+        return null;
+    }
+
     // 등급별 아이템 리스트 리턴함수
     public List<ItemData> GetItemRarityList(EnumData.EquipmentTier tier)
     {
@@ -222,7 +228,7 @@ public class DataManager : Singleton<DataManager>
             int key = data.Key;
             var value = data.Value;
 
-            Debug.Log($"{key}번째 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}, Tier : {value.tier}, AtkMtp : {value.atkMtp}, AtkPercent : {value.atkPercent}, HpPercent : {value.hpPercent}, Effect {value.specialEffectID}, EvID : {value.evolutionID}, PairID : {value.pairID.Length}");
+            Debug.Log($"{key}번 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}, Tier : {value.tier}, AtkMtp : {value.atkMtp}, AtkPercent : {value.atkPercent}, HpPercent : {value.hpPercent}, Effect {value.specialEffectID}, EvID : {value.evolutionID}, PairID : {value.pairID.Length}");
         }
     }
 }
