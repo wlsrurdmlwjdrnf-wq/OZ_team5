@@ -7,19 +7,15 @@ public class SceneController : MonoBehaviour
 {
     //로딩 UI 전체 패널(Canvas > Layer_System에 두는걸 권장)
     [SerializeField] private GameObject loadingPanel;
-
     //로딩 진행도 슬라이더(0~1)
     [SerializeField] private Slider loadingBar;
-
     //로딩 퍼센트 텍스트
     [SerializeField] private TextMeshProUGUI loadingText;
-
     //"클릭해서 계속" 안내 UI(타이틀용, 선택)
     [SerializeField] private GameObject pressToContinue;
 
     //현재 비동기 씬 로딩 작업
     private AsyncOperation asyncOp;
-
     //로딩 완료 후 입력 대기 여부
     private bool waitForInput;
 
@@ -27,10 +23,14 @@ public class SceneController : MonoBehaviour
     {
         //시작 시 로딩 UI는 꺼둠
         if (loadingPanel != null)
+        {
             loadingPanel.SetActive(false);
+        }
 
         if (pressToContinue != null)
+        {
             pressToContinue.SetActive(false);
+        }
     }
 
     private void Update()
@@ -44,7 +44,9 @@ public class SceneController : MonoBehaviour
 
             //씬 활성화 허용
             if (asyncOp != null)
+            {
                 asyncOp.allowSceneActivation = true;
+            }
         }
     }
 
@@ -72,10 +74,13 @@ public class SceneController : MonoBehaviour
 
         //로딩 UI 표시(null이어도 터지지 않게 방어)
         if (loadingPanel != null)
+        {
             loadingPanel.SetActive(true);
-
+        }
         if (pressToContinue != null)
+        {
             pressToContinue.SetActive(false);
+        }
 
         UpdateProgress(0f);
 
@@ -117,15 +122,17 @@ public class SceneController : MonoBehaviour
                     waitForInput = true;
 
                     if (pressToContinue != null)
+                    {
                         pressToContinue.SetActive(true);
+                    }
 
                     //입력 들어올 때까지 대기
                     while (waitForInput)
                         yield return null;
                 }
+                    //즉시 씬 전환
                 else
                 {
-                    //즉시 씬 전환
                     asyncOp.allowSceneActivation = true;
                 }
             }
@@ -135,10 +142,13 @@ public class SceneController : MonoBehaviour
 
         //씬 전환 완료 후 로딩 UI 정리
         if (loadingPanel != null)
+        {
             loadingPanel.SetActive(false);
-
+        }
         if (pressToContinue != null)
+        {
             pressToContinue.SetActive(false);
+        }
 
         asyncOp = null;
     }
@@ -147,7 +157,9 @@ public class SceneController : MonoBehaviour
     private void UpdateProgress(float value01)
     {
         if (loadingBar != null)
+        {
             loadingBar.value = value01;
+        }
 
         if (loadingText != null)
         {

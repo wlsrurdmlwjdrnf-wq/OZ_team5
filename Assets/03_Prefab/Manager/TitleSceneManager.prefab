@@ -746,7 +746,7 @@ Transform:
   m_GameObject: {fileID: 5076698641302651145}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5296655, y: -0.06009084, z: -3.9457006}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -766,9 +766,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logoAnim: {fileID: 9170730425823412995}
-  logoText: {fileID: 8595824993941497984}
-  loadingDone: {fileID: 4241537183744299790}
   title: {fileID: 1133057484799988803}
+  loadingDone: {fileID: 4241537183744299790}
   loadingBar: {fileID: 8252513407164766953}
   loadingText: {fileID: 1645573726003404261}
 --- !u!1 &7960467548876908488
