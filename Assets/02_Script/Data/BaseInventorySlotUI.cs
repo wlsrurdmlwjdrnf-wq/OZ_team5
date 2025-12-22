@@ -4,17 +4,19 @@ using System.Collections.Generic;
 using System.Xml.Schema;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 // 인벤토리 데이터
-public abstract class InventorySlotUI : MonoBehaviour
+public abstract class BaseInventorySlotUI : MonoBehaviour, IPointerClickHandler
 {
     protected Image icon;
     [SerializeField] protected EnumData.InventoryType type;
-    public int slotItemID { get; protected set; } = -1;
+    [SerializeField] protected int slotNum;
+    public int slotItemID { get; protected set; }
 
 
-    public event Action<InventorySlotUI> OnSlotClick;
+    public event Action<BaseInventorySlotUI> OnSlotClick;    
 
     protected virtual void SetItem(int id)
     {
@@ -38,6 +40,12 @@ public abstract class InventorySlotUI : MonoBehaviour
             icon.sprite = DataManager.Instance.GetItemIcon("empty");
             icon.enabled = true;
         }
-    }                
+    }
+
+    // 오버라이딩시 base호출 필수
+    public virtual void OnPointerClick(PointerEventData data)
+    {
+        OnSlotClick?.Invoke(this);
+    }
 }
 

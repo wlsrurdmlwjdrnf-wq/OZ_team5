@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventorySlotEquipUI : InventorySlotUI
+public class InventorySlotEquipUI : BaseInventorySlotUI
 {
     [SerializeField] private EnumData.EquipmentType equipType;
 
@@ -11,12 +11,18 @@ public class InventorySlotEquipUI : InventorySlotUI
 
     public event Action<int, int> OnEquip;
 
+
+    //일반 인벤토리에서 클릭했을때 이 함수 호출
     protected override void SetItem(int id)
     {
         int beforID = slotItemID;
+        var item = DataManager.Instance.GetItemData(id);
+        if (item.type == equipType)
+        {
+            base.SetItem(id); // 해당 타입의 UI에 icon 띄움            
+        }
+        else return;
 
-        base.SetItem(id);
-        
         if (beforID != id)
         {
             OnEquip?.Invoke(beforID, id);

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-    // 종류별 컨테이너
+    // 종류별 아이템 컨테이너
     private Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
     private Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
     private Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
@@ -15,9 +15,10 @@ public class DataManager : Singleton<DataManager>
     //이미지 파일 컨테이너
     private Dictionary<string, Sprite> itemIcon = new Dictionary<string, Sprite>();
 
-    [Tooltip("등급별 분류 컨테이너")]
+    //뽑기를 위한 티어별 아이템 컨테이너
     private Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
 
+    public PlayerData playerData {  get; private set; }
 
     protected override void Init()
     {
@@ -26,6 +27,7 @@ public class DataManager : Singleton<DataManager>
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
         LoadRarityItemData(); // 티어별 데이터 로드
+        LoadPlayerStat();
         // LogData(); // 테스트용 로그함수
     }
 
@@ -191,8 +193,15 @@ public class DataManager : Singleton<DataManager>
         Debug.Log("무기스킬 / 지원폼 데이터 로드완료");
     }
 
+    public void LoadPlayerStat()
+    {
+        playerData = new PlayerData();
+    }
+
 
     #endregion
+
+    #region 데이터 겟 함수
 
     public ItemData GetItemData(int id)
     {
@@ -233,6 +242,8 @@ public class DataManager : Singleton<DataManager>
         }
         return null;
     }
+
+    #endregion
 
     //테스트용 로그함수
     public void LogData()
