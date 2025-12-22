@@ -10,7 +10,14 @@ using UnityEngine.UI;
 public abstract class InventorySlotUI : MonoBehaviour
 {
     protected Image icon;
+    protected Image backgroundGrade;
+    protected Image emptyIcon;
     protected TextMeshProUGUI amount;
 
+    public event Action OnClickSlot;
+
+    protected virtual void Awake()
+    {
+    }
 }
 
