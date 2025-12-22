@@ -6,22 +6,19 @@ using UnityEngine.UI;
 
 public class TitleSceneManager : MonoBehaviour
 {
-    //게임시작시 재생될 로고 애니메이션
+    //게임시작시 로고 애니메이션
     public Animation logoAnim;
-    //시작로고 텍스트
-    public TextMeshProUGUI logoText;
 
-    //로딩이 끝나면 나오는 오브젝트
-    public GameObject loadingDone;
-    
-
-    //타이틀로 사용할 게임오브젝트
+    //스타트패널(타이틀UI)
     public GameObject title;
-    //로딩표시 슬라이더
+    //로딩완료후표시
+    public GameObject loadingDone;
+    //로딩UI
     public Slider loadingBar;
     //퍼센트 텍스트
     public TextMeshProUGUI loadingText;
 
+    //비동기씬로딩상태를저장하는변수
     private AsyncOperation _AsyncOperation;
     private bool lodingCheck;
 
