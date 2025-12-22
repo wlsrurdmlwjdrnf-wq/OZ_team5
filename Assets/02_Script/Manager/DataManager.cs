@@ -149,7 +149,7 @@ public class DataManager : Singleton<DataManager>
 
                 data.id = Convert.ToInt32(d["ID"]);
 
-                if (itemDataDic.ContainsKey(data.id))
+                if (ingameItemDataDic.ContainsKey(data.id))
                 {
                     //중복ID로그
                     Debug.LogError($"ID : {data.id}는 이미 존재하는 ID 입니다.");
