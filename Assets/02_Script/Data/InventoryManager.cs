@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
-    private Dictionary<EnumData.InventoryType, Inventory> playerInven;
+    /*
+    private Dictionary<EnumData.InventoryType, InventoryData> playerInven;
 
     [Tooltip("인벤토리별 아이템칸 설정")]
     [SerializeField] private int General = 10; //일반 인벤토리
@@ -16,19 +17,19 @@ public class InventoryManager : Singleton<InventoryManager>
     protected override void Init()
     {          
         base.Init();
-        playerInven = new Dictionary<EnumData.InventoryType, Inventory>
+        playerInven = new Dictionary<EnumData.InventoryType, InventoryData>
         {
-            {EnumData.InventoryType.General, new Inventory(General) },
-            {EnumData.InventoryType.Equipment, new Inventory(Equipment) },
-            {EnumData.InventoryType.InGameWeapon, new Inventory(IngameSkill) },
-            {EnumData.InventoryType.InGamePassive, new Inventory(IngamePassive) }
+            {EnumData.InventoryType.General, new InventoryData(General) },
+            {EnumData.InventoryType.Equipment, new InventoryData(Equipment) },
+            {EnumData.InventoryType.InGameWeapon, new InventoryData(IngameSkill) },
+            {EnumData.InventoryType.InGamePassive, new InventoryData(IngamePassive) }
         };
     }
 
     // 아이템 추가 뽑기에서 아이템을 먹으면 알맞은 종류의 인벤토리에 아이템(ID)을 넣을때 호출함
     public void AddItem(EnumData.InventoryType type, int id)
     {
-        Inventory inven = playerInven[type];
+        InventoryData inven = playerInven[type];
         if (inven == null) return;
 
         int emptySlot = inven.GetEmptySlot();
@@ -43,7 +44,7 @@ public class InventoryManager : Singleton<InventoryManager>
     // 아이템 제거
     public void RemoveItem(EnumData.InventoryType type, int slot)
     {
-        Inventory inven = playerInven[type];
+        InventoryData inven = playerInven[type];
 
         ItemData item = inven.GetItemInfo(slot);
         if (item == null) return;
@@ -53,7 +54,8 @@ public class InventoryManager : Singleton<InventoryManager>
     // 아이템 정보 반환
     public ItemData GetItemData(EnumData.InventoryType type, int slot)
     {
-        Inventory inven = playerInven[type];
+        InventoryData inven = playerInven[type];
         return inven?.GetItemInfo(slot);
     }
+    */
 }

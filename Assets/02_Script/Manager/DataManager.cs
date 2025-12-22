@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,20 +7,23 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
+    //모든 아이템 컨테이너의 컨테이너 (모든 데이터)
+    private Dictionary<Type, object> allItemData = new Dictionary<Type, object>();
 
-    [Tooltip("아이템, 특수효과SO, 인게임무기스킬,지원폼 컨테이너")]
-    public Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
-    public Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
-    public Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
+    // 종류별 컨테이너
+    private Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
+    private Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
+    private Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
 
 
     [Tooltip("등급별 분류 컨테이너")]
-    public Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
+    private Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
 
 
     protected override void Init()
     {
         base.Init();
+        InitAllData();
         LoadItemData(); // 아이템 데이터 로드
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
@@ -27,6 +31,13 @@ public class DataManager : Singleton<DataManager>
         // LogData(); // 테스트용 로그함수
     }
 
+    // 모든데이터 참조용 함수
+    private void InitAllData()
+    {
+        allItemData[typeof(ItemData)] = itemDataDic;
+        allItemData[typeof(EquipmentEffectSO)] = equipmentEffectDic;
+        allItemData[typeof(IngameItemData)] = ingameItemDataDic;
+    }
     #region 데이터 로드 함수
 
     private void LoadEffectSO()
@@ -138,7 +149,7 @@ public class DataManager : Singleton<DataManager>
 
                 data.id = Convert.ToInt32(d["ID"]);
 
-                if (itemDataDic.ContainsKey(data.id))
+                if (ingameItemDataDic.ContainsKey(data.id))
                 {
                     //중복ID로그
                     Debug.LogError($"ID : {data.id}는 이미 존재하는 ID 입니다.");
@@ -194,24 +205,26 @@ public class DataManager : Singleton<DataManager>
 
 
     // 아이템 정보 리턴함수
-    public ItemData GetItemData(int id)
+    public T GetData<T>(int id)
     {
-        if (itemDataDic.ContainsKey(id)) return itemDataDic[id];
-            return null;        
+        Type type = typeof(T);
+
+        if (allItemData.TryGetValue(type, out object dicitem) && dicitem is Dictionary<int, T> dicType)
+        {
+            if (dicType.TryGetValue(id, out T data))
+            {
+                return data;
+            }
+        }        
+        return default(T);
     }
+
 
     // 등급별 아이템 리스트 리턴함수
     public List<ItemData> GetItemRarityList(EnumData.EquipmentTier tier)
     {
         if (itemRarityDic.ContainsKey(tier)) return itemRarityDic[tier];
             return null;
-    }
-
-    //장비 특수효과 리턴함수
-    public EquipmentEffectSO GetEquipEffectData(int id)
-    {
-        if (equipmentEffectDic.ContainsKey(id)) return equipmentEffectDic[id];
-            return null;        
     }
 
     //테스트용 로그함수
@@ -222,7 +235,7 @@ public class DataManager : Singleton<DataManager>
             int key = data.Key;
             var value = data.Value;
 
-            Debug.Log($"{key}번째 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}, Tier : {value.tier}, AtkMtp : {value.atkMtp}, AtkPercent : {value.atkPercent}, HpPercent : {value.hpPercent}, Effect {value.specialEffectID}, EvID : {value.evolutionID}, PairID : {value.pairID.Length}");
+            Debug.Log($"{key}번 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}, Tier : {value.tier}, AtkMtp : {value.atkMtp}, AtkPercent : {value.atkPercent}, HpPercent : {value.hpPercent}, Effect {value.specialEffectID}, EvID : {value.evolutionID}, PairID : {value.pairID.Length}");
         }
     }
 }

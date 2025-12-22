@@ -11,6 +11,7 @@ using UnityEngine;
 
 public class GachaController : MonoBehaviour
 {
+    /*
     [SerializeField] public float legendaryRate = 1f;
     [SerializeField] public float epicRate = 9f;
     [SerializeField] public float rareRate = 90f;
@@ -62,4 +63,5 @@ public class GachaController : MonoBehaviour
         int value = UnityEngine.Random.Range(0, item.Count);
         return item[value];
     }
+    */
 }
