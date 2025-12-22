@@ -1343,9 +1343,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logoAnim: {fileID: 1448508176}
-  logoText: {fileID: 1034338550}
-  loadingDone: {fileID: 503705817}
   title: {fileID: 497746950}
+  loadingDone: {fileID: 503705817}
   loadingBar: {fileID: 1969679839}
   loadingText: {fileID: 1205959858}
 --- !u!1 &1303501323

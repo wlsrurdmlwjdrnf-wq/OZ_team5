@@ -7,14 +7,13 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-    //모든 아이템 컨테이너의 컨테이너 (모든 데이터)
-    private Dictionary<Type, object> allItemData = new Dictionary<Type, object>();
-
     // 종류별 컨테이너
     private Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
     private Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
     private Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
 
+    //이미지 파일 컨테이너
+    private Dictionary<string, Sprite> itemIcon = new Dictionary<string, Sprite>();
 
     [Tooltip("등급별 분류 컨테이너")]
     private Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
@@ -23,7 +22,6 @@ public class DataManager : Singleton<DataManager>
     protected override void Init()
     {
         base.Init();
-        InitAllData();
         LoadItemData(); // 아이템 데이터 로드
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
@@ -31,13 +29,6 @@ public class DataManager : Singleton<DataManager>
         // LogData(); // 테스트용 로그함수
     }
 
-    // 모든데이터 참조용 함수
-    private void InitAllData()
-    {
-        allItemData[typeof(ItemData)] = itemDataDic;
-        allItemData[typeof(EquipmentEffectSO)] = equipmentEffectDic;
-        allItemData[typeof(IngameItemData)] = ingameItemDataDic;
-    }
     #region 데이터 로드 함수
 
     private void LoadEffectSO()
@@ -203,20 +194,22 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
-
-    // 아이템 정보 리턴함수
-    public T GetData<T>(int id)
+    public ItemData GetItemData(int id)
     {
-        Type type = typeof(T);
+        if (itemDataDic.ContainsKey(id)) return itemDataDic[id];
+        return null;
+    }
 
-        if (allItemData.TryGetValue(type, out object dicitem) && dicitem is Dictionary<int, T> dicType)
-        {
-            if (dicType.TryGetValue(id, out T data))
-            {
-                return data;
-            }
-        }        
-        return default(T);
+    public IngameItemData GetIngameItemData(int id)
+    {
+        if (ingameItemDataDic.ContainsKey(id)) return ingameItemDataDic[id];
+        return null;
+    }
+
+    public EquipmentEffectSO GetEquipEffectData(int id)
+    {
+        if (equipmentEffectDic.ContainsKey(id)) return equipmentEffectDic[id];
+        return null;
     }
 
 
@@ -224,7 +217,21 @@ public class DataManager : Singleton<DataManager>
     public List<ItemData> GetItemRarityList(EnumData.EquipmentTier tier)
     {
         if (itemRarityDic.ContainsKey(tier)) return itemRarityDic[tier];
-            return null;
+        return null;
+    }
+
+    //아이템 아이콘 스프라이트 리턴함수
+    public Sprite GetItemIcon(string icon)
+    {
+        if (itemIcon.ContainsKey(icon)) return itemIcon[icon];
+
+        Sprite sprite = Resources.Load<Sprite>($"Icons/{icon}");
+        if (sprite != null)
+        {
+            itemIcon.Add(icon, sprite);
+            return sprite;
+        }
+        return null;
     }
 
     //테스트용 로그함수

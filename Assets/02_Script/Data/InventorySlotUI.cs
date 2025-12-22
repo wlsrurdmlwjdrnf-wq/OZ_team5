@@ -10,14 +10,34 @@ using UnityEngine.UI;
 public abstract class InventorySlotUI : MonoBehaviour
 {
     protected Image icon;
-    protected Image backgroundGrade;
-    protected Image emptyIcon;
-    protected TextMeshProUGUI amount;
+    [SerializeField] protected EnumData.InventoryType type;
+    public int slotItemID { get; protected set; } = -1;
 
-    public event Action OnClickSlot;
 
-    protected virtual void Awake()
+    public event Action<InventorySlotUI> OnSlotClick;
+
+    protected virtual void SetItem(int id)
     {
-    }
+        if (DataManager.Instance.GetItemData(id) != null)
+        {
+            slotItemID = id;
+            var item = DataManager.Instance.GetItemData(id);
+            icon.sprite = DataManager.Instance.GetItemIcon(item.name);
+            icon.enabled = true;
+        }
+        else if (DataManager.Instance.GetIngameItemData(id) != null)
+        {
+            slotItemID = id;
+            var item = DataManager.Instance.GetIngameItemData(id);
+            icon.sprite = DataManager.Instance.GetItemIcon(item.name);
+            icon.enabled = true;
+        }
+        else
+        {
+            slotItemID = -1;
+            icon.sprite = DataManager.Instance.GetItemIcon("empty");
+            icon.enabled = true;
+        }
+    }                
 }
 
