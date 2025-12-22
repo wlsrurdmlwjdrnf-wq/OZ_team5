@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6407330938982897861
+--- !u!1 &1048411833950273759
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7550870678910645800}
-  - component: {fileID: 5964211452544920602}
-  - component: {fileID: 4447050684079638090}
-  - component: {fileID: 6295894947171352376}
+  - component: {fileID: 7654118379191842176}
+  - component: {fileID: 4560790412295224185}
+  - component: {fileID: 7991689330155438066}
+  - component: {fileID: 8748528378229157522}
   m_Layer: 0
-  m_Name: ShotgunRange
+  m_Name: FootballProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7550870678910645800
+--- !u!4 &7654118379191842176
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6407330938982897861}
+  m_GameObject: {fileID: 1048411833950273759}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.92, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5964211452544920602
+--- !u!212 &4560790412295224185
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6407330938982897861}
+  m_GameObject: {fileID: 1048411833950273759}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -74,39 +74,25 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5eb0570dd160f9544a36e8a23dd46e02, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 46692f5b358795b4a90bcb7c8499e6f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.36, y: 2.55}
+  m_Size: {x: 1.22, y: 1.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4447050684079638090
-MonoBehaviour:
+--- !u!58 &7991689330155438066
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6407330938982897861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65670a581e0e76347a45682907899780, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageInterval: 0.5
-  damage: 11
---- !u!60 &6295894947171352376
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6407330938982897861}
+  m_GameObject: {fileID: 1048411833950273759}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -133,19 +119,23 @@ PolygonCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.36, y: 2.55}
-    newSize: {x: 2.36, y: 2.55}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.3, y: 1.4}
-      - {x: -0.3, y: 1.4}
-      - {x: -1.2, y: -0.9}
-      - {x: 1.2, y: -0.9}
-  m_UseDelaunayMesh: 0
+  serializedVersion: 2
+  m_Radius: 0.62
+--- !u!114 &8748528378229157522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048411833950273759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 248ac1645a1673d4695c44a9fb267974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dmg: 13
+  speed: 5
+  lifetime: 5
+  cam: {fileID: 0}
+  margin: 0.02
+  maxBounceCount: 7

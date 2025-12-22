@@ -55,7 +55,7 @@ public class EnemyBase : ForTargeting, IDamageable
     {
         MoveToPlayer();
     }
-    public virtual void TakeDamage(int amount)
+    public override void TakeDamage(int amount)
     {
         hp -= amount;
         if (hp <= 0)

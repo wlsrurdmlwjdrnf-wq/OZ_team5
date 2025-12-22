@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KunaiSkill : MonoBehaviour
+public class FootballSkill : MonoBehaviour
 {
-    [Header("юс╫ц")]
     [SerializeField] float interval;
-    [SerializeField] int level;
     [SerializeField] int count;
-    [SerializeField] ProjectileBase kunaiPrefab;
+    [SerializeField] ProjectileBase footballPrefab;
     private void Awake()
     {
-        PoolManager.Instance.CreatePool(kunaiPrefab, 30);
+        PoolManager.Instance.CreatePool(footballPrefab, 30);
     }
     private void OnEnable()
     {
@@ -24,21 +22,15 @@ public class KunaiSkill : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 ForTargeting enemy = EnemyManager.Instance.GetClosestEnemy(transform.position);
-                if(enemy == null) continue;
+                if (enemy == null) continue;
                 Vector2 dir = enemy.transform.position - transform.position;
 
-                ProjectileBase kunai = PoolManager.Instance.GetFromPool(kunaiPrefab);
-                kunai.SetDirection(dir);
-                kunai.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(interval*0.1f);
+                ProjectileBase drill = PoolManager.Instance.GetFromPool(footballPrefab);
+                drill.SetDirection(dir);
+                drill.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+                yield return new WaitForSeconds(interval * 0.2f);
             }
             yield return new WaitForSeconds(interval);
         }
     }
-    public void LevelUp()
-    {
-        level++;
-        count++;
-    }
 }
-
