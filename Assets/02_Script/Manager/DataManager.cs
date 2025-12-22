@@ -11,9 +11,9 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<Type, object> allItemData = new Dictionary<Type, object>();
 
     // 종류별 컨테이너
-    private Dictionary<int, ItemData> itemDataDic;
-    private Dictionary<int, EquipmentEffectSO> equipmentEffectDic;
-    private Dictionary<int, IngameItemData> ingameItemDataDic;
+    private Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
+    private Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
+    private Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
 
 
     [Tooltip("등급별 분류 컨테이너")]
@@ -23,7 +23,6 @@ public class DataManager : Singleton<DataManager>
     protected override void Init()
     {
         base.Init();
-
         InitAllData();
         LoadItemData(); // 아이템 데이터 로드
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
