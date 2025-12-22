@@ -85,7 +85,7 @@ public class Spawner : MonoBehaviour
         StartCoroutine(SpawnItemBox());
         StartCoroutine(SpawnEnemy(zombiePrefab, 1f));
         StartCoroutine(SpawnEnemy(bigZombiePrefab, 4f));
-        StartCoroutine(SpawnBoss(boss1Prefab, 20f));
+        StartCoroutine(SpawnBoss(boss1Prefab, 30f));
     }
     private IEnumerator SpawnBoss(EnemyBase boss, float waitBossTime)
     {

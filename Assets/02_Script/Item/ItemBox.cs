@@ -23,7 +23,7 @@ public class ItemBox : ForTargeting, IDamageable
             EnemyManager.Instance.enemies.Remove(this);
         }
     }
-    public void TakeDamage(int amount)
+    public override void TakeDamage(int amount)
     {
         hp -= amount;
         if (hp <= 0) Broken();
