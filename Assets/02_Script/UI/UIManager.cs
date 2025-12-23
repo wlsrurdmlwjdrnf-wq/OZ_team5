@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         //씬 전환 시에도 UI 유지
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     //Screen
