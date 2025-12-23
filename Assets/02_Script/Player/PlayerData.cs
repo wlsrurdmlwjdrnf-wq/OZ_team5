@@ -3,11 +3,11 @@ using System.Collections.Generic;
 [System.Serializable]
 public class PlayerData
 {
-    public int playerAtk;
-    public int playerDef;
-    public int playerMaxHp;
-    public int playerCurrentHp;
-    public int playerMeatRestore;
+    public float playerAtk;
+    public float playerDef;
+    public float playerMaxHp;
+    public float playerCurrentHp;
+    public float playerMeatRestore;
     public float playerSpeed;
     public float magnetRadius;
     public int playerLevel;
@@ -19,6 +19,7 @@ public class PlayerData
     public float resultAtkPer; // (외부에 의한)최종 공격력 증가량 10% 20%
     public float resultAtkMtp; // (외부에 의한)최종 공격력 증가 배수 2배 3배
     public float resultGoldPt; // (외부에 의한)최종 골드 획득량 10% 20%
+    public float resultHpPer; // (외부에 의한)최종 체력 증가량 10% 20%
 
     // 게임시작시 장비아이템
     public List<int> playerEquipInven;
@@ -40,6 +41,10 @@ public class PlayerData
         playerExpPt = 0;
         playerGoldPt = 0;
 
+        resultAtkPer = 0;
+        resultAtkMtp = 0;
+        resultGoldPt = 0;
+        resultHpPer = 0;
 
         playerGeneralInven = new List<int>();
 
