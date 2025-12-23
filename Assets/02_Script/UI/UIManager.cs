@@ -1,206 +1,178 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static EnumData;
 /*
  UI 전체를 관리하는 매니저
  - Screen(화면): 로비, 배틀HUD, 결과 등 "큰 화면" -> 보통 한 번에 1개만 유지
  - Popup(팝업): 일시정지/설정/보상/레벨업 선택 등 -> Stack으로 쌓고 최상단부터 닫기
- 
+ - toast(알림): 짧게 표시되는 알림창
+
  프로젝트 권장 원칙
  1) GameManager는 "게임 상태"를 관리(일시정지, 게임오버 등)
- 2) UIManager는 "표시"만 담당(팝업 열기/닫기, 화면 전환)
- 3) timeScale=0일 때도 UI 애니메이션이 돌게 하려면
-    해당 UI Animator의 Update Mode = Unscaled Time 로 설정
+ 2) UIManager는 씬에 배치된 UI를 "어디에 붙이고 어떻게 보여줄지"만 관리
+    - UI 생성 책임 없음(Instantiate 안 함)
+    - 씬에 배치된 UI 인스턴스를 관리
 */
-public class UIManager : Singleton<UIManager>
+public class UIManager : MonoBehaviour
 {
+    //전역 접근용 싱글톤
+    public static UIManager Instance { get; private set; }
+
     [Header("Canvas Layer Roots (Canvas 아래 빈 오브젝트로 만들어서 연결)")]
     [SerializeField] private Transform screenRoot;  // 화면(UI Screen) 붙는 곳
     [SerializeField] private Transform popupRoot;   // 팝업(UIPopup) 붙는 곳
     [SerializeField] private Transform systemRoot;  // 로딩(페이드 인/아웃) 같은 시스템 UI
     [SerializeField] private Transform toastRoot;   // 알림창 UI
 
-    [Header("Default UI Prefabs (원하면 비워두고 외부에서 Show 호출만 해도 됨)")]
-    [SerializeField] private UIScreen battleHUDPrefab;      //배틀 HUD Screen프리팹
-    [SerializeField] private UIPopup pausePopupPrefab;      //일시정지 Popup프리팹
-    [SerializeField] private UIPopup gameOverPopupPrefab;   //게임오버 Popup프리팹
-    [SerializeField] private UIPopup gameClearPopupPrefab;  //클리어 Popup프리팹
+    //현재 활성화된 Screen 스택
+    private readonly Stack<UIScreen> screenStack = new();
 
-    //현재 활성화된 Screen(보통 1개만 유지)
-    private UIScreen currentScreen;
-
-    //Popup은 여러 개가 뜰 수 있어 Stack으로 관리(최근에 뜬 것부터 닫기)
+    //현재 열려있는 Popup 스택
     private readonly Stack<UIPopup> popupStack = new();
 
-    protected override void Init()
+    //PopupId → UIPopup 매핑 테이블 (씬에 배치된 팝업들을 등록해서 사용)
+    private readonly Dictionary<PopupId, UIPopup> popupTable = new();
+
+    private void Awake()
     {
-        //_IsDestroyOnLoad가 true면 씬이 바뀌어도 유지됨(UIRoot를 공용으로 쓰려면 true 권장)
-        _IsDestroyOnLoad = true;
-        base.Init();
-    }
+        //싱글톤 중복 방지
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-    private void OnEnable()
-    {
-        //GameManager 이벤트 구독(씬 로드 순서 때문에 GameManager가 아직 없을 수 있어 null체크)
-        if (GameManager.Instance == null) return;
+        Instance = this;
 
-        GameManager.Instance.OnGameStart += HandleGameStart;    //게임 시작 시 UI 처리
-        GameManager.Instance.OnGamePause += HandleGamePause;    //일시정지 시 UI 처리
-        GameManager.Instance.OnGameResume += HandleGameResume;  //재개 시 UI 처리
-        GameManager.Instance.OnGameOver += HandleGameOver;      //게임오버 시 UI 처리
-        GameManager.Instance.OnGameClear += HandleGameClear;    //클리어 시 UI 처리
-        GameManager.Instance.OnLevelUp += HandleLevelUp;        //레벨업 시 UI 처리
-    }
-
-    private void OnDisable()
-    {
-        //GameManager 이벤트 구독 해제(메모리 누수/중복 호출 방지)
-        if (GameManager.Instance == null) return;
-
-        GameManager.Instance.OnGameStart -= HandleGameStart;
-        GameManager.Instance.OnGamePause -= HandleGamePause;
-        GameManager.Instance.OnGameResume -= HandleGameResume;
-        GameManager.Instance.OnGameOver -= HandleGameOver;
-        GameManager.Instance.OnGameClear -= HandleGameClear;
-        GameManager.Instance.OnLevelUp -= HandleLevelUp;
+        //씬 전환 시에도 UI 유지
+        DontDestroyOnLoad(gameObject);
     }
 
     //Screen
-    public T ShowScreen<T>(T screenPrefab, object param = null) where T : UIScreen
+    //UIScreen 표시
+    //clearStack=true : 기존 Screen 전부 제거(씬 전환 시 기본)
+    //clearStack=false: 이전 Screen 위에 쌓기(특수 연출용)
+    public void ShowScreen(UIScreen screen, bool clearStack = true)
     {
-        //화면 전환 시 남아있는 Popup이 있으면 꼬이기 쉬워서 정리하는게 안전
-        CloseAllPopups();
+        //null 방어
+        if (screen == null) return;
 
-        //기존 Screen 닫기
-        if (currentScreen != null)
+        //Screen은 항상 screenRoot 아래로 이동
+        if (screenRoot != null && screen.transform.parent != screenRoot)
         {
-            currentScreen.OnClose();    //이벤트 해제/정리 작업
-            Destroy(currentScreen.gameObject);  //화면 오브젝트 삭제
-            currentScreen = null;
+            screen.transform.SetParent(screenRoot, false);
         }
 
-        //새 Screen 생성
-        T screen = Instantiate(screenPrefab, screenRoot);
-        currentScreen = screen;
-
-        //Screen 초기화(데이터 전달이 필요하면 param으로 전달)
-        screen.OnOpen(param);
-
-        return screen;
-    }
-
-    public void CloseScreen()
-    {
-        //현재 Screen이 없으면 아무것도 안 함
-        if (currentScreen == null) return;
-
-        currentScreen.OnClose();    //정리 작업
-        Destroy(currentScreen.gameObject);//오브젝트 삭제
-        currentScreen = null;
-    }
-
-    //Popup
-    public T ShowPopup<T>(T popupPrefab, object param = null) where T : UIPopup
-    {
-        //팝업 생성 후 Stack에 push
-        T popup = Instantiate(popupPrefab, popupRoot);
-        popupStack.Push(popup);
-
-        //팝업 초기화(데이터 전달이 필요하면 param으로 전달)
-        popup.OnOpen(param);
-        return popup;
-    }
-
-    public void CloseTopPopup()
-    {
-        //열려있는 팝업이 없으면 종료
-        if (popupStack.Count == 0) return;
-
-        //가장 마지막에 열린 팝업부터 닫기
-        UIPopup top = popupStack.Pop();
-        top.OnClose();  //정리 작업
-        Destroy(top.gameObject);    //오브젝트 삭제
-    }
-
-    public void CloseAllPopups()
-    {
-        //Stack이 빌 때까지 최상단 팝업을 반복해서 닫음
-        while (popupStack.Count > 0)
-        { 
-            CloseTopPopup(); 
-        }
-    }
-
-    //현재 팝업이 하나라도 떠있는지
-    public bool HasPopup => popupStack.Count > 0;
-
-    private void Update()
-    {
-        //ESC(PC) / Back(모바일) 공통 처리
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (clearStack)
         {
-            //팝업이 있으면 팝업부터 닫음(뒤로가기 UX)
-            if (HasPopup)
+            //기존 Screen 전부 숨김
+            while (screenStack.Count > 0)
             {
-                CloseTopPopup();
-            }
-            else
-            {
-                //팝업이 없으면 게임 일시정지 요청(실제 timeScale=0 처리는 GameManager가 담당)
-                if (GameManager.Instance != null && GameManager.Instance.isPlay)
-                { 
-                    GameManager.Instance.GamePause(); 
+                UIScreen top = screenStack.Pop();
+                if (top != null) 
+                {
+                    top.Hide(); 
                 }
             }
         }
+        else
+        {
+            //이전 Screen만 숨김
+            if (screenStack.Count > 0)
+            {
+                screenStack.Peek()?.Hide();
+            }
+        }
+
+        //새 Screen 등록 및 표시
+        screenStack.Push(screen);
+        screen.Show();
     }
 
-    //GameManager Event Handlers
-    private void HandleGameStart()
+    //Popup(Register)
+    //씬 시작 시 팝업을 UIManager에 등록
+    //PopupPanel 아래에 있는 팝업을 한 번에 등록하는 용도
+    public void RegisterPopup(UIPopup popup)
     {
-        //게임 시작 시 HUD Screen 표시
-        if (battleHUDPrefab != null)
-        { 
-            ShowScreen(battleHUDPrefab); 
+        if (popup == null) return;
+
+        PopupId id = popup.PopupId;
+
+        //같은 ID가 이미 있으면 덮어씀(씬별 팝업 교체 가능)
+        popupTable[id] = popup;
+
+        //시작 시에는 항상 비활성화
+        popup.gameObject.SetActive(false);
+
+        //부모를 popupRoot로 통일
+        if (popupRoot != null && popup.transform.parent != popupRoot)
+        {
+            popup.transform.SetParent(popupRoot, false);
         }
     }
 
-    private void HandleGamePause()
+    //Popup(Open)
+    //PopupId로 팝업 열기(외부에서 호출하는 메인 함수)
+    public void ShowPopup(PopupId id)
     {
-        //게임 일시정지 시 Pause 팝업 표시
-        if (pausePopupPrefab == null) return;
-        ShowPopup(pausePopupPrefab);
+        //등록되지 않은 팝업 방어
+        if (!popupTable.TryGetValue(id, out UIPopup popup) || popup == null)
+        {
+            Debug.LogError($"//등록되지않은팝업:{id}");
+            return;
+        }
+
+        //공통 팝업 표시 로직 호출
+        ShowPopupInternal(popup);
     }
 
-    private void HandleGameResume()
+    //실제 팝업 표시 처리(내부 공통)
+    private void ShowPopupInternal(UIPopup popup)
     {
-        //게임 재개 시 보통 Pause 팝업 하나만 닫으면 됨(상황에 따라 CloseAllPopups로 바꿔도 됨)
-        if (HasPopup)
-        { 
-            CloseTopPopup(); 
+        if (popup == null) return;
+
+        //스택에 쌓고 표시
+        popupStack.Push(popup);
+        popup.Open();
+    }
+
+    //가장 위에 있는 팝업 닫기
+    public void CloseTopPopup()
+    {
+        if (popupStack.Count == 0) return;
+
+        UIPopup top = popupStack.Pop();
+        top?.Close();
+    }
+
+    //모든 팝업 닫기
+    //씬 전환 직전, 게임 리셋 시 사용
+    public void CloseAllPopup()
+    {
+        while (popupStack.Count > 0)
+        {
+            UIPopup top = popupStack.Pop();
+            top?.Close();
         }
     }
 
-    private void HandleGameOver()
+    //System
+    //로딩 UI, 페이드 UI를 systemRoot로 이동
+    //SceneController에서 주로 호출
+    public void AttachSystemUI(MonoBehaviour systemUI)
     {
-        //게임오버 시 결과 UI 표시(팝업으로 만들었을 때)
-        if (gameOverPopupPrefab != null)
-        { 
-            ShowPopup(gameOverPopupPrefab); 
-        }
+        if (systemUI == null || systemRoot == null) return;
+
+        systemUI.transform.SetParent(systemRoot, false);
     }
 
-    private void HandleGameClear()
+    //Toast UI 표시
+    //보통 일정 시간 후 자동으로 꺼짐
+    public void ShowToast(MonoBehaviour toastUI)
     {
-        //게임클리어 시 결과 UI 표시(팝업으로 만들었을 때)
-        if (gameClearPopupPrefab != null)
-        { 
-            ShowPopup(gameClearPopupPrefab); 
-        }
-    }
+        if (toastUI == null || toastRoot == null) return;
 
-    private void HandleLevelUp()
-    {
-        //레벨업 시 선택 UI 표시 지점
-        //ShowPopup(levelUpPopupPrefab, param);
+        toastUI.transform.SetParent(toastRoot, false);
+        toastUI.gameObject.SetActive(true);
     }
 }

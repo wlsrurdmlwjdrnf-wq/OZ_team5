@@ -37,8 +37,7 @@ public class GameManager : Singleton<GameManager>
     public bool isFinalBoss { get; private set; } = false;
     
     /// <summary>
-    /// 승문추가
-    ///(플레이어가 이동하는거에 따라 맵을 재생성할거라 플레이어 정보를 받아야함)
+    /// 승문추가 (플레이어가 이동하는거에 따라 맵을 재생성할거라 플레이어 정보를 받아야함)
     public Player player;
     /// </summary>
 

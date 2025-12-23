@@ -51,4 +51,15 @@ public static class EnumData
         LobbyScene,
         BattleScene
     }
+
+    //팝업 UI 식별 전용 ID
+    public enum PopupId
+    {
+        Pause,       //일시정지
+        Settings,    //설정
+        Confirm,     //확인/취소
+        GameOver,    //게임오버
+        GameClear,   //클리어
+        LevelUp      //레벨업 알림
+    }
 }
