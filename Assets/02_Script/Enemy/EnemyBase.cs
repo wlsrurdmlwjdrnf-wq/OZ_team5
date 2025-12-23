@@ -24,7 +24,6 @@ public class EnemyBase : ForTargeting, IDamageable
     protected static readonly int isKilledHash = Animator.StringToHash("IsKilled");
     protected void Awake()
     {
-        player = GameObject.FindWithTag("Player").transform;
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         initAtk = atk;
@@ -32,8 +31,9 @@ public class EnemyBase : ForTargeting, IDamageable
         initScale = transform.localScale;
         damageInterval = new WaitForSeconds(0.5f);
     }
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
+        player = GameObject.FindWithTag("Player").transform;
         animator.SetBool(isKilledHash, isKilled);
         hp = maxHp;
         atk = initAtk;
@@ -44,8 +44,9 @@ public class EnemyBase : ForTargeting, IDamageable
             EnemyManager.Instance.enemies.Add(this);
         }
     }
-    protected void OnDisable()
+    protected virtual void OnDisable()
     {
+        StopAllCoroutines();
         if (EnemyManager.Instance != null && EnemyManager.Instance.enemies != null)
         {
             EnemyManager.Instance.enemies.Remove(this);
@@ -69,7 +70,7 @@ public class EnemyBase : ForTargeting, IDamageable
     {
         GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(0.2f);
-        ItemBase tmpStone = PoolManager.Instance.GetFromPool(expStone);
+        ItemBase tmpStone = Managers.Pool.GetFromPool(expStone);
         tmpStone.transform.position = transform.position;
         ReturnPool();
     }
@@ -77,7 +78,7 @@ public class EnemyBase : ForTargeting, IDamageable
     {
         isKilled = false;
         GetComponent<Collider2D>().enabled = true;
-        PoolManager.Instance.ReturnPool(this);
+        Managers.Pool.ReturnPool(this);
     }
     protected void MoveToPlayer()
     {

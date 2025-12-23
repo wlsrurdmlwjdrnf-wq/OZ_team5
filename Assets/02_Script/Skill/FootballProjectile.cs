@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class FootballProjectile : ProjectileBase
 {
-    [SerializeField] private Camera cam;
     [SerializeField] private float margin = 0.02f; // 화면 가장자리 여유 (스프라이트 크기 고려)
 
     [SerializeField] private int maxBounceCount;
     private int curBounceCount;
 
-    private void Awake()
-    {
-        if (cam == null) cam = Camera.main;
-    }
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -24,7 +19,7 @@ public class FootballProjectile : ProjectileBase
         base.Update();
 
         // 현재 위치를 Viewport 좌표로 변환 (0~1)
-        Vector3 vp = cam.WorldToViewportPoint(transform.position);
+        Vector3 vp = Camera.main.WorldToViewportPoint(transform.position);
         bool bounced = false;
 
         // X축 경계 체크
@@ -58,7 +53,7 @@ public class FootballProjectile : ProjectileBase
         // 튕겼으면 위치를 다시 월드 좌표로 변환
         if (bounced)
         {
-            transform.position = cam.ViewportToWorldPoint(vp);
+            transform.position = Camera.main.ViewportToWorldPoint(vp);
             IncreaseBounceCount();
         }
     }

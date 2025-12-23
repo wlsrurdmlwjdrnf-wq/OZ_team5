@@ -6,9 +6,11 @@ public class Boss3 : EnemyBase
 {
     [SerializeField] private EnemyProjectile glowPjt;
     [SerializeField] private float shootInterval;
+    [SerializeField] private HpBar hpBarPrefab;
 
     private WaitForSeconds shooting;
     private WaitForSeconds angryShooting;
+    private HpBar hpBar;
 
     private bool isAngry = false;
 
@@ -17,11 +19,31 @@ public class Boss3 : EnemyBase
     {
         shooting = new WaitForSeconds(shootInterval);
         angryShooting = new WaitForSeconds(shootInterval * 0.5f);
+        hpBar = Instantiate(hpBarPrefab);
+        hpBar.Init(transform);
+        UpdateHpBar();
+    }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        hpBar = Instantiate(hpBarPrefab);
+        hpBar.Init(transform);
+        UpdateHpBar();
         StartCoroutine(NormalPatternCo());
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        if (hpBar != null) Destroy(hpBar.gameObject);
+    }
+    private void UpdateHpBar()
+    {
+        hpBar.UpdateHp(hp, maxHp);
     }
     public override void TakeDamage(int amount)
     {
         hp -= amount;
+        UpdateHpBar();
         if(hp <= maxHp / 2 && hp > 0 &&!isAngry)
         {
             isAngry = true;
@@ -48,7 +70,12 @@ public class Boss3 : EnemyBase
         {
             Vector2 dir = player.position - transform.position;
 
-            EnemyProjectile small = PoolManager.Instance.GetFromPool(glowPjt);
+            EnemyProjectile small = Managers.Pool.GetFromPool(glowPjt);
+            if (small == null)
+            {
+                yield return null;
+                continue;
+            }
             small.SetDirection(dir);
             small.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
 
@@ -66,7 +93,7 @@ public class Boss3 : EnemyBase
                 float angle = i * angleStep;
                 dir = Quaternion.Euler(0, 0, angle) * Vector2.left;
 
-                EnemyProjectile big = PoolManager.Instance.GetFromPool(glowPjt);
+                EnemyProjectile big = Managers.Pool.GetFromPool(glowPjt);
                 big.SetDirection(dir);
                 big.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
             }

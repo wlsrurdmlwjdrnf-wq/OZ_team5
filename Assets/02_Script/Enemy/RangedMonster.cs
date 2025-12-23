@@ -10,6 +10,10 @@ public class RangedMonster : EnemyBase
     private void Start()
     {
         attackInterval = new WaitForSeconds(shootInterval);
+    }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
         StartCoroutine(ShootToPlayer());
     }
     private IEnumerator ShootToPlayer()
@@ -18,7 +22,12 @@ public class RangedMonster : EnemyBase
         {
             Vector2 dir = player.position - transform.position;
 
-            EnemyProjectile pjt = PoolManager.Instance.GetFromPool(smallPjt);
+            EnemyProjectile pjt = Managers.Pool.GetFromPool(smallPjt);
+            if (pjt == null)
+            {
+                yield return null;
+                continue;
+            }
             pjt.SetDirection(dir);
             pjt.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
 

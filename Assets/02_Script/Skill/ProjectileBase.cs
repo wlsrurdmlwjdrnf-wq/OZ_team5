@@ -42,6 +42,6 @@ public class ProjectileBase : MonoBehaviour
     }
     protected void ReturnPool()
     {
-        PoolManager.Instance.ReturnPool(this);
+        Managers.Pool.ReturnPool(this);
     }
 }

@@ -6,6 +6,7 @@ public class Boss1 : EnemyBase
 {
     [SerializeField] private EnemyProjectile smallPjt;
     [SerializeField] private EnemyProjectile bigPjt;
+    [SerializeField] private HpBar hpBarPrefab;
 
     [SerializeField] private float pattern1Interval;
     [SerializeField] private float pattern2Interval;
@@ -14,14 +15,42 @@ public class Boss1 : EnemyBase
     private WaitForSeconds shootPattern1;
     private WaitForSeconds shootPattern2;
     private WaitForSeconds shooting;
+    private HpBar hpBar;
 
     private void Start()
     {
         shootPattern1 = new WaitForSeconds(pattern1Interval);
         shootPattern2 = new WaitForSeconds(pattern2Interval);
         shooting = new WaitForSeconds(shootInterval);
+    }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        hpBar = Instantiate(hpBarPrefab);
+        hpBar.Init(transform);
+        UpdateHpBar();
         StartCoroutine(ShootingCo());
         StartCoroutine(PatternCo());
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        if(hpBar != null) Destroy(hpBar.gameObject);
+    }
+    private void UpdateHpBar()
+    {
+        hpBar.UpdateHp(hp, maxHp);
+    }
+    public override void TakeDamage(int amount)
+    {
+        hp -= amount;
+        UpdateHpBar();
+        if (hp <= 0)
+        {
+            isKilled = true;
+            animator.SetBool(isKilledHash, isKilled);
+            StartCoroutine(DieCo());
+        }
     }
     private IEnumerator ShootingCo()
     {
@@ -29,7 +58,12 @@ public class Boss1 : EnemyBase
         {
             Vector2 dir = player.position - transform.position;
 
-            EnemyProjectile small = PoolManager.Instance.GetFromPool(smallPjt);
+            EnemyProjectile small = Managers.Pool.GetFromPool(smallPjt);
+            if (small == null)
+            {
+                yield return null;
+                continue;
+            }
             small.SetDirection(dir);
             small.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
 
@@ -49,7 +83,7 @@ public class Boss1 : EnemyBase
                 float angle = i * angleStep;
                 dir = Quaternion.Euler(0, 0, angle) * Vector2.right;
 
-                EnemyProjectile big = PoolManager.Instance.GetFromPool(bigPjt);
+                EnemyProjectile big = Managers.Pool.GetFromPool(bigPjt);
                 big.SetDirection(dir);
                 big.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
             }
@@ -59,7 +93,7 @@ public class Boss1 : EnemyBase
             { 
                 dir = player.position - transform.position;
                
-                EnemyProjectile big2 = PoolManager.Instance.GetFromPool(bigPjt);
+                EnemyProjectile big2 = Managers.Pool.GetFromPool(bigPjt);
                 big2.SetDirection(dir);
                 big2.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(0.2f);
