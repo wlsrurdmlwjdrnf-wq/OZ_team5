@@ -4,19 +4,19 @@ using System.Collections;
 
 public class DamageTextManager : Singleton<DamageTextManager>
 {
-    public TextMeshProUGUI damageTextPrefab;
-    public Transform canvasTransform; // UI 캔버스 참조
+    [SerializeField] private TextMeshProUGUI damageTextPrefab;
+    [SerializeField] private Transform canvasTransform; // UI 캔버스 참조
 
     private void Start()
     {
-        PoolManager.Instance.CreatePool(damageTextPrefab, 100);
+        Managers.Pool.CreatePool(damageTextPrefab, 100);
     }
     public void ShowDamage(int damage, Vector3 worldPosition)
     {
         // 월드 좌표 → 화면 좌표 변환
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
 
-        TextMeshProUGUI textObj = PoolManager.Instance.GetFromPool(damageTextPrefab); 
+        TextMeshProUGUI textObj = Managers.Pool.GetFromPool(damageTextPrefab); 
         textObj.transform.SetParent(canvasTransform, false);
 
         textObj.transform.position = screenPos;
@@ -27,7 +27,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
 
     private IEnumerator FadeOut(TextMeshProUGUI text)
     {
-        float duration = 0.5f;
+        float duration = 0.7f;
         float elapsed = 0f;
         Color startColor = text.color;
 
@@ -45,6 +45,6 @@ public class DamageTextManager : Singleton<DamageTextManager>
             yield return null;
         }
 
-        PoolManager.Instance.ReturnPool(text);
+        Managers.Pool.ReturnPool(text);
     }
 }

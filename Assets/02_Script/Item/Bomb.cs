@@ -12,7 +12,7 @@ public class Bomb : ItemBase
             if(enemy.TryGetComponent<EnemyBase>(out EnemyBase em))
             {
                 em.TakeDamage(999999);
-                PoolManager.Instance.ReturnPool(this);
+                Managers.Pool.ReturnPool(this);
             }
         }
     }

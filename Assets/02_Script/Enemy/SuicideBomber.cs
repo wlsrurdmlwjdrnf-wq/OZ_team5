@@ -17,7 +17,7 @@ public class SuicideBomber : EnemyBase
         animator.SetBool(isKilledHash, isKilled);
         atk *= 2;
         yield return new WaitForSeconds(0.4f);
-        var tmpStone = PoolManager.Instance.GetFromPool(expStone);
+        var tmpStone = Managers.Pool.GetFromPool(expStone);
         tmpStone.transform.position = transform.position;
         ReturnPool();
     }

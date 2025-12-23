@@ -52,6 +52,15 @@ public class Player : MonoBehaviour
     {
         rb.velocity = input * playerData.playerSpeed;
     }
+    private void OnDisable()
+    {
+        ProjectileBase[] pjt = FindObjectsOfType<ProjectileBase>();
+        if (pjt == null || pjt.Length == 0) return;
+        foreach (ProjectileBase p in pjt)
+        {
+            Managers.Pool.ReturnPool(p);
+        }
+    }
     private void UpdateHpBar()
     {
         hpBar.UpdateHp(playerData.playerCurrentHp, playerData.playerMaxHp);
@@ -85,7 +94,7 @@ public class Player : MonoBehaviour
             hpBar.gameObject.SetActive(false);
             joystick.gameObject.SetActive(false);
             gameObject.SetActive(false);
-            GameManager.Instance.GameOver();
+            //GameManager.Instance.GameOver();
         }
     }
 

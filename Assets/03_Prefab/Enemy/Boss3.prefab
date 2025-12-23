@@ -162,6 +162,7 @@ MonoBehaviour:
   expStone: {fileID: 6277145758167594058, guid: d23b4aa6273bc66439651eaf7d59db8d, type: 3}
   glowPjt: {fileID: 569821303758150229, guid: 2dc6c92410e5a284d80848e6af50b192, type: 3}
   shootInterval: 5
+  hpBarPrefab: {fileID: 6933861538974871527, guid: 612b86b3f6411054fa543a2ec933afe0, type: 3}
 --- !u!50 &5524561336677019066
 Rigidbody2D:
   serializedVersion: 4
