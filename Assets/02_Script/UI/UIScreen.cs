@@ -1,19 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+//모든 화면 UI의 베이스 클래스
+// - 로비, 배틀 HUD, 타이틀 화면 등
+// - UIManager가 Show / Hide로 제어
 public abstract class UIScreen : MonoBehaviour
 {
-    //화면(Screen)이 처음 표시될 때 호출됨
-    //param으로 씬/상태에 따라 필요한 데이터 전달 가능
-    public virtual void OnOpen(object param = null) 
-    { 
+    //최초 1회 초기화 여부
+    private bool initialized;
 
-    }
-    //화면(Screen)이 교체되거나 제거될 때 호출됨
-    //이벤트 해제, 리스너 정리, 데이터 초기화 용도
-    public virtual void OnClose() 
-    { 
+    //UIScreen 표시(UIManager에서 호출)
+    public void Show()
+    {
+        //최초 1회만 초기화
+        if (!initialized)
+        {
+            initialized = true;
+            OnInit();
+        }
 
+        gameObject.SetActive(true);
+        OnShow();
     }
+
+    //UIScreen 숨김(UIManager에서 호출)
+    public void Hide()
+    {
+        OnHide();
+        gameObject.SetActive(false);
+    }
+
+    //Override 포인트
+
+    //최초 1회만 호출
+    //버튼 바인딩, 참조 캐싱
+    protected virtual void OnInit() { }
+
+    //화면이 열릴 때마다 호출
+    protected virtual void OnShow() { }
+
+    //화면이 닫힐 때마다 호출
+    protected virtual void OnHide() { }
 }

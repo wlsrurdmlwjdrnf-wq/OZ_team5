@@ -1343,9 +1343,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logoAnim: {fileID: 1448508176}
-  logoText: {fileID: 1034338550}
-  loadingDone: {fileID: 503705817}
   title: {fileID: 497746950}
+  loadingDone: {fileID: 503705817}
   loadingBar: {fileID: 1969679839}
   loadingText: {fileID: 1205959858}
 --- !u!1 &1303501323
@@ -1379,6 +1378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   setWidth: 720
   setHeight: 1280
+  targetCamera: {fileID: 0}
 --- !u!4 &1303501325
 Transform:
   m_ObjectHideFlags: 0
@@ -1556,12 +1556,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 720, y: 1280}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
