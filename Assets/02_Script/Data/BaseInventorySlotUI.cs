@@ -1,51 +1,69 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml.Schema;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 // 인벤토리 데이터
-public abstract class BaseInventorySlotUI : MonoBehaviour, IPointerClickHandler
-{
-    protected Image icon;
-    [SerializeField] protected EnumData.InventoryType type;
-    [SerializeField] protected int slotNum;
-    public int slotItemID { get; protected set; }
+public abstract class BaseInventorySlotUI : MonoBehaviour
+{    
+    [SerializeField] protected Image icon; // 아이템의 sprite가 표시될 이미지
+    [SerializeField] protected Image grade; // 아이템 등급 sprite
+    [SerializeField] protected Image iconEmpty; // 빈슬롯일때 이미지
+    [SerializeField] protected Button btn;
+    [SerializeField] protected int slotNum; // Action용 슬롯 넘버
 
+    //몇번째 슬롯이 눌렸는지 알림
+    public event Action<int> OnClickEquipSlot;
+    public event Action<int> OnClickGeneralSlot;
 
-    public event Action<BaseInventorySlotUI> OnSlotClick;    
+    protected virtual void Awake()
+    {
+        btn.onClick.AddListener(OnSlotClick);
+    }
 
-    protected virtual void SetItem(int id)
+    public void SetSlotView(int id)
     {
         if (DataManager.Instance.GetItemData(id) != null)
         {
-            slotItemID = id;
-            var item = DataManager.Instance.GetItemData(id);
-            icon.sprite = DataManager.Instance.GetItemIcon(item.name);
-            icon.enabled = true;
+            ItemData temp = DataManager.Instance.GetItemData(id);
+            icon.sprite = DataManager.Instance.GetItemIcon(temp.name);            
+            grade.sprite = DataManager.Instance.GetItemIcon(nameof(temp.tier));
         }
         else if (DataManager.Instance.GetIngameItemData(id) != null)
         {
-            slotItemID = id;
-            var item = DataManager.Instance.GetIngameItemData(id);
-            icon.sprite = DataManager.Instance.GetItemIcon(item.name);
-            icon.enabled = true;
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
+            icon.sprite = DataManager.Instance.GetItemIcon(temp.name);            
         }
         else
         {
-            slotItemID = -1;
-            icon.sprite = DataManager.Instance.GetItemIcon("empty");
-            icon.enabled = true;
+            //코드수정  empty이미지일때 백그라운드 off
+            ItemData emptyItem = DataManager.Instance.GetItemData(id);
+            if (emptyItem != null)
+            icon.sprite = DataManager.Instance.GetItemIcon(emptyItem.name);
+            grade.enabled = false;
         }
+
+    }
+    public void SetSlotNum(int num)
+    {
+        slotNum = num;
     }
 
-    // 오버라이딩시 base호출 필수
-    public virtual void OnPointerClick(PointerEventData data)
+    protected void CallOnClickEuip(int slotNum)
     {
-        OnSlotClick?.Invoke(this);
+        OnClickEquipSlot?.Invoke(slotNum);
     }
+    protected void CallOnClickGeneral(int slotNum)
+    {
+        OnClickGeneralSlot?.Invoke(slotNum);
+    }
+
+    protected abstract void OnSlotClick();
 }
 

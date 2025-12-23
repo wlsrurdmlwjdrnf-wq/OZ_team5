@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 [System.Serializable]
 public class PlayerData
@@ -21,11 +22,13 @@ public class PlayerData
     public float resultGoldPt; // (외부에 의한)최종 골드 획득량 10% 20%
     public float resultHpPer; // (외부에 의한)최종 체력 증가량 10% 20%
 
-    // 게임시작시 장비아이템
-    public List<int> playerEquipInven;
-    // 게임시작시 인벤토리
-    public List<int> playerGeneralInven;
 
+    // 게임시작시 인벤토리
+    public List<ItemData> playerGeneralInven;
+
+    // 게임시작시 장비아이템
+    public Dictionary<EnumData.EquipmentType, ItemData> playerEquipInven;
+    
     public PlayerData()
     {
         playerAtk = 20;
@@ -46,13 +49,20 @@ public class PlayerData
         resultGoldPt = 0;
         resultHpPer = 0;
 
-        playerGeneralInven = new List<int>();
+        playerGeneralInven = new List<ItemData>();
+        playerEquipInven = new Dictionary<EnumData.EquipmentType, ItemData>();
 
-        //장비칸 -1값 할당 (빈칸)
-        playerEquipInven = new List<int>();
-        for (int i = 0; i < 6; i++)
+        //인벤토리와 장비칸을 Empty값으로 초기화
+        for (int i  = 0; i < 6;  i++)
         {
-            playerEquipInven.Add(-1);
+            ItemData item = DataManager.Instance.GetItemData(0);
+            playerEquipInven[(EnumData.EquipmentType)i] = item;
+
+        }
+        for (int i = 0; i < 50;  i++)
+        {
+            ItemData temp = DataManager.Instance.GetItemData(0);
+            playerGeneralInven.Add(temp);
         }
     }
 
