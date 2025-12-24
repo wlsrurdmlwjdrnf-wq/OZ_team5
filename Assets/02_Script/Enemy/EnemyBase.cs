@@ -22,6 +22,8 @@ public class EnemyBase : ForTargeting, IDamageable
     protected WaitForSeconds damageInterval;
 
     protected static readonly int isKilledHash = Animator.StringToHash("IsKilled");
+
+    public float Speed { get { return moveSpeed; } set { moveSpeed = value; } }
     protected void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();

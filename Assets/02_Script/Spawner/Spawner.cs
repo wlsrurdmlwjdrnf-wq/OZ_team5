@@ -85,7 +85,7 @@ public class Spawner : MonoBehaviour
         StartCoroutine(SpawnItemBox());
         StartCoroutine(SpawnEnemy(zombiePrefab, 1f));
         StartCoroutine(SpawnEnemy(bigZombiePrefab, 4f));
-        StartCoroutine(SpawnBoss(boss1Prefab, 30f));
+        StartCoroutine(SpawnBoss(boss1Prefab, 20f));
     }
     private void OnDisable()
     {
@@ -100,10 +100,10 @@ public class Spawner : MonoBehaviour
         ClearField(player.position, 30f);
         WarningPanel.SetActive(false);
 
-        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 1.2f);
+        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 1.0f);
 
         EnemyBase bossObj = Managers.Instance.Pool.GetFromPool(boss);
-        bossObj.transform.position = RandPos(4f, 4f, 4f) + player.position; 
+        bossObj.transform.position = RandPos(5f, 5f, 4f) + player.position; 
 
         StopAllCoroutines();
         //보스 출현 경고 후 보스와 벽몬스터 스폰, 타이머 정지, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함.
