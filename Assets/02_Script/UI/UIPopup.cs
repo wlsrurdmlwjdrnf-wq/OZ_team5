@@ -11,8 +11,9 @@ public abstract class UIPopup : MonoBehaviour
 {
     [Header("Popup Identity")]
     //UIManager에서 구분하기 위한 고유 ID
-    [SerializeField] private PopupId popupId;
-    public PopupId PopupId => popupId;
+    //EnumData 안에 있는 PopupId 사용
+    [SerializeField] private EnumData.PopupId popupId;
+    public EnumData.PopupId PopupId => popupId;
 
     //최초 1회 초기화 여부
     private bool initialized;

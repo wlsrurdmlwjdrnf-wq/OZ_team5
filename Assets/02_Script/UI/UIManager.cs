@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
     private readonly Stack<UIPopup> popupStack = new();
 
     //PopupId → UIPopup 매핑 테이블 (씬에 배치된 팝업들을 등록해서 사용)
-    private readonly Dictionary<PopupId, UIPopup> popupTable = new();
+    private Dictionary<EnumData.PopupId, UIPopup> popupTable = new();
 
     private void Awake()
     {
@@ -96,7 +96,7 @@ public class UIManager : MonoBehaviour
     {
         if (popup == null) return;
 
-        PopupId id = popup.PopupId;
+        EnumData.PopupId id = popup.PopupId;
 
         //같은 ID가 이미 있으면 덮어씀(씬별 팝업 교체 가능)
         popupTable[id] = popup;
@@ -116,11 +116,12 @@ public class UIManager : MonoBehaviour
     public void ShowPopup(PopupId id)
     {
         //등록되지 않은 팝업 방어
-        if (!popupTable.TryGetValue(id, out UIPopup popup) || popup == null)
+        if (!popupTable.TryGetValue(id, out UIPopup popup))
         {
             Debug.LogError($"//등록되지않은팝업:{id}");
             return;
         }
+        popup.Open();
 
         //공통 팝업 표시 로직 호출
         ShowPopupInternal(popup);
