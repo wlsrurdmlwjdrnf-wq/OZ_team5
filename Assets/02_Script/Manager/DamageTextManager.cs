@@ -9,14 +9,14 @@ public class DamageTextManager : Singleton<DamageTextManager>
 
     private void Start()
     {
-        Managers.Pool.CreatePool(damageTextPrefab, 100);
+        Managers.Instance.Pool.CreatePool(damageTextPrefab, 150);
     }
     public void ShowDamage(int damage, Vector3 worldPosition)
     {
         // ¿ùµå ÁÂÇ¥ ¡æ È­¸é ÁÂÇ¥ º¯È¯
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
 
-        TextMeshProUGUI textObj = Managers.Pool.GetFromPool(damageTextPrefab); 
+        TextMeshProUGUI textObj =  Managers.Instance.Pool.GetFromPool(damageTextPrefab); 
         textObj.transform.SetParent(canvasTransform, false);
 
         textObj.transform.position = screenPos;
@@ -27,7 +27,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
 
     private IEnumerator FadeOut(TextMeshProUGUI text)
     {
-        float duration = 0.7f;
+        float duration = 1.0f;
         float elapsed = 0f;
         Color startColor = text.color;
 
@@ -45,6 +45,6 @@ public class DamageTextManager : Singleton<DamageTextManager>
             yield return null;
         }
 
-        Managers.Pool.ReturnPool(text);
+        Managers.Instance.Pool.ReturnPool(text);
     }
 }

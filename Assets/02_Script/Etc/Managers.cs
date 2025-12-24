@@ -2,40 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Managers
+public class Managers : MonoBehaviour
 {
-    private static GameObject _root;
-    private static PoolManager _pool;
-
-    private static void Init()
-    {
-        if (_root == null)
-        {
-            _root = new GameObject("@Managers");
-            Object.DontDestroyOnLoad(_root);
-        }
-    }
-    private static void CreateManager<T>(ref T manager, string name) where T : Component
-    {
-        if (manager == null)
-        {
-            Init();
-
-            GameObject obj = new GameObject(name);
-
-            manager = obj.AddComponent<T>();
-
-            Object.DontDestroyOnLoad(obj);
-
-            obj.transform.SetParent(_root.transform);
-        }
-    }
-    public static PoolManager Pool
+    private static Managers instance;
+    public static Managers Instance
     {
         get
         {
-            CreateManager(ref _pool, "PoolManager");
+            if (instance == null)
+            {
+                GameObject obj = new GameObject("@Managers");
+                instance = obj.AddComponent<Managers>();
+                DontDestroyOnLoad(obj);
+            }
+            return instance;
+        }
+    }
+
+    private PoolManager _pool;
+    public PoolManager Pool
+    {
+        get
+        {
+            if (_pool == null)
+            {
+                GameObject obj = new GameObject("PoolManager");
+                _pool = obj.AddComponent<PoolManager>();
+                obj.transform.SetParent(transform);
+            }
             return _pool;
         }
     }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    void OnApplicationQuit()
+    {
+        if (Managers.Instance != null)
+            Destroy(Managers.Instance.gameObject);
+    }
+
 }

@@ -19,6 +19,6 @@ public class Magnet : ItemBase
 
         player.PlayerStat().magnetRadius -= 50f;
         superPulling = false;
-        Managers.Pool.ReturnPool(this);
+        Managers.Instance.Pool.ReturnPool(this);
     }
 }

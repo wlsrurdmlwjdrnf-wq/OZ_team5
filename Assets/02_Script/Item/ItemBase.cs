@@ -11,7 +11,7 @@ public abstract class ItemBase : MonoBehaviour
     protected IEnumerator Duration()
     {
         yield return new WaitForSeconds(20f);
-        Managers.Pool.ReturnPool(this);
+        Managers.Instance.Pool.ReturnPool(this);
     }
     protected void OnTriggerEnter2D(Collider2D collision)
     {

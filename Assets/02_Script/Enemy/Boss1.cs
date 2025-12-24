@@ -58,7 +58,7 @@ public class Boss1 : EnemyBase
         {
             Vector2 dir = player.position - transform.position;
 
-            EnemyProjectile small = Managers.Pool.GetFromPool(smallPjt);
+            EnemyProjectile small = Managers.Instance.Pool.GetFromPool(smallPjt);
             if (small == null)
             {
                 yield return null;
@@ -83,7 +83,7 @@ public class Boss1 : EnemyBase
                 float angle = i * angleStep;
                 dir = Quaternion.Euler(0, 0, angle) * Vector2.right;
 
-                EnemyProjectile big = Managers.Pool.GetFromPool(bigPjt);
+                EnemyProjectile big = Managers.Instance.Pool.GetFromPool(bigPjt);
                 big.SetDirection(dir);
                 big.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
             }
@@ -93,7 +93,7 @@ public class Boss1 : EnemyBase
             { 
                 dir = player.position - transform.position;
                
-                EnemyProjectile big2 = Managers.Pool.GetFromPool(bigPjt);
+                EnemyProjectile big2 = Managers.Instance.Pool.GetFromPool(bigPjt);
                 big2.SetDirection(dir);
                 big2.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(0.2f);

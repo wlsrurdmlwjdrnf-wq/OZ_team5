@@ -6,12 +6,11 @@ public class KunaiSkill : MonoBehaviour
 {
     [Header("юс╫ц")]
     [SerializeField] float interval;
-    [SerializeField] int level;
     [SerializeField] int count;
     [SerializeField] ProjectileBase kunaiPrefab;
     private void Awake()
     {
-        Managers.Pool.CreatePool(kunaiPrefab, 30);
+        Managers.Instance.Pool.CreatePool(kunaiPrefab, 30);
     }
     private void OnEnable()
     {
@@ -24,21 +23,20 @@ public class KunaiSkill : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 ForTargeting enemy = EnemyManager.Instance.GetClosestEnemy(transform.position);
-                if(enemy == null) continue;
+                if (enemy == null)
+                {
+                    yield return null;
+                    continue;
+                }
                 Vector2 dir = enemy.transform.position - transform.position;
 
-                ProjectileBase kunai = Managers.Pool.GetFromPool(kunaiPrefab);
+                ProjectileBase kunai = Managers.Instance.Pool.GetFromPool(kunaiPrefab);
                 kunai.SetDirection(dir);
                 kunai.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(interval*0.1f);
             }
             yield return new WaitForSeconds(interval);
         }
-    }
-    public void LevelUp()
-    {
-        level++;
-        count++;
     }
 }
 

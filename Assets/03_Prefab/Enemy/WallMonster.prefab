@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2083076149832055201}
   - component: {fileID: 61599631229590802}
   - component: {fileID: 7634590579518030588}
-  - component: {fileID: -85724007641698132}
+  - component: {fileID: 2567975775451002543}
   m_Layer: 0
   m_Name: WallMonster
   m_TagString: Enemy
@@ -170,7 +170,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!50 &-85724007641698132
+--- !u!50 &2567975775451002543
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

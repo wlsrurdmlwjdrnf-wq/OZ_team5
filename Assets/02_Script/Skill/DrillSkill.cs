@@ -9,7 +9,7 @@ public class DrillSkill : MonoBehaviour
     [SerializeField] ProjectileBase drillPrefab;
     private void Awake()
     {
-        Managers.Pool.CreatePool(drillPrefab, 30);
+        Managers.Instance.Pool.CreatePool(drillPrefab, 30);
     }
     private void OnEnable()
     {
@@ -22,10 +22,14 @@ public class DrillSkill : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 ForTargeting enemy = EnemyManager.Instance.GetClosestEnemy(transform.position);
-                if (enemy == null) continue;
+                if (enemy == null)
+                {
+                    yield return null;
+                    continue;
+                }
                 Vector2 dir = enemy.transform.position - transform.position;
 
-                ProjectileBase drill = Managers.Pool.GetFromPool(drillPrefab);
+                ProjectileBase drill = Managers.Instance.Pool.GetFromPool(drillPrefab);
                 drill.SetDirection(dir);
                 drill.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(interval * 0.2f);

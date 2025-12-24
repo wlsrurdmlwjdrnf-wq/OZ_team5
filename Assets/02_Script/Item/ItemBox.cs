@@ -30,12 +30,12 @@ public class ItemBox : ForTargeting, IDamageable
     }
     private void Broken()
     {
-        ItemBase tmpItem = Managers.Pool.GetFromPool(itemPrefabs[Random.Range(0, itemPrefabs.Length)]);
+        ItemBase tmpItem = Managers.Instance.Pool.GetFromPool(itemPrefabs[Random.Range(0, itemPrefabs.Length)]);
         tmpItem.transform.position = transform.position;
         ReturnPool();
     }
     private void ReturnPool()
     {
-        Managers.Pool.ReturnPool(this);
+        Managers.Instance.Pool.ReturnPool(this);
     }
 }
