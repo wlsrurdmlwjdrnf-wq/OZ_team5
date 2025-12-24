@@ -17,9 +17,7 @@ public class DataManager : Singleton<DataManager>
 
     //뽑기를 위한 티어별 아이템 컨테이너
     private Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
-
-    public PlayerData playerData {  get; private set; }
-
+    private PlayerData basePlayerData;
     protected override void Init()
     {
         base.Init();
@@ -27,11 +25,15 @@ public class DataManager : Singleton<DataManager>
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
         LoadRarityItemData(); // 티어별 데이터 로드
-        LoadPlayerStat();
+        SetPlayerBaseData();
         // LogData(); // 테스트용 로그함수
     }
 
     #region 데이터 로드 함수
+    private void SetPlayerBaseData()
+    {
+        basePlayerData = new PlayerData();
+    }
 
     private void LoadEffectSO()
     {
@@ -191,17 +193,17 @@ public class DataManager : Singleton<DataManager>
         }
         //로드완료
         Debug.Log("무기스킬 / 지원폼 데이터 로드완료");
-    }
-
-    public void LoadPlayerStat()
-    {
-        playerData = new PlayerData();
-    }
+    }    
 
 
     #endregion
 
     #region 데이터 겟 함수
+
+    public PlayerData GetPlayerBaseStat()
+    {
+        return basePlayerData;
+    }
 
     public ItemData GetItemData(int id)
     {
@@ -232,12 +234,15 @@ public class DataManager : Singleton<DataManager>
     //아이템 아이콘 스프라이트 리턴함수
     public Sprite GetItemIcon(string icon)
     {
-        if (itemIcon.ContainsKey(icon)) return itemIcon[icon];
-
-        Sprite sprite = Resources.Load<Sprite>($"Icons/{icon}");
-        if (sprite != null)
+        if (itemIcon.TryGetValue(icon, out Sprite sprite))
         {
-            itemIcon.Add(icon, sprite);
+            return sprite;
+        }
+
+        Sprite newSprite = Resources.Load<Sprite>($"Icons/{icon}");
+        if (newSprite != null)
+        {
+            itemIcon.Add(icon, newSprite);
             return sprite;
         }
         return null;

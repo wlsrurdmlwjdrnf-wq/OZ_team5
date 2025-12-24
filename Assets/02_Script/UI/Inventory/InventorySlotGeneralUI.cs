@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class InventorySlotGeneralUI : BaseInventorySlotUI
 {
-
-    protected override void SetItem(int id)
+    protected override void OnSlotClick()
     {
-        base.SetItem(id);
-
+        CallOnClickGeneral(slotNum);
     }
 }
