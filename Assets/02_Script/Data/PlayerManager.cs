@@ -32,7 +32,7 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             if (playerData.playerEquipInven[(EnumData.EquipmentType)i].id == 0 && (EnumData.EquipmentType)i == temp.type)
             {
-                
+                //playerData.playerEquipInven.Add
             }
         }
         //일반칸에서 장비칸으로 데이터를 옮겨야됨
