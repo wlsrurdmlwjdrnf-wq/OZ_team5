@@ -14,11 +14,15 @@ public class PlayerManager : Singleton<PlayerManager>
 
     protected override void Init()
     {
-        base.Init();
-        playerData = new PlayerData();
+        base.Init();        
         slotUI.OnClickEquipSlot += UnEquipItem;
         slotUI.OnClickGeneralSlot += EquipItem;
         GachaManager.Instance.OnDrawItem += AddItemInven;
+    }
+    private void Start()
+    {
+        playerData = new PlayerData();
+        playerData.SetPlayerInven();
     }
 
     //¿Â∫Ò ¿Â¬¯
