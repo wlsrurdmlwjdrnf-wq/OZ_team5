@@ -24,56 +24,96 @@ public class PlayerManager : Singleton<PlayerManager>
     //장비 장착
     public void EquipItem(int slot)
     {
-        //해당슬롯 번호와 일치하는 플레이어 인벤토리에서 아이템 데이터 불러오기
-        ItemData temp = playerData.playerGeneralInven[slot];
+        /* 장착할 아이템 : item
+         * 빈아이템으로 채우기 위한 아이템 : empty
+         * 장착할 아이템과 같은 타입의 장착중인 아이템 : curItem
+         * 장착하기위한 타입 : type
+         */
+        ItemData item = playerData.playerGeneralInven[slot];
+        if (item.id == 0) return;
+        ItemData empty = DataManager.Instance.GetItemData(0);
 
-        //장비칸을 돌면서 비어있는지, 장착하려는 아이템이 같은 type인지 확인
-        for (int i = 0; i < playerData.playerEquipInven.Count; i++)
+        ItemData curItem = playerData.playerEquipInven[item.type];
+
+        //장비칸이 비었다면
+        if (curItem.id == 0)
         {
-            if (playerData.playerEquipInven[(EnumData.EquipmentType)i].id == 0 && (EnumData.EquipmentType)i == temp.type)
-            {
-                //playerData.playerEquipInven.Add
-            }
+            playerData.playerEquipInven[item.type] = item;
+            playerData.playerGeneralInven[slot] = empty;
         }
-        //일반칸에서 장비칸으로 데이터를 옮겨야됨
-        
-        //아이템 데이터들이 플레이어 인벤토리에 다 옮겨지고나서 스탯리셋함수호출
+        else
+        {
+            playerData.playerEquipInven[item.type] = item;
+            playerData.playerGeneralInven[slot] = curItem;
+
+        }
+        //장비착용로직이 끝난 후 장비에 따른 스탯변화를 위해 resetstat 호출
         ResetPlayerStat();
-        //아이템icon을 띄우라고 action 호출
+        //변경된 인벤토리들의 아이템icon을 띄우라고 action 호출
         OnItemUpdata?.Invoke();
     }
 
-    public void UnEquipItem(int id)
+    //장비 해제
+    public void UnEquipItem(int slot)
     {
+        //장착된 아이템 curitem
+        ItemData curitem = playerData.playerEquipInven[(EnumData.EquipmentType)slot];
+        ItemData empty = DataManager.Instance.GetItemData(0);
 
+        if (curitem.id == 0) return;
 
-        //ResetPlayerStat();
+        //장비 해제시 들어간 빈 인벤토리가 있는지 확인
+        int index = playerData.playerGeneralInven.FindIndex(item => item.id == 0);
+        
+        //빈 인벤토리가 있다면
+        if (index != -1)
+        {
+            playerData.playerEquipInven[curitem.type] = empty;
+            playerData.playerGeneralInven[index] = curitem;
+        }
+
+        ResetPlayerStat();
+        OnItemUpdata?.Invoke();
     }
+
 
     //플레이어의 스탯변화시(장비변화, 진화스탯변화) 호출 버그발생을 없애기 위해 호출시마다 초기화 후 데이터 대입
     public void ResetPlayerStat()
     {
+        float oldMaxHp = playerData.playerMaxHp;
         DataManager.Instance.LoadPlayerStat();
 
-        foreach (var itemId in playerData.playerEquipInven.Values)
-        {
-            if (itemId == null) continue;
+        float totalMtp = 0f;
 
-            ItemData item = DataManager.Instance.GetItemData(itemId.id);
+        foreach (var item in playerData.playerEquipInven.Values)
+        {
+            if (item == null || item.id == 0) continue;
 
             playerData.resultAtkPer += item.atkPercent;
-            playerData.resultAtkMtp += item.atkMtp;
+            
+            if (item.atkMtp > 1f)
+            {
+                totalMtp += (item.atkMtp - 1f);
+            }
+
             playerData.resultHpPer += item.hpPercent;
         }
-        float oldMaxHp = playerData.playerMaxHp;
-        
-        playerData.playerMaxHp = playerData.playerCurrentHp * (1f + playerData.resultHpPer);
-        if (playerData.playerMaxHp > oldMaxHp )
+
+        playerData.playerMaxHp = playerData.playerMaxHp * (1f + playerData.resultHpPer);
+
+        if (playerData.playerMaxHp > oldMaxHp)
         {
             float temp = playerData.playerMaxHp - oldMaxHp;
             playerData.playerCurrentHp += temp;
         }
-        playerData.playerAtk = (playerData.playerAtk * (1f + playerData.resultAtkPer)) * playerData.resultAtkPer;        
-    }
+        else if (playerData.playerMaxHp < oldMaxHp)
+        {
+            if (playerData.playerCurrentHp > playerData.playerMaxHp)
+            {
+                playerData.playerCurrentHp = playerData.playerMaxHp;
+            }            
+        }
 
+        playerData.playerAtk = playerData.playerAtk * (1f + playerData.resultAtkPer) * (1f + totalMtp);
+    }
 }

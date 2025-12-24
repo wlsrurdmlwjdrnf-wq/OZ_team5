@@ -24,10 +24,14 @@ public class PlayerData
 
 
     // 게임시작시 인벤토리
-    public List<ItemData> playerGeneralInven;
+    public List<ItemData> playerGeneralInven {  get; private set; }
 
     // 게임시작시 장비아이템
-    public Dictionary<EnumData.EquipmentType, ItemData> playerEquipInven;
+    public Dictionary<EnumData.EquipmentType, ItemData> playerEquipInven { get; private set; }
+
+    // 인게임 장비 리스트
+    public List<IngameItemData> playerSkillInven { get; private set; }
+    public List<IngameItemData> playerSupportInven { get; private set; }
     
     public PlayerData()
     {
@@ -51,8 +55,10 @@ public class PlayerData
 
         playerGeneralInven = new List<ItemData>();
         playerEquipInven = new Dictionary<EnumData.EquipmentType, ItemData>();
+        playerSkillInven = new List<IngameItemData>();
+        playerSupportInven = new List<IngameItemData>();
 
-        //인벤토리와 장비칸을 Empty값으로 초기화
+        //모든 인벤토리 Empty값으로 초기화
         for (int i  = 0; i < 6;  i++)
         {
             ItemData item = DataManager.Instance.GetItemData(0);
@@ -63,6 +69,16 @@ public class PlayerData
         {
             ItemData temp = DataManager.Instance.GetItemData(0);
             playerGeneralInven.Add(temp);
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(0);
+            playerSkillInven.Add(temp);
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(0);
+            playerSupportInven.Add(temp);
         }
     }
 

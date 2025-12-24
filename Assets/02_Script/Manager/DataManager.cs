@@ -232,12 +232,15 @@ public class DataManager : Singleton<DataManager>
     //아이템 아이콘 스프라이트 리턴함수
     public Sprite GetItemIcon(string icon)
     {
-        if (itemIcon.ContainsKey(icon)) return itemIcon[icon];
-
-        Sprite sprite = Resources.Load<Sprite>($"Icons/{icon}");
-        if (sprite != null)
+        if (itemIcon.TryGetValue(icon, out Sprite sprite))
         {
-            itemIcon.Add(icon, sprite);
+            return sprite;
+        }
+
+        Sprite newSprite = Resources.Load<Sprite>($"Icons/{icon}");
+        if (newSprite != null)
+        {
+            itemIcon.Add(icon, newSprite);
             return sprite;
         }
         return null;
