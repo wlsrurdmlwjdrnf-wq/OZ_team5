@@ -13,7 +13,7 @@ public class LobbyInventoryUIController : BaseInventoryUIController
         base.Start();
         SetSlotNum();
     }
-    private void SetSlotNum()
+    protected override void SetSlotNum()
     {
         for (int i = 0; i < equipUI.Length; i++)
         {

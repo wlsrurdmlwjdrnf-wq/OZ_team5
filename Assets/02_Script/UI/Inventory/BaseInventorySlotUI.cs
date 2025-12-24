@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Schema;
 using TMPro;
+using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +13,7 @@ using UnityEngine.UI;
 // 인벤토리 데이터
 public abstract class BaseInventorySlotUI : MonoBehaviour
 {    
+    //슬롯번호만 지정해주면됨
     [SerializeField] protected Image icon; // 아이템의 sprite가 표시될 이미지
     [SerializeField] protected Image grade; // 아이템 등급 sprite
     [SerializeField] protected Image iconEmpty; // 빈슬롯일때 이미지
@@ -21,6 +23,8 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
     //몇번째 슬롯이 눌렸는지 알림
     public event Action<int> OnClickEquipSlot;
     public event Action<int> OnClickGeneralSlot;
+    public event Action<int> OnClickSkillSlot;
+    public event Action<int> OnClickSupportSlot;
 
     protected virtual void Awake()
     {
@@ -63,7 +67,14 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
     {
         OnClickGeneralSlot?.Invoke(slotNum);
     }
-
+    protected void CallOnClickSkill(int slotNum)
+    {
+        OnClickSkillSlot?.Invoke(slotNum);
+    }
+    protected void CallOnClickSupport(int slotNum)
+    {
+        OnClickSupportSlot?.Invoke(slotNum);
+    }
     protected abstract void OnSlotClick();
 }
 

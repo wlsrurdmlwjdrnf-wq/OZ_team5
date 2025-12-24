@@ -9,30 +9,35 @@ using UnityEngine;
  * 뽑기에 필요한 돈의 보유여부는? ( playermanager에서 가진골드값 받아오기)
  */
 
-public class GachaController : MonoBehaviour
+public class GachaManager : Singleton<GachaManager>
 {
-    /*
-    [SerializeField] public float legendaryRate = 1f;
+
+    [SerializeField] public float niceRate = 45f;
+    [SerializeField] public float rareRate = 25f;
+    [SerializeField] public float eliteRate = 20f;
     [SerializeField] public float epicRate = 9f;
-    [SerializeField] public float rareRate = 90f;
+    [SerializeField] public float legendaryRate = 1f;
 
     public event Action<ItemData> OnDrawItem;
 
+    protected override void Init()
+    {
+        base.Init();
+    }
+    //뽑기 버튼을 누르면 이 함수를 호출하세요
     public void DrawItem()
     {
         // 돈이 부족한지 체크 부족하면 리턴
 
+
+        //등급을 먼저 뽑고 뽑은 등급의 컨테이너에서 장비 한개 뽑아서 item 변수에 저장
         EnumData.EquipmentTier tier = GetRarity();
         ItemData item = GetItemByRarity(tier);
-        
-        if (item != null)
-        {
-            //아이템을 얻었다고 UI알림
-            OnDrawItem.Invoke(item);
 
-            //인벤토리에 해당 아이템 추가
-            InventoryManager.Instance.AddItem(EnumData.InventoryType.General, item.id);
-        }       
+
+        //아이템 뽑았다고 외부에 알리기
+        OnDrawItem?.Invoke(item);
+
     }
 
 
@@ -63,5 +68,5 @@ public class GachaController : MonoBehaviour
         int value = UnityEngine.Random.Range(0, item.Count);
         return item[value];
     }
-    */
+    
 }

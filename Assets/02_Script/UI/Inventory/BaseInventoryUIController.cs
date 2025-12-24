@@ -13,7 +13,7 @@ public abstract class BaseInventoryUIController : MonoBehaviour
     }
 
     protected abstract void LoadInven();
-
+    protected abstract void SetSlotNum();
     protected virtual void OnDestroy() { }       
 
 }

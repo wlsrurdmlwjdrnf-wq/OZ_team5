@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class PlayerData
@@ -24,14 +25,14 @@ public class PlayerData
 
 
     // 게임시작시 인벤토리
-    public List<ItemData> playerGeneralInven {  get; private set; }
+    public List<ItemData> playerGeneralInven = new List<ItemData>();
 
     // 게임시작시 장비아이템
-    public Dictionary<EnumData.EquipmentType, ItemData> playerEquipInven { get; private set; }
+    public Dictionary<EnumData.EquipmentType, ItemData> playerEquipInven = new Dictionary<EnumData.EquipmentType, ItemData>();
 
     // 인게임 장비 리스트
-    public List<IngameItemData> playerSkillInven { get; private set; }
-    public List<IngameItemData> playerSupportInven { get; private set; }
+    public List<IngameItemData> playerSkillInven = new List<IngameItemData>();
+    public List<IngameItemData> playerSupportInven = new List<IngameItemData>();
     
     public PlayerData()
     {
@@ -52,11 +53,6 @@ public class PlayerData
         resultAtkMtp = 0;
         resultGoldPt = 0;
         resultHpPer = 0;
-
-        playerGeneralInven = new List<ItemData>();
-        playerEquipInven = new Dictionary<EnumData.EquipmentType, ItemData>();
-        playerSkillInven = new List<IngameItemData>();
-        playerSupportInven = new List<IngameItemData>();
 
         //모든 인벤토리 Empty값으로 초기화
         for (int i  = 0; i < 6;  i++)
@@ -81,7 +77,34 @@ public class PlayerData
             playerSupportInven.Add(temp);
         }
     }
+    public void SetBaseData(PlayerData other)
+    {
+        playerAtk = other.playerAtk;
+        playerDef = other.playerDef;
+        playerMaxHp = other.playerMaxHp;
+        playerCurrentHp = other.playerCurrentHp;
+        playerMeatRestore = other.playerMeatRestore;
+        playerSpeed = other.playerSpeed;
+        magnetRadius = other.magnetRadius;
+        playerLevel = other.playerLevel;
+        playerMaxExp = other.playerMaxExp;
+        playerCurExp = other.playerCurExp;
+        playerExpPt = other.playerExpPt;
+        playerGoldPt = other.playerGoldPt;
 
+        resultAtkPer = other.resultAtkPer;
+        resultAtkMtp = other.resultAtkMtp;
+        resultGoldPt = other.resultGoldPt;
+        resultHpPer = other.resultHpPer;
+    }
+    public void SetBaseBattleInventory(PlayerData other)
+    {
+        playerSkillInven.Clear();
+        playerSupportInven.Clear();
+
+        playerSkillInven.AddRange(other.playerSkillInven);
+        playerSupportInven.AddRange(other.playerSupportInven);
+    }
 
     //제거 해야함 datamanager에서 초기화 완료
     //기존에 getdefault는 playerData로 불러와야함

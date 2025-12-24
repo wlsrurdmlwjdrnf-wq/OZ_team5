@@ -15,10 +15,10 @@ public class PlayerManager : Singleton<PlayerManager>
     protected override void Init()
     {
         base.Init();
-        DataManager.Instance.LoadPlayerStat();
-        playerData = DataManager.Instance.playerData;
+        playerData = new PlayerData();
         slotUI.OnClickEquipSlot += UnEquipItem;
         slotUI.OnClickGeneralSlot += EquipItem;
+        GachaManager.Instance.OnDrawItem += AddItemInven;
     }
 
     //장비 장착
@@ -76,13 +76,52 @@ public class PlayerManager : Singleton<PlayerManager>
         OnItemUpdata?.Invoke();
     }
 
+    //상점에서 뽑은 아이템 추가
+    public void AddItemInven(ItemData item)
+    {
+        int index = playerData.playerGeneralInven.FindIndex(_item => _item.id == 0);
+        if (index != -1)
+        {
+            playerData.playerGeneralInven[index] = item;
+        }
+        // 꽉차있을때 로직 ex) 우편함에 넣어두기
+    }
+
+    //배틀씬에서 획득한 스킬,지원폼 인벤토리에 추가
+    public void AddIngameItemInven(IngameItemData item)
+    {
+        if (item.type == EnumData.SkillType.Attack)
+        {
+            int index = playerData.playerSkillInven.FindIndex(_item => _item.id == 0);
+            if (index != -1)
+            {
+                playerData.playerSkillInven[index] = item;
+            }
+            else
+            {
+                // 스킬창 꽉찼다고 알림
+            }
+        }
+        else if (item.type == EnumData.SkillType.Support)
+        {
+            int index = playerData.playerSupportInven.FindIndex(_item => _item.id == 0);
+            if (index != -1)
+            {
+                playerData.playerSupportInven[index] = item;
+            }
+            else
+            {
+                // 지원폼창 꽉찼다고 알림
+            }
+        }
+    }
 
     //플레이어의 스탯변화시(장비변화, 진화스탯변화) 호출 버그발생을 없애기 위해 호출시마다 초기화 후 데이터 대입
     public void ResetPlayerStat()
     {
         float oldMaxHp = playerData.playerMaxHp;
-        DataManager.Instance.LoadPlayerStat();
-
+        PlayerData baseData = DataManager.Instance.GetPlayerBaseStat();
+        playerData.SetBaseData(baseData);
         float totalMtp = 0f;
 
         foreach (var item in playerData.playerEquipInven.Values)
