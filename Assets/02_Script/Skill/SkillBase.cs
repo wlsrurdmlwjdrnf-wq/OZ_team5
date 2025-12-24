@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class SkillBase : MonoBehaviour
 {
     [Header("Common Skill Data")]
-    [SerializeField] protected float damage;
+    [SerializeField] protected int damage;
     [SerializeField] protected int count;
 
     [Header("Count Limit")]
@@ -18,7 +18,7 @@ public abstract class SkillBase : MonoBehaviour
     }
 
     // 스킬 레벨업
-    public virtual void LevelUp(float addDamage, int addCount)
+    public virtual void LevelUp(int addDamage, int addCount)
     {
         damage += addDamage;
         count = Mathf.Clamp(count + addCount, minCount, maxCount);

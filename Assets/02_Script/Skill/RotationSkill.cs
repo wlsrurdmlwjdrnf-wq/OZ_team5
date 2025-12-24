@@ -144,4 +144,15 @@ public class RotationSkill : SkillBase
         rb.simulated = true;
         rb.gravityScale = 0f;
     }
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
+        {
+            DamageTextManager.Instance.ShowDamage(damage, enemy.transform.position);
+        }
+        if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obj))
+        {
+            obj.TakeDamage(damage);
+        }
+    }
 }

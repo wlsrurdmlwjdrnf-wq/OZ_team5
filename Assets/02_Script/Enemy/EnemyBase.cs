@@ -70,7 +70,7 @@ public class EnemyBase : ForTargeting, IDamageable
     {
         GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(0.2f);
-        ItemBase tmpStone = Managers.Pool.GetFromPool(expStone);
+        ItemBase tmpStone = Managers.Instance.Pool.GetFromPool(expStone);
         tmpStone.transform.position = transform.position;
         ReturnPool();
     }
@@ -78,7 +78,7 @@ public class EnemyBase : ForTargeting, IDamageable
     {
         isKilled = false;
         GetComponent<Collider2D>().enabled = true;
-        Managers.Pool.ReturnPool(this);
+        Managers.Instance.Pool.ReturnPool(this);
     }
     protected void MoveToPlayer()
     {

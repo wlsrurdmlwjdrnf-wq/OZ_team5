@@ -23,7 +23,7 @@ public class ProjectileBase : MonoBehaviour
     {
         shootDirection = dir.normalized;
     }
-    protected IEnumerator Lifetime()
+    protected virtual IEnumerator Lifetime()
     {
         yield return new WaitForSeconds(lifetime);
         ReturnPool();
@@ -42,6 +42,6 @@ public class ProjectileBase : MonoBehaviour
     }
     protected void ReturnPool()
     {
-        Managers.Pool.ReturnPool(this);
+        Managers.Instance.Pool.ReturnPool(this);
     }
 }

@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         if (pjt == null || pjt.Length == 0) return;
         foreach (ProjectileBase p in pjt)
         {
-            Managers.Pool.ReturnPool(p);
+            Managers.Instance.Pool.ReturnPool(p);
         }
     }
     private void UpdateHpBar()

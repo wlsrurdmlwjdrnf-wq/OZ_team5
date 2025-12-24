@@ -21,7 +21,7 @@ public class GlowProjectile : MonoBehaviour
             float angle = i * angleStep;
             dir = Quaternion.Euler(0, 0, angle) * Vector2.right;
 
-            EnemyProjectile big = Managers.Pool.GetFromPool(bigPjt);
+            EnemyProjectile big = Managers.Instance.Pool.GetFromPool(bigPjt);
             big.SetDirection(dir);
             big.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
         }
@@ -31,7 +31,7 @@ public class GlowProjectile : MonoBehaviour
             float angle = i * angleStep;
             dir = Quaternion.Euler(0, 0, angle) * Vector2.right;
 
-            EnemyProjectile small = Managers.Pool.GetFromPool(smallPjt);
+            EnemyProjectile small = Managers.Instance.Pool.GetFromPool(smallPjt);
             small.SetDirection(dir);
             small.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
         }

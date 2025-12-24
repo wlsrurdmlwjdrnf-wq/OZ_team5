@@ -48,38 +48,38 @@ public class Spawner : MonoBehaviour
     }
     private void Start()
     {
-        if (Managers.Pool.isCreatePool == false)
+        if (Managers.Instance.Pool.isCreatePool == false)
         {
-            Managers.Pool.CreatePool(itemBoxPrefab, 50);
+            Managers.Instance.Pool.CreatePool(itemBoxPrefab, 50);
 
-            Managers.Pool.CreatePool(zombiePrefab, 100);
-            Managers.Pool.CreatePool(bigZombiePrefab, 10);
-            Managers.Pool.CreatePool(zomPlantPrefab, 20);
-            Managers.Pool.CreatePool(zomDogPrefab, 50);
-            Managers.Pool.CreatePool(suicideBomberPrefab, 20);
-            Managers.Pool.CreatePool(wallMonsterPrefab, 100);
+            Managers.Instance.Pool.CreatePool(zombiePrefab, 100);
+            Managers.Instance.Pool.CreatePool(bigZombiePrefab, 10);
+            Managers.Instance.Pool.CreatePool(zomPlantPrefab, 20);
+            Managers.Instance.Pool.CreatePool(zomDogPrefab, 50);
+            Managers.Instance.Pool.CreatePool(suicideBomberPrefab, 20);
+            Managers.Instance.Pool.CreatePool(wallMonsterPrefab, 100);
 
-            Managers.Pool.CreatePool(boss1Prefab, 2);
-            Managers.Pool.CreatePool(boss2Prefab, 2);
-            Managers.Pool.CreatePool(boss3Prefab, 2);
+            Managers.Instance.Pool.CreatePool(boss1Prefab, 2);
+            Managers.Instance.Pool.CreatePool(boss2Prefab, 2);
+            Managers.Instance.Pool.CreatePool(boss3Prefab, 2);
 
-            Managers.Pool.CreatePool(bombPrefab, 10);
-            Managers.Pool.CreatePool(coin10Prefab, 10);
-            Managers.Pool.CreatePool(coin30Prefab, 10);
-            Managers.Pool.CreatePool(coin100Prefab, 10);
-            Managers.Pool.CreatePool(magnetPrefab, 10);
-            Managers.Pool.CreatePool(meatPrefab, 10);
+            Managers.Instance.Pool.CreatePool(bombPrefab, 10);
+            Managers.Instance.Pool.CreatePool(coin10Prefab, 10);
+            Managers.Instance.Pool.CreatePool(coin30Prefab, 10);
+            Managers.Instance.Pool.CreatePool(coin100Prefab, 10);
+            Managers.Instance.Pool.CreatePool(magnetPrefab, 10);
+            Managers.Instance.Pool.CreatePool(meatPrefab, 10);
 
-            Managers.Pool.CreatePool(expStone1Prefab, 100);
-            Managers.Pool.CreatePool(expStone5Prefab, 100);
-            Managers.Pool.CreatePool(expStone10Prefab, 100);
-            Managers.Pool.CreatePool(expStone50Prefab, 50);
+            Managers.Instance.Pool.CreatePool(expStone1Prefab, 100);
+            Managers.Instance.Pool.CreatePool(expStone5Prefab, 100);
+            Managers.Instance.Pool.CreatePool(expStone10Prefab, 100);
+            Managers.Instance.Pool.CreatePool(expStone50Prefab, 50);
 
-            Managers.Pool.CreatePool(enemySmallPjtPrefab, 150);
-            Managers.Pool.CreatePool(enemyBigPjtPrefab, 100);
-            Managers.Pool.CreatePool(enemyGlowPjtPrefab, 20);
+            Managers.Instance.Pool.CreatePool(enemySmallPjtPrefab, 150);
+            Managers.Instance.Pool.CreatePool(enemyBigPjtPrefab, 100);
+            Managers.Instance.Pool.CreatePool(enemyGlowPjtPrefab, 20);
 
-            Managers.Pool.isCreatePool = true;
+            Managers.Instance.Pool.isCreatePool = true;
         }
 
         StartCoroutine(SpawnItemBox());
@@ -102,7 +102,7 @@ public class Spawner : MonoBehaviour
 
         WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 1.2f);
 
-        EnemyBase bossObj = Managers.Pool.GetFromPool(boss);
+        EnemyBase bossObj = Managers.Instance.Pool.GetFromPool(boss);
         bossObj.transform.position = RandPos(4f, 4f, 4f) + player.position; 
 
         StopAllCoroutines();
@@ -119,19 +119,19 @@ public class Spawner : MonoBehaviour
         {
             if (col.TryGetComponent<EnemyBase>(out EnemyBase target))
             {
-                Managers.Pool.ReturnPool(target);
+                Managers.Instance.Pool.ReturnPool(target);
             }
             if (col.TryGetComponent<ItemBox>(out ItemBox box))
             {
-                Managers.Pool.ReturnPool(box);
+                Managers.Instance.Pool.ReturnPool(box);
             }
             if (col.TryGetComponent<ItemBase>(out ItemBase item))
             {
-                Managers.Pool.ReturnPool(item);
+                Managers.Instance.Pool.ReturnPool(item);
             }
             if (col.TryGetComponent<EnemyProjectile>(out EnemyProjectile projectile))
             {
-                Managers.Pool.ReturnPool(projectile);
+                Managers.Instance.Pool.ReturnPool(projectile);
             }
         }
     }
@@ -156,7 +156,7 @@ public class Spawner : MonoBehaviour
     {
         while (true)
         {
-            ItemBox itembox = Managers.Pool.GetFromPool(itemBoxPrefab);
+            ItemBox itembox = Managers.Instance.Pool.GetFromPool(itemBoxPrefab);
             itembox.transform.position = RandPos(6f, 6f, 5f) + player.position;
             yield return new WaitForSeconds(10f);
         }
@@ -166,7 +166,7 @@ public class Spawner : MonoBehaviour
         WaitForSeconds wfs = new WaitForSeconds(spawnInterval);
         while (true)
         {
-            EnemyBase enemy = Managers.Pool.GetFromPool(prefab);
+            EnemyBase enemy = Managers.Instance.Pool.GetFromPool(prefab);
             enemy.transform.position = RandPos(4f, 5f, 3f) + player.position;
             yield return wfs;
         }

@@ -19,7 +19,7 @@ public class EnemyProjectile : MonoBehaviour
 
         if(Time.time - spawntime >= lifetime)
         {
-            Managers.Pool.ReturnPool(this);
+            Managers.Instance.Pool.ReturnPool(this);
         }
     }
     public void SetDirection(Vector2 dir)
@@ -31,7 +31,7 @@ public class EnemyProjectile : MonoBehaviour
         if (collision.TryGetComponent<Player>(out Player player))
         {
             player.TakeDamage(atk);
-            Managers.Pool.ReturnPool(this);
+            Managers.Instance.Pool.ReturnPool(this);
         }
     }
 }

@@ -22,7 +22,7 @@ public class RangedMonster : EnemyBase
         {
             Vector2 dir = player.position - transform.position;
 
-            EnemyProjectile pjt = Managers.Pool.GetFromPool(smallPjt);
+            EnemyProjectile pjt = Managers.Instance.Pool.GetFromPool(smallPjt);
             if (pjt == null)
             {
                 yield return null;
