@@ -54,7 +54,7 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
         }
 
     }
-    public void SetSlotNum(int num)
+    public void SetSlotNumber(int num)
     {
         slotNum = num;
     }
@@ -75,6 +75,9 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
     {
         OnClickSupportSlot?.Invoke(slotNum);
     }
+
+    protected virtual void OnDestroy() { }
+
     protected abstract void OnSlotClick();
 }
 

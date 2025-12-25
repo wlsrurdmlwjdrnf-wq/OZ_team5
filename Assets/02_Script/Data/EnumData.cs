@@ -7,7 +7,7 @@ public static class EnumData
     //장비 아이템 Type
     public enum EquipmentType
     {
-        Weapon = 1,
+        Weapon,
         Amor,
         Necklace,
         Belt,

@@ -16,11 +16,11 @@ public class BattleInventoryUIController : BaseInventoryUIController
     {
         for (int i = 0; i < skillUI.Length; i++)
         {
-            skillUI[i].SetSlotNum(i);
+            skillUI[i].SetSlotNumber(i);
         }
         for (int i = 0; i < supportUI.Length; i++)
         {
-            supportUI[i].SetSlotNum(i);
+            supportUI[i].SetSlotNumber(i);
         }
     }
     protected override void LoadInven()

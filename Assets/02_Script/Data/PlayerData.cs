@@ -61,13 +61,8 @@ public class PlayerData
     {
         for (int i = 0; i < 6; i++)
         {
-            if (DataManager.Instance == null)
-            {
-                UnityEngine.Debug.LogError("null");
-            }
             ItemData item = DataManager.Instance.GetItemData(0);
             playerEquipInven[(EnumData.EquipmentType)i] = item;
-
         }
         for (int i = 0; i < 50; i++)
         {
