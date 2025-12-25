@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine;
 
 [System.Serializable]
 public class PlayerData
@@ -34,6 +36,7 @@ public class PlayerData
     public List<IngameItemData> playerSkillInven = new List<IngameItemData>();
     public List<IngameItemData> playerSupportInven = new List<IngameItemData>();
     
+    
     public PlayerData()
     {
         playerAtk = 20;
@@ -52,16 +55,21 @@ public class PlayerData
         resultAtkPer = 0;
         resultAtkMtp = 0;
         resultGoldPt = 0;
-        resultHpPer = 0;
-
-        //모든 인벤토리 Empty값으로 초기화
-        for (int i  = 0; i < 6;  i++)
+        resultHpPer = 0;        
+    }
+    public void SetPlayerInven()
+    {
+        for (int i = 0; i < 6; i++)
         {
+            if (DataManager.Instance == null)
+            {
+                UnityEngine.Debug.LogError("null");
+            }
             ItemData item = DataManager.Instance.GetItemData(0);
             playerEquipInven[(EnumData.EquipmentType)i] = item;
 
         }
-        for (int i = 0; i < 50;  i++)
+        for (int i = 0; i < 50; i++)
         {
             ItemData temp = DataManager.Instance.GetItemData(0);
             playerGeneralInven.Add(temp);
@@ -105,6 +113,7 @@ public class PlayerData
         playerSkillInven.AddRange(other.playerSkillInven);
         playerSupportInven.AddRange(other.playerSupportInven);
     }
+    
 
     //제거 해야함 datamanager에서 초기화 완료
     //기존에 getdefault는 playerData로 불러와야함

@@ -25,14 +25,14 @@ public class DataManager : Singleton<DataManager>
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
         LoadRarityItemData(); // 티어별 데이터 로드
-        SetPlayerBaseData();
+        SetPlayerBaseData();                               
         // LogData(); // 테스트용 로그함수
     }
-
     #region 데이터 로드 함수
     private void SetPlayerBaseData()
     {
         basePlayerData = new PlayerData();
+        basePlayerData.SetPlayerInven();
     }
 
     private void LoadEffectSO()
