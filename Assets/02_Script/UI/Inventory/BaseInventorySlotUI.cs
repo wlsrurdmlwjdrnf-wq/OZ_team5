@@ -46,10 +46,7 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
         }
         else
         {
-            //코드수정  empty이미지일때 백그라운드 off
-            ItemData emptyItem = DataManager.Instance.GetItemData(id);
-            if (emptyItem != null)
-            icon.sprite = DataManager.Instance.GetItemIcon(emptyItem.name);
+            icon.enabled = false;
             grade.enabled = false;
         }
 
