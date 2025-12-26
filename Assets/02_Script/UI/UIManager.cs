@@ -113,7 +113,7 @@ public class UIManager : MonoBehaviour
 
     //Popup(Open)
     //PopupId로 팝업 열기(외부에서 호출하는 메인 함수)
-    public void ShowPopup(PopupId id)
+    public void ShowPopup(EnumData.PopupId id)
     {
         //등록되지 않은 팝업 방어
         if (!popupTable.TryGetValue(id, out UIPopup popup))
@@ -121,7 +121,7 @@ public class UIManager : MonoBehaviour
             Debug.LogError($"//등록되지않은팝업:{id}");
             return;
         }
-        popup.Open();
+            popup.Open();
 
         //공통 팝업 표시 로직 호출
         ShowPopupInternal(popup);

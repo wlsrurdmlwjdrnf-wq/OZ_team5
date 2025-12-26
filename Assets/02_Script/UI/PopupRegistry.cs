@@ -4,13 +4,13 @@ using UnityEngine;
 //하위에 있는 모든 UIPopup을 자동으로 UIManager에 등록
 public class PopupRegistry : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
-        Debug.Log("//PopupRegistry Awake");
-        //UIManager가 아직 없으면 등록 불가
+        Debug.Log("//PopupRegistry Start");
+
         if (UIManager.Instance == null)
         {
-            Debug.LogError("//UIManager.Instance == null in PopupRegistry");
+            Debug.LogError("//UIManager.Instance == null in PopupRegistry(Start)");
             return;
         }
 
