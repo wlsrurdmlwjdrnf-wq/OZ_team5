@@ -10,7 +10,8 @@ public class BattleHUDNumbers : MonoBehaviour
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI levelText; //플레이어 레벨 표시(5)
     [SerializeField] private TextMeshProUGUI expText;   //경험치 표시(30 / 100)
-    [SerializeField] private TextMeshProUGUI goldText;  //골드 표시(1234)
+    [SerializeField] private TextMeshProUGUI goldText;  //코인 표시(1234)
+    [SerializeField] private TextMeshProUGUI killText;  //처치 수 표시(25)
     [SerializeField] private TextMeshProUGUI timeText;  //플레이 타임 표시(12:34)
 
     [Header("EXP Slider")]
@@ -19,6 +20,7 @@ public class BattleHUDNumbers : MonoBehaviour
     private Player player;          //플레이어 참조
     private PlayerData playerData;  //플레이어 데이터
     private float bestSurvivalTime; //이번 플레이 최고 생존 시간
+    private int killCount;          //이번 플레이 처치 수
 
     private void Awake()
     {
@@ -26,7 +28,9 @@ public class BattleHUDNumbers : MonoBehaviour
         player = FindObjectOfType<Player>();
 
         if (player != null)
+        {
             playerData = player.PlayerStat();
+        }
 
         //경험치 슬라이더 기본 세팅
         if (expSlider != null)
@@ -74,10 +78,14 @@ public class BattleHUDNumbers : MonoBehaviour
         float max = playerData.playerMaxExp;
 
         if (expText != null)
+        {
             expText.text = $"{(int)cur} / {(int)max}";
+        }
 
         if (expSlider != null && max > 0f)
+        {
             expSlider.value = cur / max;
+        }
     }
 
     //골드 표시 갱신
@@ -100,7 +108,9 @@ public class BattleHUDNumbers : MonoBehaviour
         timeText.text = $"{min:00}:{sec:00}";
 
         if (time > bestSurvivalTime)
+        {
             bestSurvivalTime = time;
+        }
     }
 
     //게임 종료 팝업에서 최고 생존 시간을 가져갈 때 사용
