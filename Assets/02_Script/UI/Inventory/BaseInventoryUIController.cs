@@ -8,8 +8,8 @@ public abstract class BaseInventoryUIController : MonoBehaviour
 
     protected virtual void Start() 
     {
-        LoadInven();
         PlayerManager.Instance.OnItemUpdata += LoadInven;
+        LoadInven();
     }
 
     protected abstract void LoadInven();

@@ -17,8 +17,10 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
 
     //이미지 파일 컨테이너
-    private Dictionary<string, Sprite> itemIcon = new Dictionary<string, Sprite>();
-
+    private Dictionary<ItemData, Sprite> itemIcon = new Dictionary<ItemData, Sprite>();
+    private Dictionary<ItemData, Sprite> itemGrade = new Dictionary<ItemData, Sprite>();
+    private Dictionary<IngameItemData, Sprite> ingameItemIcon = new Dictionary<IngameItemData, Sprite>();
+    private Dictionary<IngameItemData, Sprite> ingameItemGrade = new Dictionary<IngameItemData, Sprite>();
     //뽑기를 위한 티어별 아이템 컨테이너
     private Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
     private PlayerData basePlayerData;
@@ -238,18 +240,65 @@ public class DataManager : Singleton<DataManager>
     }
 
     //아이템 아이콘 스프라이트 리턴함수
-    public Sprite GetItemIcon(string icon)
+    public Sprite GetItemIcon(ItemData item)
     {
-        if (itemIcon.TryGetValue(icon, out Sprite sprite))
+        if (itemIcon.TryGetValue(item, out Sprite sprite))
         {
             return sprite;
         }
 
-        Sprite newSprite = Resources.Load<Sprite>($"Icons/{icon}");
+        Sprite newSprite = Resources.Load<Sprite>($"Icons/{item.name}");
         if (newSprite != null)
         {
-            itemIcon.Add(icon, newSprite);
+            itemIcon.Add(item, newSprite);
+            return newSprite;
+        }
+        return null;
+    }
+    public Sprite GetItemGrade(ItemData item)
+    {
+        if (itemGrade.TryGetValue(item, out Sprite sprite))
+        {
             return sprite;
+        }
+
+        Sprite newSprite = Resources.Load<Sprite>($"Icons/{item.tier}");
+        if (newSprite != null)
+        {
+            itemGrade.Add(item, newSprite);
+            return newSprite;
+        }
+        return null;
+    }
+
+    public Sprite GetIngameItemIcon(IngameItemData item)
+    {
+        if (ingameItemIcon.TryGetValue(item, out Sprite sprite))
+        {
+            return sprite;
+        }
+
+        Sprite newSprite = Resources.Load<Sprite>($"Icons/{item.name}");
+        if (newSprite != null)
+        {
+            ingameItemIcon.Add(item, newSprite);
+            return newSprite;
+        }
+        return null;
+    }
+
+    public Sprite GetIngameItemGrade(IngameItemData item)
+    {
+        if (ingameItemGrade.TryGetValue(item, out Sprite sprite))
+        {
+            return sprite;
+        }
+
+        Sprite newSprite = Resources.Load<Sprite>($"Icons/{item.level}");
+        if (newSprite != null)
+        {
+            ingameItemGrade.Add(item, newSprite);
+            return newSprite;
         }
         return null;
     }

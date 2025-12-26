@@ -13,7 +13,7 @@ public static class EnumData
         Belt,
         Gloves,
         Boots,
-        NONE
+        NONE = -1
     }
 
     //장비 아이템 Tier
