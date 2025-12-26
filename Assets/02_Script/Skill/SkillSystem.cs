@@ -9,4 +9,8 @@ public class SkillSystem : MonoBehaviour
     //스킬레벨5에다가 조합에 맞는 패시브(지원품)가 있으면 돌파조합스킬 출현
     //돌파조합스킬 클릭시 스킬레벨5였던 것이 돌파조합스킬로 변경
 
+    public void SelectSkill(IngameItemData skill, Player player)
+    {
+        
+    }
 }

@@ -9,15 +9,28 @@ public class FireArea : MonoBehaviour
     [SerializeField] private float duration;
 
     private List<ForTargeting> inRange = new List<ForTargeting>();
+    private WaitForSeconds interval;
+    private WaitForSeconds lifetime;
 
+
+    private void Awake()
+    {
+        interval = new WaitForSeconds(damageInterval);
+        lifetime = new WaitForSeconds(duration);
+    }
     private void OnEnable()
     {
         StartCoroutine(DoDamageCo());
         StartCoroutine(Duration());
+        GameManager.Instance.OnGameClear += ReturnPool;
+        GameManager.Instance.OnGameOver += ReturnPool;
     }
+
     private void OnDisable()
     {
         StopAllCoroutines();
+        GameManager.Instance.OnGameClear -= ReturnPool;
+        GameManager.Instance.OnGameOver -= ReturnPool;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -52,12 +65,16 @@ public class FireArea : MonoBehaviour
                 DamageTextManager.Instance.ShowDamage(damage, inRange[i].transform.position);
                 inRange[i].TakeDamage(damage);
             }
-            yield return new WaitForSeconds(damageInterval);
+            yield return interval;
         }
     }
     private IEnumerator Duration()
     {
-        yield return new WaitForSeconds(duration);
+        yield return lifetime;
+        Managers.Instance.Pool.ReturnPool(this);
+    }
+    private void ReturnPool()
+    {
         Managers.Instance.Pool.ReturnPool(this);
     }
 }
