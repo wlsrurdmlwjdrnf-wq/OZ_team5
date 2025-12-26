@@ -9,6 +9,10 @@ public class ExpStone : ItemBase
     public override void Activate(Player player)
     {
         player.PlayerStat().playerCurExp += amount;
+        if (player.PlayerStat().playerCurExp > player.PlayerStat().playerMaxExp)
+        {
+            //PlayerLevelUpSystem.LevelUp(player);
+        }
         Managers.Instance.Pool.ReturnPool(this);
     }
 }

@@ -5,6 +5,12 @@ public class Player : MonoBehaviour
     [SerializeField] private Joystick joystick;
     [SerializeField] private HpBar hpBarPrefab;
     [SerializeField] SkillBase kunai;
+    [SerializeField] SkillBase shotgun;
+    [SerializeField] SkillBase fireBomb;
+    [SerializeField] SkillBase barrier;
+    [SerializeField] SkillBase defender;
+    [SerializeField] SkillBase football;
+    [SerializeField] SkillBase drillShot;
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -100,11 +106,17 @@ public class Player : MonoBehaviour
     }
     private void SetBaseWeapon()
     {
-        if (playerData.playerSkillInven[0].id == 0)
+        if (playerData.playerSkillInven[0].id == 0 || playerData.playerSkillInven[0].id == 10001)
         {
             IngameItemData temp = DataManager.Instance.GetIngameItemData(10001);
             playerData.playerSkillInven.Add(temp);
             kunai.gameObject.SetActive(true);
+        }
+        if (playerData.playerSkillInven[0].id == 10002)
+        {
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(10002);
+            playerData.playerSkillInven.Add(temp);
+            shotgun.gameObject.SetActive(true);
         }
     }
     //private void OnTriggerEnter2D(Collider2D collision)

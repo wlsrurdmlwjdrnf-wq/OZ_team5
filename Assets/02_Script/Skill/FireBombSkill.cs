@@ -7,6 +7,8 @@ public class FireBombSkill : SkillBase
     protected override int Id { get; set; } = 3000;
     [SerializeField] ProjectileBase fireBombPrefab;
     [SerializeField] FireArea fireAreaPrefab;
+
+    private WaitForSeconds smallInterval = new WaitForSeconds(0.2f);
     protected override void Awake()
     {
         base.Awake();
@@ -30,7 +32,7 @@ public class FireBombSkill : SkillBase
                 ProjectileBase fb = Managers.Instance.Pool.GetFromPool(fireBombPrefab);
                 fb.SetDirection(dir);
                 fb.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(0.2f);
+                yield return smallInterval;
             }
             yield return interval;
         }
