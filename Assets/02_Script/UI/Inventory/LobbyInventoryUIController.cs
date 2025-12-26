@@ -38,6 +38,7 @@ public class LobbyInventoryUIController : BaseInventoryUIController
         for (int i = 0;i < generalUI.Length; i++)
         {
             ItemData item = PlayerManager.Instance.playerData.playerGeneralInven[i];
+            Debug.Log($"{item.name}");
             generalUI[i].SetSlotView(item.id);
         }
     }

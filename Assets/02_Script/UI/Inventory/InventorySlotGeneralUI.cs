@@ -14,6 +14,9 @@ public class InventorySlotGeneralUI : BaseInventorySlotUI
     }
     protected override void OnDestroy()
     {
-        OnClickGeneralSlot -= PlayerManager.Instance.EquipItem;
+        if (PlayerManager.Instance != null)
+        {
+            OnClickGeneralSlot -= PlayerManager.Instance.EquipItem;
+        }
     }
 }

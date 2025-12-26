@@ -12,12 +12,12 @@ public class PlayerManager : Singleton<PlayerManager>
 
     protected override void Init()
     {
-        base.Init();                
+        base.Init();
+        playerData = new PlayerData();
+        playerData.SetPlayerInven();
     }
     private void Start()
     {
-        playerData = new PlayerData();
-        playerData.SetPlayerInven();
         //GachaManager.Instance.OnDrawItem += AddItemInven;
     }
 
@@ -30,7 +30,11 @@ public class PlayerManager : Singleton<PlayerManager>
          * 장착하기위한 타입 : type
          */
         ItemData item = playerData.playerGeneralInven[slot];
-        if (item.id == 0) return;
+        if (item.id == 0)
+        {
+            Debug.Log("장착할 아이템이 없다");
+        }
+           
         ItemData empty = DataManager.Instance.GetItemData(0);
 
         ItemData curItem = playerData.playerEquipInven[item.type];

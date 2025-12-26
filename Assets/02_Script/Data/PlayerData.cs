@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class PlayerData
@@ -57,8 +58,47 @@ public class PlayerData
         resultAtkPer = 0;
         resultAtkMtp = 0;
         resultGoldPt = 0;
-        resultHpPer = 0;        
+        resultHpPer = 0;
+        
     }
+    public void SetPlayerInven()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            ItemData item = DataManager.Instance.GetItemData(0);
+            playerEquipInven[(EnumData.EquipmentType)i] = item;
+        }
+        for (int i = 0; i < 50; i++)
+        {
+            if (i == 0)
+            {
+                ItemData item = DataManager.Instance.GetItemData(2000);
+                playerGeneralInven.Add(item);
+            }
+            else if (i < 4)
+            {
+                int tempnum = 100 * i;
+                ItemData item = DataManager.Instance.GetItemData(2000 + tempnum);
+                playerGeneralInven.Add(item);
+            }
+            else
+            {
+                ItemData item = DataManager.Instance.GetItemData(0);
+                playerGeneralInven.Add(item);
+            }
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(0);
+            playerSkillInven.Add(temp);
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(0);
+            playerSupportInven.Add(temp);
+        }
+    }
+    /*
     public void SetPlayerInven()
     {
         for (int i = 0; i < 6; i++)
@@ -82,6 +122,7 @@ public class PlayerData
             playerSupportInven.Add(temp);
         }
     }
+    */
     public void SetBaseData(PlayerData other)
     {
         playerAtk = other.playerAtk;

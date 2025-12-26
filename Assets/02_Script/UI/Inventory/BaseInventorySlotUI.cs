@@ -16,7 +16,6 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
     //슬롯번호만 지정해주면됨
     [SerializeField] protected Image icon; // 아이템의 sprite가 표시될 이미지
     [SerializeField] protected Image grade; // 아이템 등급 sprite
-    [SerializeField] protected Image iconEmpty; // 빈슬롯일때 이미지
     [SerializeField] protected Button btn;
     [SerializeField] protected int slotNum; // Action용 슬롯 넘버
 
@@ -33,16 +32,22 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
 
     public void SetSlotView(int id)
     {
+        //처음 6번은 장비칸에서 부른 slotview
+
         if (DataManager.Instance.GetItemData(id) != null)
         {
             ItemData temp = DataManager.Instance.GetItemData(id);
-            icon.sprite = DataManager.Instance.GetItemIcon(temp.name);            
-            grade.sprite = DataManager.Instance.GetItemIcon(nameof(temp.tier));
+            icon.sprite = DataManager.Instance.GetItemIcon(temp);            
+            grade.sprite = DataManager.Instance.GetItemGrade(temp);
+            icon.enabled = true;
+            grade.enabled = true;
         }
         else if (DataManager.Instance.GetIngameItemData(id) != null)
         {
             IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-            icon.sprite = DataManager.Instance.GetItemIcon(temp.name);            
+            icon.sprite = DataManager.Instance.GetIngameItemIcon(temp);
+            icon.enabled = true;
+            grade.enabled = true;
         }
         else
         {
