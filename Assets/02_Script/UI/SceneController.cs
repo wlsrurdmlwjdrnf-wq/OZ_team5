@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class SceneController : MonoBehaviour
 {
+    public static SceneController Instance { get; private set; }
+
     //로딩 UI 전체 패널(Canvas > Layer_System에 두는걸 권장)
     [SerializeField] private GameObject loadingPanel;
     //로딩 진행도 슬라이더(0~1)
@@ -27,6 +29,15 @@ public class SceneController : MonoBehaviour
         {
             loadingPanel.SetActive(false);
         }
+
+        //싱글톤 중복 방지
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
     //버튼에서 이 함수만 호출하면 됨(로비→배틀, 배틀→로비, 타이틀→로비 전부)
