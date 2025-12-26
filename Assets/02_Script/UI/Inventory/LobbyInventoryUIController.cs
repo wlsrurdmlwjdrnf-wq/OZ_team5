@@ -17,11 +17,11 @@ public class LobbyInventoryUIController : BaseInventoryUIController
     {
         for (int i = 0; i < equipUI.Length; i++)
         {
-            equipUI[i].SetSlotNum(i);
+            equipUI[i].SetSlotNumber(i);
         }
         for (int i = 0; i < generalUI.Length; i++)
         {
-            generalUI[i].SetSlotNum(i);
+            generalUI[i].SetSlotNumber(i);
         }
     }
     protected override void LoadInven()

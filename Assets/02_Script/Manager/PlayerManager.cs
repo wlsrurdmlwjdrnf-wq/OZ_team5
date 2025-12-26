@@ -7,22 +7,18 @@ using UnityEngine;
 public class PlayerManager : Singleton<PlayerManager>
 {
     public PlayerData playerData {  get; private set; }
-    private BaseInventorySlotUI slotUI;
-
 
     public event Action OnItemUpdata;
 
     protected override void Init()
     {
-        base.Init();        
-        slotUI.OnClickEquipSlot += UnEquipItem;
-        slotUI.OnClickGeneralSlot += EquipItem;
-        GachaManager.Instance.OnDrawItem += AddItemInven;
+        base.Init();                
     }
     private void Start()
     {
         playerData = new PlayerData();
         playerData.SetPlayerInven();
+        //GachaManager.Instance.OnDrawItem += AddItemInven;
     }
 
     //장비 장착
@@ -30,7 +26,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         /* 장착할 아이템 : item
          * 빈아이템으로 채우기 위한 아이템 : empty
-         * 장착할 아이템과 같은 타입의 장착중인 아이템 : curItem
+         * 장착중인 아이템 : curItem
          * 장착하기위한 타입 : type
          */
         ItemData item = playerData.playerGeneralInven[slot];
@@ -64,7 +60,11 @@ public class PlayerManager : Singleton<PlayerManager>
         ItemData curitem = playerData.playerEquipInven[(EnumData.EquipmentType)slot];
         ItemData empty = DataManager.Instance.GetItemData(0);
 
-        if (curitem.id == 0) return;
+        if (curitem.id == 0) 
+        {
+            Debug.Log("벗을장비가없다");
+            return;
+        }
 
         //장비 해제시 들어간 빈 인벤토리가 있는지 확인
         int index = playerData.playerGeneralInven.FindIndex(item => item.id == 0);

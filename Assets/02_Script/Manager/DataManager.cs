@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
+    // itemdata data = datamanager.instance.getitemdata(1010)
+    // 
+
     // 종류별 아이템 컨테이너
     private Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
     private Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
@@ -157,6 +160,8 @@ public class DataManager : Singleton<DataManager>
                 data.level = (d.ContainsKey("Level") && int.TryParse(d["Level"].ToString(), out int lv)) ? lv : 1;
                 data.ptCount = (d.ContainsKey("PtCount") && int.TryParse(d["PtCount"].ToString(), out int ptc)) ? ptc : -1;
                 data.ptSpeed = (d.ContainsKey("PtSpeed") && int.TryParse(d["PtSpeed"].ToString(), out int pts)) ? pts : -1;
+                data.cooldown = (d.ContainsKey("Cooldown") && float.TryParse(d["Cooldown"].ToString(), out float col)) ? col : -1f;
+                data.lifeTime = (d.ContainsKey("LifeTime") && float.TryParse(d["LifeTime"].ToString(), out float ltm)) ? ltm : -1f;
                 data.specialEffectID = (d.ContainsKey("Effect") && int.TryParse(d["Effect"].ToString(), out int efso)) ? efso : -1;
                 data.EvID = (d.ContainsKey("EvID") && int.TryParse(d["EvID"].ToString(), out int ev)) ? ev : -1;
 
