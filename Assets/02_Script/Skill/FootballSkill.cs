@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FootballSkill : MonoBehaviour
+public class FootballSkill : SkillBase
 {
-    [SerializeField] float interval;
-    [SerializeField] int count;
+    protected override int Id { get; set; } = 3003;
     [SerializeField] ProjectileBase footballPrefab;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Managers.Instance.Pool.CreatePool(footballPrefab, 30);
     }
     private void OnEnable()
@@ -32,9 +32,13 @@ public class FootballSkill : MonoBehaviour
                 ProjectileBase drill = Managers.Instance.Pool.GetFromPool(footballPrefab);
                 drill.SetDirection(dir);
                 drill.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(interval * 0.2f);
+                yield return new WaitForSeconds(0.5f);
             }
-            yield return new WaitForSeconds(interval);
+            yield return interval;
         }
+    }
+    protected override void SkillLevelUp()
+    {
+        
     }
 }

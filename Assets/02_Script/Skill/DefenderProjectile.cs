@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//나중에 수정 필요
 public class DefenderProjectile : MonoBehaviour
 {
     [SerializeField] private int damage;

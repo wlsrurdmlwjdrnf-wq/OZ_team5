@@ -2,16 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileBase : MonoBehaviour
+public abstract class ProjectileBase : MonoBehaviour
 {
-    //스킬데이터 받을 곳
-    [SerializeField] protected int dmg;
-    [SerializeField] protected int speed;
-    [SerializeField] protected float lifetime;
+    protected int damage;
+    protected int speed;
+    protected float lifetime;
+
+    protected IngameItemData skillData;
+    protected abstract int Id { get; set; }
 
     protected Vector2 shootDirection;
     protected float spawntime;
 
+
+    protected void Awake()
+    {
+        skillData = DataManager.Instance.GetIngameItemData(Id);
+        damage = skillData.damage;
+        speed = skillData.ptSpeed;
+        lifetime = skillData.lifeTime;
+    }
     protected virtual void OnEnable() 
     {
         spawntime = Time.time;
@@ -30,11 +40,11 @@ public class ProjectileBase : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
         {
-            DamageTextManager.Instance.ShowDamage(dmg, enemy.transform.position);
+            DamageTextManager.Instance.ShowDamage(damage, enemy.transform.position);
         }
         if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obj))
         {
-            obj.TakeDamage(dmg);
+            obj.TakeDamage(damage);
             ReturnPool();
         }
     }

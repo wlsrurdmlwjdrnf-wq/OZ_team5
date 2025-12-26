@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class KunaiProjectile : ProjectileBase
 {
+    protected override int Id { get; set; } = 10001;
     private bool hasHit;
 
     protected override void OnEnable()
@@ -17,11 +18,11 @@ public class KunaiProjectile : ProjectileBase
         if (hasHit) return;
         if(collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
         {
-            DamageTextManager.Instance.ShowDamage(dmg, enemy.transform.position);
+            DamageTextManager.Instance.ShowDamage(damage, enemy.transform.position);
         }
         if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obj))
         {
-            obj.TakeDamage(dmg);
+            obj.TakeDamage(damage);
             hasHit = true;
             ReturnPool();
         }
