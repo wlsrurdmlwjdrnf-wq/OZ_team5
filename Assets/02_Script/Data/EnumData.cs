@@ -24,7 +24,7 @@ public static class EnumData
         Elite,
         Epic,
         Legendary,
-        NONE
+        NONE = -1
            
     }
 
