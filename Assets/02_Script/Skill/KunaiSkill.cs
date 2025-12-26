@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KunaiSkill : MonoBehaviour
+public class KunaiSkill : SkillBase
 {
-    [SerializeField] float interval;
-    [SerializeField] int count;
+    protected override int Id { get; set; } = 10001;
     [SerializeField] ProjectileBase kunaiPrefab;
 
     WaitForSeconds smallInterval = new WaitForSeconds(0.2f);
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Managers.Instance.Pool.CreatePool(kunaiPrefab, 30);
     }
     private void OnEnable()
@@ -31,7 +31,7 @@ public class KunaiSkill : MonoBehaviour
                     yield return null;
                     continue;
                 }
-                CooldownBar.cooldownTime = interval + 0.2f * (count-1);
+                CooldownBar.cooldownTime = skillData.cooldown + 0.2f * (count-1);
                 Vector2 dir = enemy.transform.position - transform.position;
 
                 ProjectileBase kunai = Managers.Instance.Pool.GetFromPool(kunaiPrefab);
@@ -39,8 +39,12 @@ public class KunaiSkill : MonoBehaviour
                 kunai.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
                 yield return smallInterval;
             }
-            yield return new WaitForSeconds(interval);
+            yield return interval;
         }
+    }
+    protected override void SkillLevelUp()
+    {
+        
     }
 }
 

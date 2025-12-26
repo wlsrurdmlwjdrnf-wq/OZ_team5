@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BarrierSkill : MonoBehaviour
+public class BarrierSkill : SkillBase
 {
-    [SerializeField] private float damageInterval;
-    [SerializeField] private int damage;
+    protected override int Id { get; set; } = 3001;
 
     private List<ForTargeting> inRange = new List<ForTargeting>();
 
@@ -46,7 +45,11 @@ public class BarrierSkill : MonoBehaviour
                 DamageTextManager.Instance.ShowDamage(damage, inRange[i].transform.position);
                 inRange[i].TakeDamage(damage);
             }
-            yield return new WaitForSeconds(damageInterval);
+            yield return interval;
         }
+    }
+    protected override void SkillLevelUp()
+    {
+        
     }
 }

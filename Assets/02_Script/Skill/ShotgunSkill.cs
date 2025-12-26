@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShotgunSkill : MonoBehaviour
+public class ShotgunSkill : SkillBase
 {
-    [SerializeField] private float damageInterval;
-    [SerializeField] private int damage;
+    protected override int Id { get; set; } = 10002;
 
     private List<ForTargeting> inRange = new List<ForTargeting>();
 
     private void OnEnable()
     {
         StartCoroutine(ShotCo());
-        CooldownBar.cooldownTime = 1f;
+        CooldownBar.cooldownTime = skillData.cooldown;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -47,7 +46,11 @@ public class ShotgunSkill : MonoBehaviour
                 DamageTextManager.Instance.ShowDamage(damage, inRange[i].transform.position);
                 inRange[i].TakeDamage(damage);                
             }
-            yield return new WaitForSeconds(damageInterval);
+            yield return interval;
         }
+    }
+    protected override void SkillLevelUp()
+    {
+        
     }
 }

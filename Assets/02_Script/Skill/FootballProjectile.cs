@@ -9,6 +9,7 @@ public class FootballProjectile : ProjectileBase
     [SerializeField] private int maxBounceCount;
     private int curBounceCount;
 
+    protected override int Id { get; set; } = 3003;
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -69,11 +70,11 @@ public class FootballProjectile : ProjectileBase
     {
         if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
         {
-            DamageTextManager.Instance.ShowDamage(dmg, enemy.transform.position);
+            DamageTextManager.Instance.ShowDamage(damage, enemy.transform.position);
         }
         if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obj))
         {
-            obj.TakeDamage(dmg);
+            obj.TakeDamage(damage);
             Vector2 dir = (transform.position - collision.transform.position).normalized;
             shootDirection = Vector2.Reflect(shootDirection, dir).normalized;
             IncreaseBounceCount();

@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrillSkill : MonoBehaviour
+public class DrillSkill : SkillBase
 {
-    [SerializeField] float interval;
-    [SerializeField] int count;
+    protected override int Id { get; set; } = 3004;
     [SerializeField] ProjectileBase drillPrefab;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Managers.Instance.Pool.CreatePool(drillPrefab, 30);
     }
     private void OnEnable()
@@ -32,9 +32,13 @@ public class DrillSkill : MonoBehaviour
                 ProjectileBase drill = Managers.Instance.Pool.GetFromPool(drillPrefab);
                 drill.SetDirection(dir);
                 drill.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(interval * 0.2f);
+                yield return new WaitForSeconds(0.5f);
             }
-            yield return new WaitForSeconds(interval);
+            yield return interval;
         }
+    }
+    protected override void SkillLevelUp()
+    {
+        
     }
 }

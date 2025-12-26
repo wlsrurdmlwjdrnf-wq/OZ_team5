@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBombSkill : MonoBehaviour
+public class FireBombSkill : SkillBase
 {
-    [SerializeField] float interval;
-    [SerializeField] int count;
+    protected override int Id { get; set; } = 3000;
     [SerializeField] ProjectileBase fireBombPrefab;
     [SerializeField] FireArea fireAreaPrefab;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Managers.Instance.Pool.CreatePool(fireBombPrefab, 30);
         Managers.Instance.Pool.CreatePool(fireAreaPrefab, 30);
     }
@@ -32,7 +32,11 @@ public class FireBombSkill : MonoBehaviour
                 fb.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(0.2f);
             }
-            yield return new WaitForSeconds(interval);
+            yield return interval;
         }
+    }
+    protected override void SkillLevelUp()
+    {
+        
     }
 }

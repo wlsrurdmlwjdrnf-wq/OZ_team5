@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GhostKunaiSkill : MonoBehaviour
 {
-    //공격속도가 매우 빨라지고 공격이 적을 관통한다
     [SerializeField] float interval;
     [SerializeField] ProjectileBase ghostKunaiPrefab;
     private void Awake()
