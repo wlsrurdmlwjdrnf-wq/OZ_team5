@@ -38,8 +38,18 @@ public class PlayerManager : Singleton<PlayerManager>
         //장비칸이 비었다면
         if (curItem.id == 0)
         {
-            playerData.playerEquipInven[item.type] = item;
+            playerData.playerEquipInven[item.type] = item;           
             playerData.playerGeneralInven[slot] = empty;
+            if (item.id > 999 && item.id < 1005)
+            {
+                IngameItemData temp = DataManager.Instance.GetIngameItemData(10002);
+                playerData.playerSkillInven[0] = temp;
+            }
+            if (item.id > 1009 && item.id < 1015)
+            {
+                IngameItemData temp = DataManager.Instance.GetIngameItemData(10001);
+                playerData.playerSkillInven[0] = temp;
+            }
         }
         else
         {

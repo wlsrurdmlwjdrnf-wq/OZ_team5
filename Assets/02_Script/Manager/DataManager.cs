@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -252,6 +253,17 @@ public class DataManager : Singleton<DataManager>
         }
         return null;
     }
+
+    public List<ItemData> GetAllItemdata()
+    {
+        return itemDataDic.Values.ToList();
+    }
+
+    public List<IngameItemData> GetAllIngameItemData()
+    {
+        return ingameItemDataDic.Values.ToList();
+    }
+
 
     #endregion
 
