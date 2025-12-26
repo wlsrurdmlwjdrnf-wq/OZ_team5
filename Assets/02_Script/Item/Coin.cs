@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Coin : ItemBase
 {
-    [SerializeField] private int amount;
+    [SerializeField] private float amount;
 
     public override void Activate(Player player)
     {
-        //player.PlayerStat().playerGold += amount;
+        player.PlayerStat().playerGold += amount * ((100+player.PlayerStat().playerGoldPt)*0.01f);
         Managers.Instance.Pool.ReturnPool(this);
     }
 

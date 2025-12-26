@@ -10,10 +10,11 @@ public class Player : MonoBehaviour
     private SpriteRenderer sr;
     private PlayerData playerData;
     private HpBar hpBar;
-    public PlayerData PlayerStat() => playerData;
 
     private Vector2 input;
     private bool isMoving;
+
+    public PlayerData PlayerStat() => playerData;
 
     private static readonly int isMovingHash = Animator.StringToHash("IsMoving");
     private void Awake()
@@ -23,12 +24,10 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-
-        ApplyPlayerStat();
-        playerData.playerCurrentHp = playerData.playerMaxHp;
     }
     private void Start()
     {
+        ApplyPlayerStat();
         hpBar = Instantiate(hpBarPrefab);
         hpBar.Init(transform);
         UpdateHpBar();
@@ -67,7 +66,7 @@ public class Player : MonoBehaviour
     }
     private void ApplyPlayerStat()
     {
-        playerData = PlayerData.GetDefault();
+        playerData = PlayerManager.Instance.playerData;
     }
     private void PullItems()
     {
@@ -85,7 +84,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         playerData.playerCurrentHp -= damage;
         UpdateHpBar();

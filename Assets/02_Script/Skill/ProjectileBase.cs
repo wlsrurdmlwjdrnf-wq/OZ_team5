@@ -10,23 +10,21 @@ public class ProjectileBase : MonoBehaviour
     [SerializeField] protected float lifetime;
 
     protected Vector2 shootDirection;
+    protected float spawntime;
 
     protected virtual void OnEnable() 
     {
-        StartCoroutine(Lifetime());
+        spawntime = Time.time;
     }
     protected virtual void Update()
     {
         transform.Translate(speed * Time.deltaTime * shootDirection);
+
+        if(Time.time -  spawntime >= lifetime) ReturnPool();
     }
     public void SetDirection(Vector2 dir)
     {
         shootDirection = dir.normalized;
-    }
-    protected virtual IEnumerator Lifetime()
-    {
-        yield return new WaitForSeconds(lifetime);
-        ReturnPool();
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
@@ -40,7 +38,7 @@ public class ProjectileBase : MonoBehaviour
             ReturnPool();
         }
     }
-    protected void ReturnPool()
+    protected virtual void ReturnPool()
     {
         Managers.Instance.Pool.ReturnPool(this);
     }

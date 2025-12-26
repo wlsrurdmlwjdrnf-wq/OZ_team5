@@ -11,7 +11,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
     {
         Managers.Instance.Pool.CreatePool(damageTextPrefab, 150);
     }
-    public void ShowDamage(int damage, Vector3 worldPosition)
+    public void ShowDamage(float damage, Vector3 worldPosition)
     {
         // ¿ùµå ÁÂÇ¥ ¡æ È­¸é ÁÂÇ¥ º¯È¯
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
@@ -20,7 +20,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
         textObj.transform.SetParent(canvasTransform, false);
 
         textObj.transform.position = screenPos;
-        textObj.text = damage.ToString();
+        textObj.text = ((int)damage).ToString();
 
         StartCoroutine(FadeOut(textObj));
     }

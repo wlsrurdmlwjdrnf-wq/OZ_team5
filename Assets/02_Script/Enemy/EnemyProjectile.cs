@@ -4,7 +4,7 @@ public class EnemyProjectile : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float lifetime;
-    [SerializeField] private int atk;
+    [SerializeField] private float atk;
 
     private float spawntime;
     private Vector2 shootDirection;

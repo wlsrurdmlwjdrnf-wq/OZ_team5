@@ -1,7 +1,29 @@
 using UnityEngine;
 
-public class RotationSkill : SkillBase
+public class RotationSkill : MonoBehaviour
 {
+    [Header("Common Skill Data")]
+    [SerializeField] protected int damage;
+    [SerializeField] protected int count;
+
+    [Header("Count Limit")]
+    [SerializeField] protected int minCount = 1;
+    [SerializeField] protected int maxCount = 6;
+
+    // 스킬 초기화 (처음 생성될 때 1회)
+    public virtual void Init()
+    {
+        count = Mathf.Clamp(minCount, minCount, maxCount);
+        OnChanged(); // 초기에도 배치/재계산 실행
+    }
+
+    // 스킬 레벨업
+    public virtual void LevelUp(int addDamage, int addCount)
+    {
+        damage += addDamage;
+        count = Mathf.Clamp(count + addCount, minCount, maxCount);
+        OnChanged(); // 스탯이 변했으니 재배치/재계산
+    }
     [Header("Rotation Settings")]
     // 부모 오브젝트의 회전 속도 (음수면 시계/반시계 반전)
     [SerializeField] private float rotateSpeed = -150f;
@@ -52,7 +74,7 @@ public class RotationSkill : SkillBase
     }
 
     // count나 스탯이 변경되었을 때 호출됨
-    protected override void OnChanged()
+    protected void OnChanged()
     {
         // maxCount 변경이나 프리팹 교체 상황 대비
         EnsureOrbiters();

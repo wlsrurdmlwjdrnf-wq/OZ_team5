@@ -12,6 +12,7 @@ public class ShotgunSkill : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(ShotCo());
+        CooldownBar.cooldownTime = 1f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -12,12 +12,11 @@ public class FireBombProjectile : ProjectileBase
         base.OnEnable();
         hasHit = false;
     }
-    protected override IEnumerator Lifetime()
+    protected override void ReturnPool()
     {
-        yield return new WaitForSeconds(lifetime);
         FireArea fa = Managers.Instance.Pool.GetFromPool(fireAreaPrefab);
         fa.transform.position = transform.position;
-        ReturnPool();
+        base.ReturnPool();
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
@@ -32,3 +31,4 @@ public class FireBombProjectile : ProjectileBase
         }
     }
 }
+

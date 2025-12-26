@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ExpStone : ItemBase
 {
-    [SerializeField] private int amount;
+    [SerializeField] private float amount;
 
     public override void Activate(Player player)
     {
