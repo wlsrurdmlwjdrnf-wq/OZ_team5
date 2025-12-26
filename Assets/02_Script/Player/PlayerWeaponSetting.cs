@@ -16,21 +16,14 @@ public class PlayerWeaponSetting : MonoBehaviour
     
     private void Start()
     {
+        Debug.Log($"1234");
         switch (player.PlayerStat().playerSkillInven[0].id)
         {
             case 0:
-            case 1010:
-            case 1011:
-            case 1012:
-            case 1013:
-            case 1014:
+            case 10001:
                 kunai.SetActive(true);
                 break;
-            case 1000:
-            case 1001:
-            case 1002:
-            case 1003:
-            case 1004:
+            case 10002:
                 shotgun.SetActive(true);
                 break;
         }

@@ -4,6 +4,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private HpBar hpBarPrefab;
+    [SerializeField] SkillBase kunai;
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -103,6 +104,7 @@ public class Player : MonoBehaviour
         {
             IngameItemData temp = DataManager.Instance.GetIngameItemData(10001);
             playerData.playerSkillInven.Add(temp);
+            kunai.gameObject.SetActive(true);
         }
     }
     //private void OnTriggerEnter2D(Collider2D collision)

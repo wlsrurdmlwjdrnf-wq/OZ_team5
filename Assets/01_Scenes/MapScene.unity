@@ -770,15 +770,19 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3247588416705934200, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
+    - target: {fileID: 0}
       propertyPath: player
       value: 
       objectReference: {fileID: 845461954}
-    - target: {fileID: 3247588416705934200, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
+    - target: {fileID: 0}
       propertyPath: barrier
       value: 
       objectReference: {fileID: 1970246783}
-    - target: {fileID: 3247588416705934200, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: weaponType
       value: 4
       objectReference: {fileID: 0}
