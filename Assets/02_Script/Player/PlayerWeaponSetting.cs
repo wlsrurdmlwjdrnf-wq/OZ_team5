@@ -22,11 +22,9 @@ public class PlayerWeaponSetting : MonoBehaviour
         {
             case 0:
                 kunai.SetActive(true);
-                CooldownBar.cooldownTime = 2.0f;
                 break;
             case 1:
                 shotgun.SetActive(true);
-                CooldownBar.cooldownTime = 1.0f;
                 break;
             case 2:
                 drillshot.SetActive(true);

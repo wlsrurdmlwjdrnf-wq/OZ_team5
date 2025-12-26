@@ -40,7 +40,7 @@ public class Boss3 : EnemyBase
     {
         hpBar.UpdateHp(hp, maxHp);
     }
-    public override void TakeDamage(int amount)
+    public override void TakeDamage(float amount)
     {
         hp -= amount;
         UpdateHpBar();

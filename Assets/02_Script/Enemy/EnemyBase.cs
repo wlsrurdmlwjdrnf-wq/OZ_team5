@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyBase : ForTargeting, IDamageable
 {
-    [SerializeField] protected int maxHp;
-    [SerializeField] protected int atk;
+    [SerializeField] protected float maxHp;
+    [SerializeField] protected float atk;
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected ItemBase expStone;
 
@@ -15,8 +15,8 @@ public class EnemyBase : ForTargeting, IDamageable
 
     protected bool isKilled = false;
     protected bool isOverlapped = false;
-    protected int hp;
-    protected int initAtk;
+    protected float hp;
+    protected float initAtk;
     protected float initSpeed;
     protected Vector3 initScale;
     protected WaitForSeconds damageInterval;
@@ -58,7 +58,7 @@ public class EnemyBase : ForTargeting, IDamageable
     {
         MoveToPlayer();
     }
-    public override void TakeDamage(int amount)
+    public override void TakeDamage(float amount)
     {
         hp -= amount;
         if (hp <= 0)

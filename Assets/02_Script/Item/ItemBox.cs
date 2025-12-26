@@ -7,7 +7,7 @@ public class ItemBox : ForTargeting, IDamageable
 {
     [SerializeField] private ItemBase[] itemPrefabs;
 
-    private int hp;
+    private float hp;
     private void OnEnable()
     {
         hp = 1;
@@ -23,7 +23,7 @@ public class ItemBox : ForTargeting, IDamageable
             EnemyManager.Instance.enemies.Remove(this);
         }
     }
-    public override void TakeDamage(int amount)
+    public override void TakeDamage(float amount)
     {
         hp -= amount;
         if (hp <= 0) Broken();

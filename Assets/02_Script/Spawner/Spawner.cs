@@ -97,7 +97,7 @@ public class Spawner : MonoBehaviour
         yield return new WaitForSeconds(waitBossTime);
         WarningPanel.SetActive(true);
         yield return new WaitForSeconds(2f);
-        ClearField(player.position, 30f);
+        ClearField(player.position, 50f);
         WarningPanel.SetActive(false);
 
         WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 1.0f);
