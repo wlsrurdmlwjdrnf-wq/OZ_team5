@@ -12,6 +12,7 @@ public class PlayerData
     public float playerMaxHp;
     public float playerCurrentHp;
     public float playerMeatRestore;
+    public float playerGold;
     public float playerSpeed;
     public float magnetRadius;
     public int playerLevel;
@@ -44,6 +45,7 @@ public class PlayerData
         playerMaxHp = 200;
         playerCurrentHp = 200;
         playerMeatRestore = 20;
+        playerGold = 0;
         playerSpeed = 2.0f;
         magnetRadius = 0.4f;
         playerLevel = 1;
@@ -86,7 +88,7 @@ public class PlayerData
         playerDef = other.playerDef;
         playerMaxHp = other.playerMaxHp;
         playerCurrentHp = other.playerCurrentHp;
-        playerMeatRestore = other.playerMeatRestore;
+        playerMeatRestore = other.playerMeatRestore;        
         playerSpeed = other.playerSpeed;
         magnetRadius = other.magnetRadius;
         playerLevel = other.playerLevel;
@@ -107,24 +109,5 @@ public class PlayerData
 
         playerSkillInven.AddRange(other.playerSkillInven);
         playerSupportInven.AddRange(other.playerSupportInven);
-    }
-    
-
-    //제거 해야함 datamanager에서 초기화 완료
-    //기존에 getdefault는 playerData로 불러와야함
-    public static PlayerData GetDefault()
-    {
-        return new PlayerData
-        {
-            playerAtk = 20,
-            playerDef = 0,
-            playerMaxHp = 200,
-            playerMeatRestore = 20,
-            playerSpeed = 2.0f,
-            magnetRadius = 0.4f,
-            playerLevel = 1,
-            playerExpPt = 0,
-            playerGoldPt = 0
-        };
     }
 }
