@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         ApplyPlayerStat();
+        SetBaseWeapon();
         hpBar = Instantiate(hpBarPrefab);
         hpBar.Init(transform);
         UpdateHpBar();
@@ -96,7 +97,14 @@ public class Player : MonoBehaviour
             //GameManager.Instance.GameOver();
         }
     }
-
+    private void SetBaseWeapon()
+    {
+        if (playerData.playerSkillInven[0].id == 0)
+        {
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(10001);
+            playerData.playerSkillInven.Add(temp);
+        }
+    }
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
     //    if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))

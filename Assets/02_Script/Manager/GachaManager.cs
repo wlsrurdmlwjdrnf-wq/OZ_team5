@@ -11,14 +11,21 @@ using UnityEngine;
 
 public class GachaManager : Singleton<GachaManager>
 {
-
+    Player player;
     [SerializeField] public float niceRate = 45f;
     [SerializeField] public float rareRate = 25f;
     [SerializeField] public float eliteRate = 20f;
     [SerializeField] public float epicRate = 9f;
     [SerializeField] public float legendaryRate = 1f;
 
+    List<IngameItemData> skillList = DataManager.Instance.GetAllIngameItemData();
+    private bool hasSkill(IngameItemData item) => player.PlayerStat().playerSkillInven.Contains(item);
+    private bool hasSup(IngameItemData item) => player.PlayerStat().playerSupportInven.Contains(item);
+
+
     public event Action<ItemData> OnDrawItem;
+
+    
 
     protected override void Init()
     {
@@ -68,5 +75,45 @@ public class GachaManager : Singleton<GachaManager>
         int value = UnityEngine.Random.Range(0, item.Count);
         return item[value];
     }
-    
+    /*
+    public List<IngameItemData> SelectSkill()
+    {
+        List<IngameItemData> getList = new List<IngameItemData>();
+        List<IngameItemData> result = new List<IngameItemData>();
+
+        foreach (var item in skillList)
+        {
+            if (hasSkill(item) && player.PlayerStat().playerSkillInven.Exists(temp => temp.level == 5))
+            {
+                continue;
+            }
+            if (hasSup(item) && player.PlayerStat().playerSupportInven.Exists(temp =>temp.level == 5))
+            {
+                continue;
+            }
+            if (player.PlayerStat().playerSkillInven.Count == 6 || player.PlayerStat().playerSupportInven.Count == 6)
+            {
+                continue;
+            }
+            getList.Add(item);
+        }
+
+        for (int i  = 0; i < 3; i++)
+        {
+            if (getList.Count == 0) break;
+
+        }
+        
+    }
+    private int IngameItemRandomSet(IngameItemData item)
+    {
+        int result = 10;
+        
+        if (hasSkill(item))
+        {
+            result += 50;
+        }
+        if (item.)
+    }
+    */
 }
