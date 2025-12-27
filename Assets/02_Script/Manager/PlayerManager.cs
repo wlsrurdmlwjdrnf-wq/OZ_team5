@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -30,19 +26,17 @@ public class PlayerManager : Singleton<PlayerManager>
          * 장착하기위한 타입 : type
          */
         ItemData item = playerData.playerGeneralInven[slot];
-        if (item.id == 0)
-        {
-            Debug.Log("장착할 아이템이 없다");
-        }
-           
-        ItemData empty = DataManager.Instance.GetItemData(0);
 
+        //empty나 장비아이템이 아닌아이템은 장착되면 안되니까 return
+        if (item.id == 0 || item.type == EnumData.EquipmentType.NONE) return;
+
+        ItemData empty = DataManager.Instance.GetItemData(0);
         ItemData curItem = playerData.playerEquipInven[item.type];
 
         //장비칸이 비었다면
         if (curItem.id == 0)
         {
-            playerData.playerEquipInven[item.type] = item;           
+            playerData.playerEquipInven[item.type] = item;
             playerData.playerGeneralInven[slot] = empty;
         }
         else
@@ -64,11 +58,7 @@ public class PlayerManager : Singleton<PlayerManager>
         ItemData curitem = playerData.playerEquipInven[(EnumData.EquipmentType)slot];
         ItemData empty = DataManager.Instance.GetItemData(0);
 
-        if (curitem.id == 0) 
-        {
-            Debug.Log("벗을장비가없다");
-            return;
-        }
+        if (curitem.id == 0) return;
 
         //장비 해제시 들어간 빈 인벤토리가 있는지 확인
         int index = playerData.playerGeneralInven.FindIndex(item => item.id == 0);
@@ -146,7 +136,7 @@ public class PlayerManager : Singleton<PlayerManager>
             playerData.resultHpPer += item.hpPercent;
         }
 
-        playerData.playerMaxHp = playerData.playerMaxHp * (1f + playerData.resultHpPer);
+        playerData.playerMaxHp = (int)MathF.Round(playerData.playerMaxHp * (1.0f + (playerData.resultHpPer / 100.0f)));
 
         if (playerData.playerMaxHp > oldMaxHp)
         {
@@ -161,6 +151,6 @@ public class PlayerManager : Singleton<PlayerManager>
             }            
         }
 
-        playerData.playerAtk = playerData.playerAtk * (1f + playerData.resultAtkPer) * (1f + totalMtp);
+        playerData.playerAtk = (int)MathF.Round(playerData.playerAtk * (1.0f + (playerData.resultAtkPer / 100.0f))) * (1f + totalMtp);
     }
 }

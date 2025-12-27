@@ -76,8 +76,8 @@ public class DataManager : Singleton<DataManager>
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.EquipmentType ety)) ? ety : EnumData.EquipmentType.NONE;
                 data.tier = (d.ContainsKey("Tier") && Enum.TryParse(d["Tier"].ToString(), out EnumData.EquipmentTier etr)) ? etr : EnumData.EquipmentTier.NONE;
                 data.atkMtp = (d.ContainsKey("AtkMtp") && float.TryParse(d["AtkMtp"].ToString(), out float atkmtp)) ? atkmtp : -1.0f;
-                data.atkPercent = (d.ContainsKey("AtkPercent") && int.TryParse(d["AtkPercent"].ToString(), out int atkper)) ? atkper : -1;
-                data.hpPercent = (d.ContainsKey("HpPercent") && int.TryParse(d["HpPercent"].ToString(), out int hpper)) ? hpper : -1;
+                data.atkPercent = (d.ContainsKey("AtkPercent") && int.TryParse(d["AtkPercent"].ToString(), out int atkper)) ? atkper : 0;
+                data.hpPercent = (d.ContainsKey("HpPercent") && int.TryParse(d["HpPercent"].ToString(), out int hpper)) ? hpper : 0;
                 data.specialEffectID = (d.ContainsKey("Effect") && int.TryParse(d["Effect"].ToString(), out int efc)) ? efc : -1;
                 data.evolutionID = (d.ContainsKey("EvID") && int.TryParse(d["EvID"].ToString(), out int eid)) ? eid : -1;
                 // 조합이 없으면 -1
