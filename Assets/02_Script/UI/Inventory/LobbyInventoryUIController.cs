@@ -32,13 +32,17 @@ public class LobbyInventoryUIController : BaseInventoryUIController
 
             ItemData item = PlayerManager.Instance.playerData.playerEquipInven[(EnumData.EquipmentType)i];
 
+            //아이템이 정상적으로 들어왔는지 확인용 디버그
+            //Debug.Log($"{item.name}");
             equipUI[i].SetSlotView(item.id);
         }
         //플레이어의 기본인벤토리 리스트에서 값을 받아와서 View에 띄우도록 호출
         for (int i = 0;i < generalUI.Length; i++)
         {
             ItemData item = PlayerManager.Instance.playerData.playerGeneralInven[i];
-            Debug.Log($"{item.name}");
+
+            //아이템이 정상적으로 들어왔는지 확인용 디버그
+            //Debug.Log($"{item.name}");
             generalUI[i].SetSlotView(item.id);
         }
     }

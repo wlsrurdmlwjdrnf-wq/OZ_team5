@@ -41,7 +41,7 @@ public static class EnumData
     {
         Attack = 1,
         Support,
-        NONE
+        NONE = -1
     }
 
     //¾À Á¾·ù

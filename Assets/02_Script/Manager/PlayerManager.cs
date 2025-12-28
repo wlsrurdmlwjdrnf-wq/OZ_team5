@@ -14,7 +14,7 @@ public class PlayerManager : Singleton<PlayerManager>
     }
     private void Start()
     {
-        //GachaManager.Instance.OnDrawItem += AddItemInven;
+        GachaManager.Instance.OnDrawItem += AddItemInven;
     }
 
     //Àåºñ ÀåÂø

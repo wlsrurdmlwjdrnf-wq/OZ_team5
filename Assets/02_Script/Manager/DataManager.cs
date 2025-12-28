@@ -117,18 +117,14 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadRarityItemData()
     {
-        itemRarityDic.Add(EnumData.EquipmentTier.Nice, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Rare, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Elite, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Epic, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Legendary, new List<ItemData>());
+        foreach (EnumData.EquipmentTier tier in Enum.GetValues(typeof(EnumData.EquipmentTier)))
+        {
+            itemRarityDic[tier] = new List<ItemData>();
+        }
 
         foreach (var item  in itemDataDic.Values)
         {
-            if (itemRarityDic.ContainsKey(item.tier))
-            {
-                itemRarityDic[item.tier].Add(item);
-            }
+            itemRarityDic[item.tier].Add(item);
         }
     }
 
@@ -231,6 +227,10 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
+    public bool TryGetIngameItem(int id, out IngameItemData item)
+    {
+        return ingameItemDataDic.TryGetValue(id, out item);
+    }
 
     // 등급별 아이템 리스트 리턴함수
     public List<ItemData> GetItemRarityList(EnumData.EquipmentTier tier)
