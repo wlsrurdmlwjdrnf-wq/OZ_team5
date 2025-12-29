@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BarrierSkill : SkillBase
 {
-    protected override int Id { get; set; } = 3001;
+    public override int Id { get; set; } = 3001;
 
     private List<ForTargeting> inRange = new List<ForTargeting>();
 
@@ -48,8 +48,12 @@ public class BarrierSkill : SkillBase
             yield return interval;
         }
     }
-    protected override void SkillLevelUp()
+    public override void SkillLevelUp()
     {
-        
+        StopAllCoroutines();
+        damage += 1;
+        level += 1;
+        transform.localScale *= 1.1f;
+        StartCoroutine(DoDamageCo());
     }
 }

@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GhostKunaiSkill : MonoBehaviour
+public class GhostKunaiSkill : SkillBase
 {
-    [SerializeField] float interval;
     [SerializeField] ProjectileBase ghostKunaiPrefab;
-    private void Awake()
+
+    public override int Id { get; set; } = 20001;
+    protected override void Awake()
     {
+        base.Awake();
         Managers.Instance.Pool.CreatePool(ghostKunaiPrefab, 30);
     }
     private void OnEnable()
@@ -29,7 +31,8 @@ public class GhostKunaiSkill : MonoBehaviour
             ProjectileBase kunai = Managers.Instance.Pool.GetFromPool(ghostKunaiPrefab);
             kunai.SetDirection(dir);
             kunai.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
-            yield return new WaitForSeconds(interval);
+            yield return interval;
         }
     }
+    public override void SkillLevelUp(){}
 }

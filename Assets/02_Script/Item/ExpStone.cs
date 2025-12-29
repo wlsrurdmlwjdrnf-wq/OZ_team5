@@ -8,7 +8,7 @@ public class ExpStone : ItemBase
 
     public override void Activate(Player player)
     {
-        player.PlayerStat().playerCurExp += amount;
+        player.PlayerStat().playerCurExp += amount * ((100 + player.PlayerStat().playerExpPt) * 0.01f);
         if (player.PlayerStat().playerCurExp > player.PlayerStat().playerMaxExp)
         {
             //PlayerLevelUpSystem.LevelUp(player);

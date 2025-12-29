@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class DrillSkill : SkillBase
 {
-    protected override int Id { get; set; } = 3004;
+    public override int Id { get; set; } = 3004;
     [SerializeField] ProjectileBase drillPrefab;
+
+    private WaitForSeconds smallInterval = new WaitForSeconds(0.5f);
     protected override void Awake()
     {
         base.Awake();
@@ -32,13 +34,17 @@ public class DrillSkill : SkillBase
                 ProjectileBase drill = Managers.Instance.Pool.GetFromPool(drillPrefab);
                 drill.SetDirection(dir);
                 drill.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(0.5f);
+                yield return smallInterval;
             }
             yield return interval;
         }
     }
-    protected override void SkillLevelUp()
+    public override void SkillLevelUp()
     {
-        
+        StopAllCoroutines();
+        count += 1;
+        level += 1;
+        drillPrefab.ProjectileStatUp();
+        StartCoroutine(AttackCo(count));
     }
 }

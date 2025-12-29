@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2296190071580901218
+--- !u!1 &6413985369803558736
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4529312773247873336}
-  - component: {fileID: 4368021434936740868}
+  - component: {fileID: 2000698512549249971}
+  - component: {fileID: 3317285253127052482}
   m_Layer: 0
-  m_Name: RotSkill
+  m_Name: NinjaScrollSS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &4529312773247873336
+--- !u!4 &2000698512549249971
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2296190071580901218}
+  m_GameObject: {fileID: 6413985369803558736}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4368021434936740868
+--- !u!114 &3317285253127052482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2296190071580901218}
+  m_GameObject: {fileID: 6413985369803558736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee93e32a2e38eec49abfef2cad4162ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 063d1f4ea90678c4daf1e01c3c47170a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minCount: 1
-  maxCount: 6
-  rotateSpeed: -150
-  radius: 1.5
-  orbiterPrefab: {fileID: -6753745840997715790, guid: f63f7307a6e4032499b4679aea0d38ea, type: 3}
-  orbiterRoot: {fileID: 4529312773247873336}
-  autoFixPhysics: 1
-  forceTriggerCollider: 1

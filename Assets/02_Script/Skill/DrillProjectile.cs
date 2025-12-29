@@ -7,7 +7,7 @@ public class DrillProjectile : ProjectileBase
     [SerializeField] private int maxBounceCount;
     private int curBounceCount;
 
-    protected override int Id { get; set; } = 3004;
+    public override int Id { get; set; } = 3004;
 
     protected override void OnEnable()
     {
@@ -75,5 +75,10 @@ public class DrillProjectile : ProjectileBase
         {
             obj.TakeDamage(damage);
         }
+    }
+    public override void ProjectileStatUp()
+    {
+        damage += 1;
+        speed += 1;
     }
 }

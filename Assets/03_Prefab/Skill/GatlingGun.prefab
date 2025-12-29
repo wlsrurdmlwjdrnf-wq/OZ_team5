@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -1361303936, guid: d8a787f27aee76243979ac56416e6743, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -147,5 +147,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7891c96306056440bc220c254934495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: 0.2
   gatlingPjtPrefab: {fileID: 6105125944486840255, guid: 7d4ff31b2adfadc4cad0c8fa615585c9, type: 3}

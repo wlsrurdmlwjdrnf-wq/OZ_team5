@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostKunaiProjectile : ProjectileBase
 {
-    protected override int Id { get; set; } //데이터 추가 필요
+    public override int Id { get; set; } = 20001;
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
@@ -16,4 +16,5 @@ public class GhostKunaiProjectile : ProjectileBase
             obj.TakeDamage(damage);
         }
     }
+    public override void ProjectileStatUp(){}
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FootballSkill : SkillBase
 {
-    protected override int Id { get; set; } = 3003;
+    public override int Id { get; set; } = 3003;
     [SerializeField] ProjectileBase footballPrefab;
     protected override void Awake()
     {
@@ -37,8 +37,12 @@ public class FootballSkill : SkillBase
             yield return interval;
         }
     }
-    protected override void SkillLevelUp()
+    public override void SkillLevelUp()
     {
-        
+        StopAllCoroutines();
+        count += 1;
+        level += 1;
+        footballPrefab.ProjectileStatUp();
+        StartCoroutine(AttackCo(count));
     }
 }

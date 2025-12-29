@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KunaiProjectile : ProjectileBase
 {
-    protected override int Id { get; set; } = 10001;
+    public override int Id { get; set; } = 10001;
     private bool hasHit;
 
     protected override void OnEnable()
@@ -26,5 +26,9 @@ public class KunaiProjectile : ProjectileBase
             hasHit = true;
             ReturnPool();
         }
+    }
+    public override void ProjectileStatUp()
+    {
+        damage += 1;
     }
 }

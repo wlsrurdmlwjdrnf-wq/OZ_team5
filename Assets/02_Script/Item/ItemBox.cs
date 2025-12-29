@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using UnityEngine;
 
-public class ItemBox : ForTargeting, IDamageable
+public class ItemBox : ForTargeting
 {
     [SerializeField] private ItemBase[] itemPrefabs;
 

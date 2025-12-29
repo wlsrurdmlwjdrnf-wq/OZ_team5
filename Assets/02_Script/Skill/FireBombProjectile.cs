@@ -7,7 +7,7 @@ public class FireBombProjectile : ProjectileBase
     [SerializeField] private FireArea fireAreaPrefab;
     private bool hasHit;
 
-    protected override int Id { get; set; } = 3000;
+    public override int Id { get; set; } = 3000;
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -30,6 +30,11 @@ public class FireBombProjectile : ProjectileBase
             hasHit = true;
             ReturnPool();
         }
+    }
+
+    public override void ProjectileStatUp()
+    {
+        speed += 0.5f;
     }
 }
 
