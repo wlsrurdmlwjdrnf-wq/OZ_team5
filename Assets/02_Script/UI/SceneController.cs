@@ -7,20 +7,13 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController Instance { get; private set; }
 
-    //로딩 UI 전체 패널(Canvas > Layer_System에 두는걸 권장)
-    [SerializeField] private GameObject loadingPanel;
-    //로딩 진행도 슬라이더(0~1)
-    [SerializeField] private Slider loadingBar;
-    //로딩 퍼센트 텍스트
-    [SerializeField] private TextMeshProUGUI loadingText;
-
-    //로딩 UI가 너무 빨리 꺼졌다 켜져서 깜빡이는걸 방지(선택)
-    [SerializeField] private float minLoadingShowTime = 0.15f;
-
-    //현재 비동기 씬 로딩 작업
-    private AsyncOperation asyncOp;
-    //중복 로드 방지용
-    private bool isLoading;
+    [SerializeField] private GameObject loadingPanel;           //로딩 UI 전체 패널    
+    [SerializeField] private Slider loadingBar;                 //로딩 진행도 슬라이더(0~1)
+    [SerializeField] private TextMeshProUGUI loadingText;       //로딩 퍼센트 텍스트
+    [SerializeField] private float minLoadingShowTime = 0.2f;   //로딩 UI가 너무 빨리 꺼졌다 켜지는걸 방지
+ 
+    private AsyncOperation asyncOp; //현재 비동기 씬 로딩 작업
+    private bool isLoading;         //중복 로드 방지용
 
     private void Awake()
     {
@@ -40,7 +33,7 @@ public class SceneController : MonoBehaviour
         Instance = this;
     }
 
-    //버튼에서 이 함수만 호출하면 됨(로비→배틀, 배틀→로비, 타이틀→로비 전부)
+    //버튼에서 이 함수만 호출하면 됨(타이틀 <-> 로비 <-> 배틀 전부)
     public void LoadScene(EnumData.sceneType targetScene)
     {
         //로딩중에 또 누르면 중복 실행될 수 있어서 방어
@@ -99,7 +92,7 @@ public class SceneController : MonoBehaviour
         asyncOp.allowSceneActivation = false;
 
         //로딩 UI 최소 표시 시간(너무 빠르면 깜빡임이 생겨서)
-        float elapsed = 0f;
+        float elapsed = 0.1f;
 
         while (!asyncOp.isDone)
         {
