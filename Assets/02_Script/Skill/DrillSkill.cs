@@ -33,7 +33,7 @@ public class DrillSkill : SkillBase
 
                 ProjectileBase drill = Managers.Instance.Pool.GetFromPool(drillPrefab);
                 drill.SetDirection(dir);
-                drill.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+                drill.transform.SetPositionAndRotation(transform.position, drill.transform.rotation * Quaternion.Euler(0, 0, -45));
                 yield return smallInterval;
             }
             yield return interval;

@@ -5,15 +5,10 @@ public class Boss2 : EnemyBase
 {
     [SerializeField] private HpBar hpBarPrefab;
     private bool isCharging = false;
-    private WaitForSeconds chargetime;
-    private WaitForSeconds jumptime;
+    private WaitForSeconds chargetime = new WaitForSeconds(1.5f);
+    private WaitForSeconds jumptime = new WaitForSeconds(0.5f);
     private HpBar hpBar;
 
-    private void Start()
-    {
-        chargetime = new WaitForSeconds(1.5f);
-        jumptime = new WaitForSeconds(0.5f);
-    }
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -22,9 +17,9 @@ public class Boss2 : EnemyBase
         UpdateHpBar();
         StartCoroutine(ChargeCo());
     }
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        if(isCharging) base.Update();
+        if(isCharging) base.FixedUpdate();
     }
     protected override void OnDisable()
     {

@@ -93,13 +93,14 @@ public class Spawner : MonoBehaviour
     private IEnumerator SpawnBoss(EnemyBase boss, float waitBossTime)
     {
         yield return new WaitForSeconds(waitBossTime);
+        //보스경고 필요
         yield return new WaitForSeconds(2f);
         ClearField(player.position, 50f);
 
-        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 1.0f);
+        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 14f, 12f, 1.0f);
 
         EnemyBase bossObj = Managers.Instance.Pool.GetFromPool(boss);
-        bossObj.transform.position = RandPos(5f, 5f, 4f) + player.position; 
+        bossObj.transform.position = RandPos(6f, 5f, 4f) + player.position; 
 
         StopAllCoroutines();
         //보스 출현 경고 후 보스와 벽몬스터 스폰, 타이머 정지, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함.
@@ -153,7 +154,7 @@ public class Spawner : MonoBehaviour
         while (true)
         {
             ItemBox itembox = Managers.Instance.Pool.GetFromPool(itemBoxPrefab);
-            itembox.transform.position = RandPos(6f, 6f, 5f) + player.position;
+            itembox.transform.position = RandPos(8f, 8f, 6f) + player.position;
             yield return new WaitForSeconds(10f);
         }
     }
@@ -163,7 +164,7 @@ public class Spawner : MonoBehaviour
         while (true)
         {
             EnemyBase enemy = Managers.Instance.Pool.GetFromPool(prefab);
-            enemy.transform.position = RandPos(4f, 5f, 3f) + player.position;
+            enemy.transform.position = RandPos(5f, 7f, 4f) + player.position;
             yield return wfs;
         }
     }

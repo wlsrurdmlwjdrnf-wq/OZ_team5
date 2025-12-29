@@ -12,6 +12,7 @@ public class EnemyBase : ForTargeting
     protected Transform player;
     protected SpriteRenderer spriteRenderer;
     protected Animator animator;
+    protected Rigidbody2D rb;
 
     protected bool isKilled = false;
     protected bool isOverlapped = false;
@@ -19,7 +20,7 @@ public class EnemyBase : ForTargeting
     protected float initAtk;
     protected float initSpeed;
     protected Vector3 initScale;
-    protected WaitForSeconds damageInterval;
+    protected WaitForSeconds damageInterval = new WaitForSeconds(0.5f);
 
     protected static readonly int isKilledHash = Animator.StringToHash("IsKilled");
 
@@ -28,10 +29,11 @@ public class EnemyBase : ForTargeting
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+
         initAtk = atk;
         initSpeed = moveSpeed;
         initScale = transform.localScale;
-        damageInterval = new WaitForSeconds(0.5f);
     }
     protected virtual void OnEnable()
     {
@@ -57,7 +59,7 @@ public class EnemyBase : ForTargeting
             EnemyManager.Instance.enemies.Remove(this);
         }
     }
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         MoveToPlayer();
     }
@@ -90,13 +92,15 @@ public class EnemyBase : ForTargeting
     {
         if (player == null || isKilled) return;
 
-        transform.position = Vector3.MoveTowards(
-                    transform.position,
-                    player.position,
-                    moveSpeed * Time.deltaTime
-                    );
+        Vector3 newPosition = Vector3.MoveTowards(
+            rb.position,
+            player.position,
+            moveSpeed * Time.fixedDeltaTime
+        );
 
-        if (player.position.x < transform.position.x)
+        rb.MovePosition(newPosition);
+
+        if (player.position.x < rb.position.x)
         {
             spriteRenderer.flipX = true;
         }
@@ -105,6 +109,7 @@ public class EnemyBase : ForTargeting
             spriteRenderer.flipX = false;
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Player>(out Player player))

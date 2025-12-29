@@ -4,6 +4,11 @@ using System.Collections;
 
 public class DamageTextManager : Singleton<DamageTextManager>
 {
+    protected override void Init()
+    {
+        _IsDestroyOnLoad = false;
+        base.Init();
+    }
     [SerializeField] private TextMeshProUGUI damageTextPrefab;
     [SerializeField] private Transform canvasTransform; // UI 캔버스 참조
 

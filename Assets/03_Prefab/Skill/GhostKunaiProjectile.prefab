@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3066977685711417519}
   - component: {fileID: 8204084906509158876}
   - component: {fileID: 8438297010579843560}
+  - component: {fileID: 1434068667401460185}
   m_Layer: 0
   m_Name: GhostKunaiProjectile
   m_TagString: Untagged
@@ -133,6 +134,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c2e4f9f2319f74999bf1622dc5bc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmg: 10
-  speed: 5
-  lifetime: 2
+--- !u!50 &1434068667401460185
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7622365028714840595}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

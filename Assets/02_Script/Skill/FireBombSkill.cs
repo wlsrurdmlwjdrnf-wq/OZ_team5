@@ -31,7 +31,7 @@ public class FireBombSkill : SkillBase
 
                 ProjectileBase fb = Managers.Instance.Pool.GetFromPool(fireBombPrefab);
                 fb.SetDirection(dir);
-                fb.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+                fb.transform.SetPositionAndRotation(transform.position, fb.transform.rotation);
                 yield return smallInterval;
             }
             yield return interval;

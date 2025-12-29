@@ -14,7 +14,7 @@ public class DrillProjectile : ProjectileBase
         base.OnEnable();
         curBounceCount = 0;
     }
-    protected override void Update()
+    private void FixedUpdate()
     {
         base.Update();
 
@@ -54,6 +54,11 @@ public class DrillProjectile : ProjectileBase
         if (bounced)
         {
             transform.position = Camera.main.ViewportToWorldPoint(vp);
+
+            rb.velocity = shootDirection * speed;
+            float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
             IncreaseBounceCount();
         }
     }

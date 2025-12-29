@@ -29,9 +29,9 @@ public class FootballSkill : SkillBase
                 }
                 Vector2 dir = enemy.transform.position - transform.position;
 
-                ProjectileBase drill = Managers.Instance.Pool.GetFromPool(footballPrefab);
-                drill.SetDirection(dir);
-                drill.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+                ProjectileBase ball = Managers.Instance.Pool.GetFromPool(footballPrefab);
+                ball.SetDirection(dir);
+                ball.transform.SetPositionAndRotation(transform.position, ball.transform.rotation);
                 yield return new WaitForSeconds(0.5f);
             }
             yield return interval;

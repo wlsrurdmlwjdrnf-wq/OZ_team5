@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class SuicideBomber : EnemyBase
 {
-    protected override void Update()
+    protected override void FixedUpdate()
     {
         if (Vector2.Distance(player.position, transform.position) <= 0.3f && isKilled == false)
         { 
             StartCoroutine(Boom()); 
         }
-        base.Update();
+        base.FixedUpdate();
     }
     private IEnumerator Boom()
     {

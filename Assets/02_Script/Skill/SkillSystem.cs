@@ -23,6 +23,8 @@ public class SkillSystem : Singleton<SkillSystem>
     [SerializeField] private SupportSkillBase oilTicketSS;
     [SerializeField] private SupportSkillBase energyDrinkSS;
     [SerializeField] private SupportSkillBase sneakersSS;
+
+    [SerializeField] int testNumber;
     protected override void Init()
     {
         _IsDestroyOnLoad = false;
@@ -176,6 +178,6 @@ public class SkillSystem : Singleton<SkillSystem>
     //Å×½ºÆ®
     public void OnSkillClick()
     {
-        SelectSkill(3001);
+        SelectSkill(testNumber);
     }
 }
