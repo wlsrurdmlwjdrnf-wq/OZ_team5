@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4560790412295224185}
   - component: {fileID: 7991689330155438066}
   - component: {fileID: 8748528378229157522}
+  - component: {fileID: 5899184395235509105}
   m_Layer: 0
   m_Name: FootballProjectile
   m_TagString: Untagged
@@ -133,9 +134,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 248ac1645a1673d4695c44a9fb267974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmg: 13
-  speed: 5
-  lifetime: 5
-  cam: {fileID: 0}
   margin: 0.02
   maxBounceCount: 7
+--- !u!50 &5899184395235509105
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048411833950273759}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

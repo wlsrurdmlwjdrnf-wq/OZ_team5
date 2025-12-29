@@ -33,23 +33,4 @@ public class Managers : MonoBehaviour
             return _pool;
         }
     }
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-    void OnApplicationQuit()
-    {
-        if (Managers.Instance != null)
-            Destroy(Managers.Instance.gameObject);
-    }
-
 }

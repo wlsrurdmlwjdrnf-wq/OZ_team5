@@ -15,7 +15,7 @@ public class EnergyDrinkSS : SupportSkillBase
     }
     public override void LevelUp()
     {
-        StopCoroutine(HpRestoreCo(player));
+        StopAllCoroutines();
         level += 1;
         restoreAmount += 0.01f;
         StartCoroutine(HpRestoreCo(player));

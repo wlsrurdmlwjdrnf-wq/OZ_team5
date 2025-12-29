@@ -32,12 +32,12 @@ public class KunaiSkill : SkillBase
                     continue;
                 }
                 CooldownBar.cooldownTime = skillData.cooldown + 0.2f * count;
-                Vector2 dir = (enemy.transform.position - transform.position).normalized;
+                Vector2 dir = enemy.transform.position - transform.position;
 
                 ProjectileBase kunai = Managers.Instance.Pool.GetFromPool(kunaiPrefab);
                 kunai.SetDirection(dir);
 
-                kunai.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+                kunai.transform.SetPositionAndRotation(transform.position, kunai.transform.rotation*Quaternion.Euler(0,0,-90));
                 yield return smallInterval;
             }
             yield return interval;

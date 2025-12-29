@@ -30,7 +30,7 @@ public class GhostKunaiSkill : SkillBase
 
             ProjectileBase kunai = Managers.Instance.Pool.GetFromPool(ghostKunaiPrefab);
             kunai.SetDirection(dir);
-            kunai.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+            kunai.transform.SetPositionAndRotation(transform.position, kunai.transform.rotation);
             yield return interval;
         }
     }
