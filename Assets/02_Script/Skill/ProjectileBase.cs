@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public abstract class ProjectileBase : MonoBehaviour
 {
     protected float damage;
@@ -10,6 +11,7 @@ public abstract class ProjectileBase : MonoBehaviour
 
     protected Player player;
     protected IngameItemData skillData;
+    protected Rigidbody2D rb;
     public abstract int Id { get; set; }
 
     protected Vector2 shootDirection;
@@ -22,6 +24,8 @@ public abstract class ProjectileBase : MonoBehaviour
         damage = skillData.damage;
         speed = skillData.ptSpeed;
         lifetime = skillData.lifeTime;
+
+        rb = GetComponent<Rigidbody2D>();
     }
     protected virtual void Start()
     {
@@ -31,16 +35,27 @@ public abstract class ProjectileBase : MonoBehaviour
     protected virtual void OnEnable() 
     {
         spawntime = Time.time;
+        if (rb != null)
+        {
+            rb.velocity = shootDirection * speed;
+        }
     }
     protected virtual void Update()
     {
-        transform.Translate(speed * Time.deltaTime * shootDirection);
-
         if (Time.time - spawntime >= lifetime) ReturnPool();
     }
     public void SetDirection(Vector2 dir)
     {
         shootDirection = dir.normalized;
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        if (rb != null)
+        {
+            rb.velocity = shootDirection * speed;
+        }
+
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {

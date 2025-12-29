@@ -15,7 +15,7 @@ public class FootballProjectile : ProjectileBase
         base.OnEnable();
         curBounceCount = 0;
     }
-    protected override void Update()
+    private void FixedUpdate()
     {
         base.Update();
 
@@ -55,6 +55,11 @@ public class FootballProjectile : ProjectileBase
         if (bounced)
         {
             transform.position = Camera.main.ViewportToWorldPoint(vp);
+
+            rb.velocity = shootDirection * speed;
+            float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
             IncreaseBounceCount();
         }
     }
@@ -75,8 +80,15 @@ public class FootballProjectile : ProjectileBase
         if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obj))
         {
             obj.TakeDamage(damage);
+
             Vector2 dir = (transform.position - collision.transform.position).normalized;
             shootDirection = Vector2.Reflect(shootDirection, dir).normalized;
+
+            rb.velocity = shootDirection * speed;
+
+            float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
             IncreaseBounceCount();
         }
     }

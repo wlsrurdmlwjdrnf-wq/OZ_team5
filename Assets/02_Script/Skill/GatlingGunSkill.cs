@@ -20,8 +20,8 @@ public class GatlingGunSkill : SkillBase
         while (true)
         {
             ProjectileBase pjt = Managers.Instance.Pool.GetFromPool(gatlingPjtPrefab);
-            pjt.SetDirection(Vector2.right);
-            pjt.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            pjt.SetDirection(transform.position - transform.parent.position);
+            pjt.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
             yield return interval;
         }
     }

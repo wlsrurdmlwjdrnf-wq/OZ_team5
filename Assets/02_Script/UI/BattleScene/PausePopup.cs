@@ -110,7 +110,7 @@ public class PausePopup : UIPopup
     }
 
     //로비로 나가기 요청만
-    public void OnClickHome()
+    public void OnClickLobby()
     {
         BattleUIController ui = FindObjectOfType<BattleUIController>();
         if (ui != null)

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7336829120590475754}
   - component: {fileID: 3108544728421680972}
   - component: {fileID: -1921106150789808073}
+  - component: {fileID: 2281498928362201398}
   m_Layer: 0
   m_Name: FireBombProjectile
   m_TagString: Untagged
@@ -143,7 +144,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324421f825b8a7443bf2caa7a7b02da5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmg: 0
-  speed: 2
-  lifetime: 1
   fireAreaPrefab: {fileID: 7252339483385743245, guid: 2ed95a6e982be704883935d3f23b7e87, type: 3}
+--- !u!50 &2281498928362201398
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2170689553222289815}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
