@@ -24,7 +24,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550459966683706334}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -155,6 +155,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2941370828350050792, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f79da28ef4dcd9846abd2f48f24ddb56, type: 3}
     - target: {fileID: 7369549013890063426, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
       propertyPath: m_Name
       value: Inventory Button 2
@@ -257,6 +261,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2941370828350050792, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f79da28ef4dcd9846abd2f48f24ddb56, type: 3}
     - target: {fileID: 7369549013890063426, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
       propertyPath: m_Name
       value: Inventory Button 1
@@ -359,6 +367,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2941370828350050792, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f79da28ef4dcd9846abd2f48f24ddb56, type: 3}
     - target: {fileID: 7369549013890063426, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
       propertyPath: m_Name
       value: Inventory Button 4
@@ -461,6 +473,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2941370828350050792, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f79da28ef4dcd9846abd2f48f24ddb56, type: 3}
     - target: {fileID: 7369549013890063426, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
       propertyPath: m_Name
       value: Inventory Button 5
@@ -563,6 +579,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2941370828350050792, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f79da28ef4dcd9846abd2f48f24ddb56, type: 3}
     - target: {fileID: 7369549013890063426, guid: 6698445bc72759149baa8012c6b2688e, type: 3}
       propertyPath: m_Name
       value: Inventory Button 3

@@ -62,4 +62,11 @@ public static class EnumData
         GameClear,   //클리어
         LevelUp      //레벨업 알림
     }
+
+    //스탯 종류(아이콘 선택용)
+    public enum StatKind
+    {
+        Attack,
+        Hp
+    }
 }
