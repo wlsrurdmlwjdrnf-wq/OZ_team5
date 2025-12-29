@@ -6,6 +6,7 @@ public class IngameItemData
 {
     public int id;
     public string name;
+    public Sprite icon;
     public EnumData.SkillType type;
     public int damage;
     public int level;

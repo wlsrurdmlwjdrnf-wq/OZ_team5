@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class BaseSkillBoxUI : MonoBehaviour
+{
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] Image icon;
+    [SerializeField] TextMeshProUGUI info;
+    [SerializeField] Image[] star;
+    [SerializeField] Sprite yellowStar;
+    [SerializeField] Sprite grayStar;
+
+    public virtual void SetupSkillUIData(IngameItemData item)
+    {
+        nameText.text = item.name;
+        icon.sprite = item.icon;
+        info.text = DataManager.Instance.GetSkillInfo(item.id);
+        for (int i = 0; i < star.Length; i++)
+        {
+            if ( i < item.level + 1)
+            {
+                star[i].sprite = yellowStar;
+            }
+            else
+            {
+                star[i].sprite = grayStar;
+            }
+        }
+    }
+}
