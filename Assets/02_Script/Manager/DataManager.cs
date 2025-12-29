@@ -76,8 +76,8 @@ public class DataManager : Singleton<DataManager>
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.EquipmentType ety)) ? ety : EnumData.EquipmentType.NONE;
                 data.tier = (d.ContainsKey("Tier") && Enum.TryParse(d["Tier"].ToString(), out EnumData.EquipmentTier etr)) ? etr : EnumData.EquipmentTier.NONE;
                 data.atkMtp = (d.ContainsKey("AtkMtp") && float.TryParse(d["AtkMtp"].ToString(), out float atkmtp)) ? atkmtp : -1.0f;
-                data.atkPercent = (d.ContainsKey("AtkPercent") && int.TryParse(d["AtkPercent"].ToString(), out int atkper)) ? atkper : -1;
-                data.hpPercent = (d.ContainsKey("HpPercent") && int.TryParse(d["HpPercent"].ToString(), out int hpper)) ? hpper : -1;
+                data.atkPercent = (d.ContainsKey("AtkPercent") && int.TryParse(d["AtkPercent"].ToString(), out int atkper)) ? atkper : 0;
+                data.hpPercent = (d.ContainsKey("HpPercent") && int.TryParse(d["HpPercent"].ToString(), out int hpper)) ? hpper : 0;
                 data.specialEffectID = (d.ContainsKey("Effect") && int.TryParse(d["Effect"].ToString(), out int efc)) ? efc : -1;
                 data.evolutionID = (d.ContainsKey("EvID") && int.TryParse(d["EvID"].ToString(), out int eid)) ? eid : -1;
                 // 조합이 없으면 -1
@@ -117,18 +117,14 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadRarityItemData()
     {
-        itemRarityDic.Add(EnumData.EquipmentTier.Nice, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Rare, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Elite, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Epic, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Legendary, new List<ItemData>());
+        foreach (EnumData.EquipmentTier tier in Enum.GetValues(typeof(EnumData.EquipmentTier)))
+        {
+            itemRarityDic[tier] = new List<ItemData>();
+        }
 
         foreach (var item  in itemDataDic.Values)
         {
-            if (itemRarityDic.ContainsKey(item.tier))
-            {
-                itemRarityDic[item.tier].Add(item);
-            }
+            itemRarityDic[item.tier].Add(item);
         }
     }
 
@@ -231,6 +227,10 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
+    public bool TryGetIngameItem(int id, out IngameItemData item)
+    {
+        return ingameItemDataDic.TryGetValue(id, out item);
+    }
 
     // 등급별 아이템 리스트 리턴함수
     public List<ItemData> GetItemRarityList(EnumData.EquipmentTier tier)
