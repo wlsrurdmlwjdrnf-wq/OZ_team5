@@ -118,24 +118,20 @@ public class BattleUIController : MonoBehaviour
         //게임 상태 변경은 GameManager가 담당
         GameManager.Instance.GamePause();
     }
-    //ReStart Button에서 호출
-    public void OnClickRestartGame()
+    //Resume Button에서 호출
+    public void OnClickResumeGame()
     {
-        //팝업 정리
+        //게임 재개
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameResume();
+        }
+
+        //열려있는 팝업 정리
         if (UIManager.Instance != null)
         {
             UIManager.Instance.CloseAllPopup();
         }
-
-        //씬 재시작
-        SceneController sceneController = FindObjectOfType<SceneController>();
-        if (sceneController == null)
-        {
-            Debug.LogError("//SceneController가씬에없음");
-            return;
-        }
-
-        sceneController.LoadScene(EnumData.sceneType.BattleScene);
     }
     //BattleUIController에 로비 이동함수만 있음
     public void GoLobby()
