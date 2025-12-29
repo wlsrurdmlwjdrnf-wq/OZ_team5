@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KunaiSkill : SkillBase
 {
-    protected override int Id { get; set; } = 10001;
+    public override int Id { get; set; } = 10001;
     [SerializeField] ProjectileBase kunaiPrefab;
 
     WaitForSeconds smallInterval = new WaitForSeconds(0.2f);
@@ -31,7 +31,7 @@ public class KunaiSkill : SkillBase
                     yield return null;
                     continue;
                 }
-                CooldownBar.cooldownTime = skillData.cooldown + 0.2f * (count-1);
+                CooldownBar.cooldownTime = skillData.cooldown + 0.2f * count;
                 Vector2 dir = (enemy.transform.position - transform.position).normalized;
 
                 ProjectileBase kunai = Managers.Instance.Pool.GetFromPool(kunaiPrefab);
@@ -43,9 +43,13 @@ public class KunaiSkill : SkillBase
             yield return interval;
         }
     }
-    protected override void SkillLevelUp()
+    public override void SkillLevelUp()
     {
-        
+        StopAllCoroutines();
+        level += 1;
+        count += 1;
+        kunaiPrefab.ProjectileStatUp();
+        StartCoroutine(AttackCo(count));
     }
 }
 

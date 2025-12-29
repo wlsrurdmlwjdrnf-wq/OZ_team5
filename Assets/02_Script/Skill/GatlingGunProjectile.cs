@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GatlingGunProjectile : ProjectileBase
 {
-    protected override int Id { get; set; }//데이터 추가필요
+    public override int Id { get; set; } = 20002;
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
@@ -17,4 +17,6 @@ public class GatlingGunProjectile : ProjectileBase
             ReturnPool();
         }
     }
+
+    public override void ProjectileStatUp() { }
 }

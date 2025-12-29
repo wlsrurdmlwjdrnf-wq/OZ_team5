@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FireBombSkill : SkillBase
 {
-    protected override int Id { get; set; } = 3000;
+    public override int Id { get; set; } = 3000;
     [SerializeField] ProjectileBase fireBombPrefab;
     [SerializeField] FireArea fireAreaPrefab;
 
@@ -37,8 +37,12 @@ public class FireBombSkill : SkillBase
             yield return interval;
         }
     }
-    protected override void SkillLevelUp()
+    public override void SkillLevelUp()
     {
-        
+        StopAllCoroutines();
+        count += 1;
+        level += 1;
+        fireBombPrefab.ProjectileStatUp();
+        StartCoroutine(AttackCo(count));
     }
 }

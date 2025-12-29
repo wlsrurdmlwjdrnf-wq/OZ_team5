@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//º¸·ù
 public class GravityFieldSkill : MonoBehaviour
 {
     [SerializeField] private float damageInterval;

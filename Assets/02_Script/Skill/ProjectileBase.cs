@@ -4,12 +4,13 @@ using UnityEngine;
 
 public abstract class ProjectileBase : MonoBehaviour
 {
-    protected int damage;
-    protected int speed;
+    protected float damage;
+    protected float speed;
     protected float lifetime;
 
+    protected Player player;
     protected IngameItemData skillData;
-    protected abstract int Id { get; set; }
+    public abstract int Id { get; set; }
 
     protected Vector2 shootDirection;
     protected float spawntime;
@@ -22,6 +23,11 @@ public abstract class ProjectileBase : MonoBehaviour
         speed = skillData.ptSpeed;
         lifetime = skillData.lifeTime;
     }
+    protected virtual void Start()
+    {
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        damage += player.PlayerStat().playerAtk;
+    }
     protected virtual void OnEnable() 
     {
         spawntime = Time.time;
@@ -30,7 +36,7 @@ public abstract class ProjectileBase : MonoBehaviour
     {
         transform.Translate(speed * Time.deltaTime * shootDirection);
 
-        if(Time.time -  spawntime >= lifetime) ReturnPool();
+        if (Time.time - spawntime >= lifetime) ReturnPool();
     }
     public void SetDirection(Vector2 dir)
     {
@@ -52,4 +58,5 @@ public abstract class ProjectileBase : MonoBehaviour
     {
         Managers.Instance.Pool.ReturnPool(this);
     }
+    public abstract void ProjectileStatUp();
 }

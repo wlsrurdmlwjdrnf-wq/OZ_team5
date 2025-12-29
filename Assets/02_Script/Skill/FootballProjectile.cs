@@ -9,7 +9,7 @@ public class FootballProjectile : ProjectileBase
     [SerializeField] private int maxBounceCount;
     private int curBounceCount;
 
-    protected override int Id { get; set; } = 3003;
+    public override int Id { get; set; } = 3003;
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -79,5 +79,10 @@ public class FootballProjectile : ProjectileBase
             shootDirection = Vector2.Reflect(shootDirection, dir).normalized;
             IncreaseBounceCount();
         }
+    }
+    public override void ProjectileStatUp()
+    {
+        damage += 1;
+        speed += 1;
     }
 }

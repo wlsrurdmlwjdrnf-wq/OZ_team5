@@ -4,13 +4,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private HpBar hpBarPrefab;
-    [SerializeField] SkillBase kunai;
-    [SerializeField] SkillBase shotgun;
-    [SerializeField] SkillBase fireBomb;
-    [SerializeField] SkillBase barrier;
-    [SerializeField] SkillBase defender;
-    [SerializeField] SkillBase football;
-    [SerializeField] SkillBase drillShot;
+    [SerializeField] private GameObject kunai;
+    [SerializeField] private GameObject shotgun;
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -119,6 +114,7 @@ public class Player : MonoBehaviour
             shotgun.gameObject.SetActive(true);
         }
     }
+
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
     //    if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))

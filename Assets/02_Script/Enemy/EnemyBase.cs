@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : ForTargeting, IDamageable
+public class EnemyBase : ForTargeting
 {
     [SerializeField] protected float maxHp;
     [SerializeField] protected float atk;
@@ -36,11 +36,14 @@ public class EnemyBase : ForTargeting, IDamageable
     protected virtual void OnEnable()
     {
         player = GameObject.FindWithTag("Player").transform;
+
         animator.SetBool(isKilledHash, isKilled);
+
         hp = maxHp;
         atk = initAtk;
         moveSpeed = initSpeed;
         transform.localScale = initScale;
+
         if (EnemyManager.Instance != null && EnemyManager.Instance.enemies != null)
         {
             EnemyManager.Instance.enemies.Add(this);

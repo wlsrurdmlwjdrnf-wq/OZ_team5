@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShotgunSkill : SkillBase
 {
-    protected override int Id { get; set; } = 10002;
+    public override int Id { get; set; } = 10002;
 
     private List<ForTargeting> inRange = new List<ForTargeting>();
 
@@ -49,8 +49,11 @@ public class ShotgunSkill : SkillBase
             yield return interval;
         }
     }
-    protected override void SkillLevelUp()
+    public override void SkillLevelUp()
     {
-        
+        StopAllCoroutines();
+        level += 1;
+        damage += 5;
+        StartCoroutine(ShotCo());
     }
 }

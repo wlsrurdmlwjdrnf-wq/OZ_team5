@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GatlingGunSkill : MonoBehaviour
+public class GatlingGunSkill : SkillBase
 {
-    [SerializeField] float interval;
     [SerializeField] ProjectileBase gatlingPjtPrefab;
-    private void Awake()
+    public override int Id { get; set; } = 20002;
+    protected override void Awake()
     {
+        base.Awake();
         Managers.Instance.Pool.CreatePool(gatlingPjtPrefab, 30);
     }
     private void OnEnable()
@@ -21,7 +22,8 @@ public class GatlingGunSkill : MonoBehaviour
             ProjectileBase pjt = Managers.Instance.Pool.GetFromPool(gatlingPjtPrefab);
             pjt.SetDirection(Vector2.right);
             pjt.transform.SetPositionAndRotation(transform.position, transform.rotation);
-            yield return new WaitForSeconds(interval);
+            yield return interval;
         }
     }
+    public override void SkillLevelUp(){}
 }
