@@ -77,7 +77,7 @@ public class BattleUIController : MonoBehaviour
         if (UIManager.Instance == null) return;
 
         //게임오버 연출/팝업
-        UIManager.Instance.ShowPopup(EnumData.PopupId.GameClear);
+        UIManager.Instance.ShowPopup(EnumData.PopupId.GameOver);
     }
 
     //게임 클리어시 호출
@@ -93,7 +93,6 @@ public class BattleUIController : MonoBehaviour
     private void HandleLevelUp()
     {
         //레벨업은 게임을 멈추고 선택 UI를 띄움
-        //프로젝트 룰에 맞게 Popup 또는 다른 UI 처리
         if (UIManager.Instance == null) return;
 
         UIManager.Instance.ShowPopup(EnumData.PopupId.LevelUp);
@@ -119,25 +118,42 @@ public class BattleUIController : MonoBehaviour
         //게임 상태 변경은 GameManager가 담당
         GameManager.Instance.GamePause();
     }
-
-    //게임오버/클리어 팝업에서 "로비로" 버튼 누르면 호출
-    public void OnClickGoLobby()
+    //ReStart Button에서 호출
+    public void OnClickRestartGame()
     {
-        //로비<->배틀 전환은 SceneController가 담당
+        //팝업 정리
         if (UIManager.Instance != null)
         {
             UIManager.Instance.CloseAllPopup();
         }
 
-        //SceneController가 DontDestroy로 존재한다는 전제
-        if (SceneController.FindObjectOfType<SceneController>() == null)
+        //씬 재시작
+        SceneController sceneController = FindObjectOfType<SceneController>();
+        if (sceneController == null)
         {
-            //만약 씬 어디에도 없다면 에러 로그
             Debug.LogError("//SceneController가씬에없음");
             return;
         }
 
-        //FindObjectOfType은 비용이 있으니 실제 프로젝트에선 참조 캐싱
-        FindObjectOfType<SceneController>().LoadScene(EnumData.sceneType.LobbyScene);
+        sceneController.LoadScene(EnumData.sceneType.BattleScene);
+    }
+    //BattleUIController에 로비 이동함수만 있음
+    public void GoLobby()
+    {
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.CloseAllPopup();
+        }
+
+        Time.timeScale = 1f;
+
+        SceneController sceneController = FindObjectOfType<SceneController>();
+        if (sceneController == null)
+        {
+            Debug.LogError("//SceneController가씬에없음");
+            return;
+        }
+
+        sceneController.LoadScene(EnumData.sceneType.LobbyScene);
     }
 }

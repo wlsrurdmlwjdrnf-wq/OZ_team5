@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Fixed : MonoBehaviour
+public class ResolutionFixed : MonoBehaviour
 {
     //세로 기준 해상도
     [SerializeField] private int setWidth = 720;

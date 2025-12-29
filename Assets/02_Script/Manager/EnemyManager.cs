@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
+    //public int enemyKillCount = 0;
     public List<ForTargeting> enemies = new List<ForTargeting>();
 
     public ForTargeting GetClosestEnemy(Vector2 position)
