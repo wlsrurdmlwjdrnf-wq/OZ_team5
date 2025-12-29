@@ -8,8 +8,8 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-    // itemdata data = datamanager.instance.getitemdata(1010)
-    // 
+    //임시 스킬 정보
+    public Dictionary<int, string> SkillInfo;   
 
     // 종류별 아이템 컨테이너
     private Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
@@ -20,7 +20,8 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<ItemData, Sprite> itemIcon = new Dictionary<ItemData, Sprite>();
     private Dictionary<ItemData, Sprite> itemGrade = new Dictionary<ItemData, Sprite>();
     private Dictionary<IngameItemData, Sprite> ingameItemIcon = new Dictionary<IngameItemData, Sprite>();
-    private Dictionary<IngameItemData, Sprite> ingameItemGrade = new Dictionary<IngameItemData, Sprite>();
+    private Dictionary<IngameItemData, Sprite> ingameItemGrade = new Dictionary<IngameItemData, Sprite>();  
+    
     //뽑기를 위한 티어별 아이템 컨테이너
     private Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
     private PlayerData basePlayerData;
@@ -31,8 +32,25 @@ public class DataManager : Singleton<DataManager>
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
         LoadRarityItemData(); // 티어별 데이터 로드
-        SetPlayerBaseData();                               
+        SetPlayerBaseData();
         // LogData(); // 테스트용 로그함수
+        SkillInfo = new Dictionary<int, string>()
+        {
+            { 3000, "화염병" },
+            { 3001, "쉴드" },
+            { 3002, "수호자" },
+            { 3003, "축구공" },
+            { 3004, "드릴" },
+            { 4001, "총알" },
+            { 4002, "닌자스크롤" },
+            { 4003, "석유" },
+            { 4004, "에너지 드링크" },
+            { 4005, "운동화" },
+            { 10001, "쿠나이" },
+            { 10002, "샷건" },
+            { 20001, "쿠나이 진화" },
+            { 20002, "샷건 진화" }
+        };
     }
     #region 데이터 로드 함수
     private void SetPlayerBaseData()
@@ -154,6 +172,9 @@ public class DataManager : Singleton<DataManager>
                 }
 
                 data.name = Convert.ToString(d["Name"]);
+
+                string itemName = (d.ContainsKey("Name") ? d["Name"].ToString() : "NONE");
+                data.icon = Resources.Load<Sprite>("Icons/" + itemName);
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.SkillType skty)) ? skty : EnumData.SkillType.NONE;
                 data.damage = (d.ContainsKey("Damage") && int.TryParse(d["Damage"].ToString(), out int dmg)) ? dmg : -1;
                 data.level = (d.ContainsKey("Level") && int.TryParse(d["Level"].ToString(), out int lv)) ? lv : 1;
@@ -198,6 +219,7 @@ public class DataManager : Singleton<DataManager>
         //로드완료
         Debug.Log("무기스킬 / 지원폼 데이터 로드완료");
     }    
+   
 
 
     #endregion
@@ -313,8 +335,28 @@ public class DataManager : Singleton<DataManager>
         return ingameItemDataDic.Values.ToList();
     }
 
+    public string GetSkillInfo(int id)
+    {
+        if (SkillInfo.TryGetValue(id, out string name))
+        {
+            return name;
+        }
+        return "Unknown Skill";
+    }
 
-    #endregion
+    public IngameItemData[] GetPairList(IngameItemData item)
+    {
+        IngameItemData[] temp = new IngameItemData[item.pairID.Length];
+        for (int i = 0; i < item.pairID.Length; i++)
+        {
+            if (item.pairID[i] == -1) return null;
+            temp[i] = GetIngameItemData(item.pairID[i]);
+        }
+        return temp;
+    }
+
+
+#endregion
 
     //테스트용 로그함수
     public void LogData()

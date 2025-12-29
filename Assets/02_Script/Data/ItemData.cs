@@ -6,6 +6,7 @@ public class ItemData
 {
     public int id;
     public string name;
+    public Sprite icon;
     public EnumData.EquipmentType type;
     public EnumData.EquipmentTier tier;
     public float atkMtp; // 등급에 따른 공격력 증가 배수 2배 3배 등등
