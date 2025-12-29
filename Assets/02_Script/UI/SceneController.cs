@@ -7,6 +7,7 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController Instance { get; private set; }
 
+    [Header("Loading UI References (씬에 배치된 오브젝트 연결)")]
     [SerializeField] private GameObject loadingPanel;           //로딩 UI 전체 패널    
     [SerializeField] private Slider loadingBar;                 //로딩 진행도 슬라이더(0~1)
     [SerializeField] private TextMeshProUGUI loadingText;       //로딩 퍼센트 텍스트
@@ -33,7 +34,7 @@ public class SceneController : MonoBehaviour
         Instance = this;
     }
 
-    //버튼에서 이 함수만 호출하면 됨(타이틀 <-> 로비 <-> 배틀 전부)
+    //버튼에서 이 함수만 호출하면 됨(타이틀 -> 로비 <-> 배틀 전부)
     public void LoadScene(EnumData.sceneType targetScene)
     {
         //로딩중에 또 누르면 중복 실행될 수 있어서 방어
@@ -58,7 +59,7 @@ public class SceneController : MonoBehaviour
         isLoading = true;
         asyncOp = null;
 
-        //게임이 멈춰있을 수 있으므로 리셋
+        //일시정지/레벨업 등으로 게임이 멈춰있을 수 있으므로 리셋
         Time.timeScale = 1f;
 
         //로딩 UI 표시
@@ -67,12 +68,13 @@ public class SceneController : MonoBehaviour
             loadingPanel.SetActive(true);
         }
 
+        //슬라이더 초기화
         UpdateProgress(0f);
 
         //SceneLoader가 없으면 씬 로드 불가
         if (SceneLoader.Instance == null)
         {
-            Debug.LogError("//SceneLoader.Instance가null임(SceneLoader오브젝트가씬에있는지확인)");
+            Debug.LogError("//SceneLoader.Instance가 null임(SceneLoader오브젝트가 씬에 있는지 확인)");
             isLoading = false;
             yield break;
         }
@@ -83,7 +85,7 @@ public class SceneController : MonoBehaviour
         //씬 로드 실패 방어
         if (asyncOp == null)
         {
-            Debug.LogError("//LoadSceneAsync가null반환(BuildSettings또는씬이름확인)");
+            Debug.LogError("//LoadSceneAsync가 null반환(BuildSettings 또는 씬 이름 확인)");
             isLoading = false;
             yield break;
         }
@@ -92,7 +94,7 @@ public class SceneController : MonoBehaviour
         asyncOp.allowSceneActivation = false;
 
         //로딩 UI 최소 표시 시간(너무 빠르면 깜빡임이 생겨서)
-        float elapsed = 0.1f;
+        float elapsed = 0f;
 
         while (!asyncOp.isDone)
         {
@@ -129,17 +131,27 @@ public class SceneController : MonoBehaviour
     }
 
     //로딩 진행도 UI 갱신
-    private void UpdateProgress(float value01)
+    private void ShowLoadingUI()
     {
-        if (loadingBar != null)
+        //로딩 패널 켜기
+        if (loadingPanel != null)
         {
-            loadingBar.value = value01;
+            loadingPanel.SetActive(true);
         }
 
         if (loadingText != null)
         {
-            int percent = Mathf.RoundToInt(value01 * 100f);
-            loadingText.text = $"{percent}%";
+            loadingText.gameObject.SetActive(true);
         }
+
+        //슬라이더 초기화
+        UpdateProgress(0f);
     }
+
+    //진행도 표시(슬라이더만 갱신)
+    private void UpdateProgress(float value01)
+    {
+        if (loadingBar != null) loadingBar.value = value01;
+    }
+
 }
