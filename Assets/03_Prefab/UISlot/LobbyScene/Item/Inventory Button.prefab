@@ -206,7 +206,6 @@ GameObject:
   - component: {fileID: 4106625059120965398}
   - component: {fileID: 7427559395952899731}
   - component: {fileID: -3747491276049538565}
-  - component: {fileID: 8037495488969254289}
   m_Layer: 5
   m_Name: Inventory Button
   m_TagString: Untagged
@@ -332,17 +331,3 @@ MonoBehaviour:
   grade: {fileID: 6499924331244511343}
   btn: {fileID: 7427559395952899731}
   slotNum: 0
---- !u!114 &8037495488969254289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7369549013890063426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aa5c2e3ac3a94e4c8d6f9163879335e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 0
-  tooltip: {fileID: 6121190711816723255, guid: b84ce312800dfe947a9978e237137bd6, type: 3}
