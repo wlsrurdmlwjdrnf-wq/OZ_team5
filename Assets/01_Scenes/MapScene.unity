@@ -1490,7 +1490,7 @@ PrefabInstance:
       objectReference: {fileID: 274465887}
     - target: {fileID: 5996973330761822324, guid: ac9f8eff9e5553c47a62cc9546cac444, type: 3}
       propertyPath: testNumber
-      value: 3002
+      value: 20001
       objectReference: {fileID: 0}
     - target: {fileID: 5996973330761822324, guid: ac9f8eff9e5553c47a62cc9546cac444, type: 3}
       propertyPath: oilTicketSS

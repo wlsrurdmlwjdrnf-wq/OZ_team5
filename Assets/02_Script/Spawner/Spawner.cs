@@ -97,7 +97,7 @@ public class Spawner : MonoBehaviour
         yield return new WaitForSeconds(waitBossTime);
         //보스경고 필요
         WarningPanel.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         WarningPanel.SetActive(false);
         ClearField(player.position, 50f);
 
@@ -107,8 +107,6 @@ public class Spawner : MonoBehaviour
         bossObj.transform.position = RandPos(6f, 5f, 4f) + player.position; 
 
         StopAllCoroutines();
-        //보스 출현 경고 후 보스와 벽몬스터 스폰, 타이머 정지, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함.
-        //보스를 잡은 후에 타이머 다시 작동
     }
     private void ClearField(Vector2 pos, float radius)
     {

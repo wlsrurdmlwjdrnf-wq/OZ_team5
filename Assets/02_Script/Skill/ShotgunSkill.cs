@@ -55,5 +55,6 @@ public class ShotgunSkill : SkillBase
         level += 1;
         damage += 5;
         StartCoroutine(ShotCo());
+        CooldownBar.timer = 0f;
     }
 }

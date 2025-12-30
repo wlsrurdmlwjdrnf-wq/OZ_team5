@@ -14,6 +14,8 @@ public class GatlingGunSkill : SkillBase
     private void OnEnable()
     {
         StartCoroutine(AttackCo());
+        CooldownBar.timer = 0f;
+        CooldownBar.cooldownTime = 0f;
     }
     private IEnumerator AttackCo()
     {

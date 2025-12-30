@@ -7,7 +7,7 @@ public class CooldownBar : MonoBehaviour
 {
     [SerializeField] private Image cooldownBar;
     public static float cooldownTime = 0f;
-    private float timer = 0f;
+    public static float timer = 0f;
 
     private void Update()
     {
