@@ -3,24 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-
-/*
- * 뽑기 버튼을 누르면 룰렛이 돌아가고 선택된 아이템의 이미지가 화면에 나옴
- * 나온 아이템의 정보를 플레이어 인벤토리에 저장해야됨 (inventorymanager additem호출)
- * 뽑기에 필요한 돈의 보유여부는? ( playermanager에서 가진골드값 받아오기)
- */
 
 public class GachaManager : Singleton<GachaManager>
 {
     Player player;
 
-    // 등급에 따른 확률 조정칸
-    [SerializeField] public int niceRate = 45;
-    [SerializeField] public int rareRate = 25;
-    [SerializeField] public int eliteRate = 20;
-    [SerializeField] public int epicRate = 9;
-    [SerializeField] public int legendaryRate = 1;
+    private int rareRate;
+    private int eliteRate;
+    private int epicRate;
+    private int legendaryRate;
 
 
     //인게임 레벨업시 뜨는 스킬들의 확률 시스템을 위한 변수들
@@ -40,55 +31,78 @@ public class GachaManager : Singleton<GachaManager>
     {
         base.Init();
     }
-    //뽑기 버튼을 누르면 이 함수를 호출하세요
-    public void DrawItem()
+    //일반상자뽑기
+    public void DrawItemNormalBox()
     {
-        // 돈이 부족한지 체크 부족하면 리턴
+        if (GameManager.Instance.gameGold < 300) return;
 
-
-        //등급을 먼저 뽑고 뽑은 등급의 컨테이너에서 장비 한개 뽑아서 item 변수에 저장
-        EnumData.EquipmentTier tier = GetRarity();
+        EnumData.EquipmentTier tier = GetRarity(0);
         ItemData item = GetItemByRarity(tier);
 
-
-        //아이템 뽑았다고 외부에 알리기
         OnDrawItem?.Invoke(item);
+    }
 
+    public void DrawItemEpicBox()
+    {
+        if (GameManager.Instance.gameGold < 3000) return;
+
+        EnumData.EquipmentTier tier = GetRarity(1);
+        ItemData item = GetItemByRarity(tier);
+
+        OnDrawItem?.Invoke(item);
     }
 
 
     // 무슨 등급인지 반환
-    public EnumData.EquipmentTier GetRarity()
+    public EnumData.EquipmentTier GetRarity(int value)
     {
-        int value = UnityEngine.Random.Range(1, 101);
-        int total = 0;
-
-
-        total += legendaryRate;
-        if (value <= total)
+        if (value == 0)
         {
-            return EnumData.EquipmentTier.Legendary;
-        }
+            int rate = UnityEngine.Random.Range(0, 100);
+            rareRate = 30;
+            eliteRate = 1;
 
-        total += epicRate;
-        if (value <= total)
+            int  result = 0;
+
+            result += eliteRate;
+            if (rate < result)
+            {
+                return EnumData.EquipmentTier.Elite;
+            }
+            result += rareRate;
+            if (rate < result)
+            {
+                return EnumData.EquipmentTier.Rare;
+            }
+            else
+            {
+                return EnumData.EquipmentTier.Nice;
+            }
+        }
+        else
         {
-            return EnumData.EquipmentTier.Epic;
-        }
+            int rate = UnityEngine.Random.Range(0, 100);
+            eliteRate = 69;
+            epicRate = 30;
+            legendaryRate = 1;
 
-        total += eliteRate;
-        if (value <= total)
-        {
-            return EnumData.EquipmentTier.Elite;
-        }
+            int result = 0;
 
-        total += rareRate;
-        if (value <= total)
-        {
-            return EnumData.EquipmentTier.Rare;
+            result += legendaryRate;
+            if (rate < result)
+            {
+                return EnumData.EquipmentTier.Legendary;
+            }
+            result += epicRate;
+            if (rate < result)
+            {
+                return EnumData.EquipmentTier.Epic;
+            }
+            else
+            {
+                return EnumData.EquipmentTier.Elite;
+            }
         }
-
-        return EnumData.EquipmentTier.Nice;
     }
 
     //등급별로 분류된 컨테이너에서 랜덤아이템 뽑아서 반환

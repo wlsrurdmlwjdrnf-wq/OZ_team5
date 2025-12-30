@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class LevelUpPopUIController : MonoBehaviour
 {
+    private SkillBarUI skUI;
     //플레이어 레벨 팝업
     [SerializeField] Image expBackground;
     [SerializeField] TextMeshProUGUI playerLv;
@@ -30,7 +31,8 @@ public class LevelUpPopUIController : MonoBehaviour
 
     private void Start()
     {
-        refresh.onClick.AddListener(OnClickRefreshButton);
+        refresh.onClick.AddListener(OnClickRefreshButton);      
+        skUI = GetComponent<SkillBarUI>();
     }
 
     private void OnEnable()
@@ -72,7 +74,7 @@ public class LevelUpPopUIController : MonoBehaviour
 
     private void ViewPlayerBattleInven()
     {
-
+        skUI.GetPlayerInvenData();
     }
 
     private void OnClickRefreshButton()

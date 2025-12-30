@@ -91,6 +91,7 @@ public class DataManager : Singleton<DataManager>
                     continue;
                 }
                 data.name = Convert.ToString(d["Name"]);
+                data.icon = Resources.Load<Sprite>($"Icons/{data.name}");
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.EquipmentType ety)) ? ety : EnumData.EquipmentType.NONE;
                 data.tier = (d.ContainsKey("Tier") && Enum.TryParse(d["Tier"].ToString(), out EnumData.EquipmentTier etr)) ? etr : EnumData.EquipmentTier.NONE;
                 data.atkMtp = (d.ContainsKey("AtkMtp") && float.TryParse(d["AtkMtp"].ToString(), out float atkmtp)) ? atkmtp : -1.0f;
@@ -172,9 +173,7 @@ public class DataManager : Singleton<DataManager>
                 }
 
                 data.name = Convert.ToString(d["Name"]);
-
-                string itemName = (d.ContainsKey("Name") ? d["Name"].ToString() : "NONE");
-                data.icon = Resources.Load<Sprite>("Icons/" + itemName);
+                data.icon = Resources.Load<Sprite>($"Icons/{data.name}");
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.SkillType skty)) ? skty : EnumData.SkillType.NONE;
                 data.damage = (d.ContainsKey("Damage") && int.TryParse(d["Damage"].ToString(), out int dmg)) ? dmg : -1;
                 data.level = (d.ContainsKey("Level") && int.TryParse(d["Level"].ToString(), out int lv)) ? lv : 1;
@@ -262,6 +261,7 @@ public class DataManager : Singleton<DataManager>
     }
 
     //아이템 아이콘 스프라이트 리턴함수
+    
     public Sprite GetItemIcon(ItemData item)
     {
         if (itemIcon.TryGetValue(item, out Sprite sprite))
@@ -277,6 +277,7 @@ public class DataManager : Singleton<DataManager>
         }
         return null;
     }
+    
     public Sprite GetItemGrade(ItemData item)
     {
         if (itemGrade.TryGetValue(item, out Sprite sprite))
@@ -292,7 +293,7 @@ public class DataManager : Singleton<DataManager>
         }
         return null;
     }
-
+    
     public Sprite GetIngameItemIcon(IngameItemData item)
     {
         if (ingameItemIcon.TryGetValue(item, out Sprite sprite))

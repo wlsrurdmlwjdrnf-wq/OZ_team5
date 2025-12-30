@@ -8,7 +8,7 @@ public class EnemyManager : Singleton<EnemyManager>
         _IsDestroyOnLoad = false;
         base.Init();
     }
-    //public int enemyKillCount = 0;
+    public int enemyKillCount = 0;
     public List<ForTargeting> enemies = new List<ForTargeting>();
 
     public ForTargeting GetClosestEnemy(Vector2 position)

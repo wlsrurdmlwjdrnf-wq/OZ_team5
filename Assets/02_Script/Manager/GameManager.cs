@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     public event Action OnLevelUp;  // 레벨업시 호출 할 함수
     public event Action OnBossSpawn; //보스스폰시 호출 할 함수
 
-
+    public float gameGold {  get; private set; }
     public bool isPlay { get; private set; } // 게임이 진행중인지 확인 변수
     public float gamePlayTime { get; private set; } // 게임 진행시간
 
@@ -46,6 +46,7 @@ public class GameManager : Singleton<GameManager>
         base.Init();
         isPlay = false;
         gamePlayTime = 0f;
+        gameGold = 500f;
     }
 
     private void Update()
@@ -108,6 +109,16 @@ public class GameManager : Singleton<GameManager>
         Time.timeScale = 0f;
         isPlay = false;
         OnLevelUp?.Invoke();
+    }
+
+    public void AddGold(float num)
+    {
+        gameGold += num;
+    }
+
+    public void RemoveGold(float num)
+    {
+        gameGold -= num;
     }
 
     //보스스폰 함수
