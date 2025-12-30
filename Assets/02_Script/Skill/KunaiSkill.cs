@@ -50,6 +50,7 @@ public class KunaiSkill : SkillBase
         count += 1;
         kunaiPrefab.ProjectileStatUp();
         StartCoroutine(AttackCo(count));
+        CooldownBar.timer = 0f;
     }
 }
 
