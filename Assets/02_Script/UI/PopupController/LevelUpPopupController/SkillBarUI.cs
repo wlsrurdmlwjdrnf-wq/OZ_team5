@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SkillBarUI : MonoBehaviour
 {
-    Player player;
+    [SerializeField] Player player;
     [SerializeField] EnumData.SkillType type;
     [SerializeField] Image[] haveSkill;
 

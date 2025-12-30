@@ -91,7 +91,7 @@ public class InventoryItemPopup : UIPopup
         {
             //동료쪽 DataManager가 아이콘을 Resources에서 가져오는 구조라서
             //여기서는 DataManager를 통해 가져오는게 안전함
-            Sprite icon = DataManager.Instance.GetItemIcon(data);
+            Sprite icon = data.icon;
             itemIcon.sprite = icon;
             itemIcon.enabled = (icon != null);
         }

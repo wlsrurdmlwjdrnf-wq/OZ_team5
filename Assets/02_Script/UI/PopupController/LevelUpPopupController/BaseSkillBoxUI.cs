@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class BaseSkillBoxUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] Image icon;
+    [SerializeField] Image _icon;
     [SerializeField] TextMeshProUGUI info;
     [SerializeField] Image[] star;
     [SerializeField] Sprite yellowStar;
@@ -16,11 +16,11 @@ public class BaseSkillBoxUI : MonoBehaviour
     public virtual void SetupSkillUIData(IngameItemData item)
     {
         nameText.text = item.name;
-        icon.sprite = item.icon;
+        _icon.sprite = item.icon;
         info.text = DataManager.Instance.GetSkillInfo(item.id);
         for (int i = 0; i < star.Length; i++)
         {
-            if ( i < item.level + 1)
+            if ( i < item.level)
             {
                 star[i].sprite = yellowStar;
             }

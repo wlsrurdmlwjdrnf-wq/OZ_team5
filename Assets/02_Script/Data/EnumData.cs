@@ -77,7 +77,8 @@ public static class EnumData
         BattleBGM,
         Battle2BGM,
         LobbyBGM,
-        Lobby2BGM
+        Lobby2BGM,
+        COUNT
     }
 
     public enum SFX
@@ -93,6 +94,7 @@ public static class EnumData
         GameOverSFX,
         LevelUpSFX,
         LevelUp2SFX,
-        WarningSFX
+        WarningSFX,
+        COUNT
     }
 }

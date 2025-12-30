@@ -350,7 +350,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCD95\uAD6C\uACF5"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd9522f7294ffc7498ce01d060303337, type: 2}
   m_sharedMaterial: {fileID: -5226286524069841486, guid: bd9522f7294ffc7498ce01d060303337, type: 2}
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 46692f5b358795b4a90bcb7c8499e6f4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f79da28ef4dcd9846abd2f48f24ddb56, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -933,7 +933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: {fileID: 8865153915030555808}
-  icon: {fileID: 3725146806295831864}
+  _icon: {fileID: 3725146806295831864}
   info: {fileID: 6596067285425364521}
   star:
   - {fileID: 2699446665415273250}
