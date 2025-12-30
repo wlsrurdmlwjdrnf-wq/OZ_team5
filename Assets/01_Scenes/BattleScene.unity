@@ -5299,11 +5299,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48c98f5b41c2ef1488341fbab9331153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelText: {fileID: 0}
+  levelText: {fileID: 215171691}
   goldText: {fileID: 661303807}
   killText: {fileID: 1687022664}
   timeText: {fileID: 16475294}
-  expSlider: {fileID: 0}
+  expSlider: {fileID: 764496441}
 --- !u!1001 &3243267379049607719
 PrefabInstance:
   m_ObjectHideFlags: 0
