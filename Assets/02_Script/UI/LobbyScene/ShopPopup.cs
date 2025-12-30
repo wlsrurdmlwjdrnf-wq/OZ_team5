@@ -103,11 +103,11 @@ public class ShopPopup : UIPopup
 
     //군지원상자 버튼
     public void OnClickArmyBox()
-    {
+    {        
         ShowBox(armyBoxPrefab);
 
         if (GachaManager.Instance == null) return;
-        GachaManager.Instance.DrawItem();
+        GachaManager.Instance.DrawItemNormalBox();
     }
 
     //지구방위 보급품 버튼
@@ -116,7 +116,7 @@ public class ShopPopup : UIPopup
         ShowBox(earthBoxPrefab);
 
         if (GachaManager.Instance == null) return;
-        GachaManager.Instance.DrawItem();
+        GachaManager.Instance.DrawItemEpicBox();
     }
 
     //뽑기 결과가 나오면 호출됨(GachaManager 이벤트)

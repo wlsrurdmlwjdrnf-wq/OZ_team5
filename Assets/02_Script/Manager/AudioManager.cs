@@ -2,30 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BGM
-{
-    BattleBGM,
-    Battle2BGM,
-    LobbyBGM,
-    Lobby2BGM
-}
-
-public enum SFX
-{
-    Boss2JumpSFX,
-    Boss3SFX,
-    Button1SFX,
-    Button2SFX,
-    Button3SFX,
-    EnemyHitSFX,
-    EnemyHit2SFX,
-    GameClearSFX,
-    GameOverSFX,
-    LevelUpSFX,
-    LevelUp2SFX,
-    WarningSFX
-}
-
 public class AudioManager : Singleton<AudioManager>
 {
     public Transform BGMtrs;
@@ -34,8 +10,8 @@ public class AudioManager : Singleton<AudioManager>
     //오디오 클립 경로
     private const string AUDIO_PATH = "Audio";
     
-    private Dictionary<BGM, AudioSource> _BGMPlayer = new Dictionary<BGM, AudioSource>();
-    private Dictionary<SFX, AudioSource> _SFXPlayer = new Dictionary<SFX, AudioSource>();
+    private Dictionary<EnumData.BGM, AudioSource> _BGMPlayer = new Dictionary<EnumData.BGM, AudioSource>();
+    private Dictionary<EnumData.SFX, AudioSource> _SFXPlayer = new Dictionary<EnumData.SFX, AudioSource>();
 
     // 현재 재생중인 BGM
     private AudioSource _currBGMSource;
@@ -44,7 +20,8 @@ public class AudioManager : Singleton<AudioManager>
     protected override void Init()
     {
         base.Init();
-
+        LoadBGMPlayer();
+        LoadSFXPlayer();
     }
 
     //Audio 폴더내 BGM 오디오 클립 딕셔너리에 저장
@@ -52,7 +29,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         for (int i = 0; i < _BGMPlayer.Count; i++)
         {
-            var audioName = ((BGM)i).ToString();
+            var audioName = ((EnumData.BGM)i).ToString();
             var pathStr = $"{AUDIO_PATH}/{audioName}";
             var audioClip = Resources.Load(pathStr, typeof(AudioClip)) as AudioClip;
 
@@ -68,7 +45,8 @@ public class AudioManager : Singleton<AudioManager>
             newAudioSource.playOnAwake = false;
             newGameObject.transform.parent = BGMtrs;
 
-            _BGMPlayer[(BGM)i] = newAudioSource;
+            _BGMPlayer[(EnumData.BGM)i] = newAudioSource;
+            Debug.Log($"{audioName}");
         }
     }
 
@@ -77,7 +55,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         for(int i = 0; i < _SFXPlayer.Count; i++)
         {
-            var audioName = ((SFX)i).ToString();
+            var audioName = ((EnumData.SFX)i).ToString();
             var pathStr = $"{AUDIO_PATH}/{audioName}";
             var audioClip = Resources.Load(pathStr, typeof(AudioClip)) as AudioClip;
 
@@ -93,13 +71,14 @@ public class AudioManager : Singleton<AudioManager>
             newAudioSource.playOnAwake = false;
             newGameObject.transform.parent = SFXtrs;
 
-            _SFXPlayer[(SFX)i] = newAudioSource;
+            _SFXPlayer[(EnumData.SFX)i] = newAudioSource;
+            Debug.Log($"{audioName}");
         }
     }
     // BGM 함수
     #region [BGM 함수]
 
-    public void PlayBGM(BGM bgm)
+    public void PlayBGM(EnumData.BGM bgm)
     {
         // BGM 재생 함수
         // Audio 폴더에 있는 오디오클립명으로 매개변수를 받습니다
@@ -162,7 +141,7 @@ public class AudioManager : Singleton<AudioManager>
     // SFX 함수 
     #region [SFX 함수]
 
-    public void PlaySFX(SFX sfx)
+    public void PlaySFX(EnumData.SFX sfx)
     {
         // SFX 재생 함수
         // Audio 폴더에 있는 오디오클립명으로 매개변수를 받습니다

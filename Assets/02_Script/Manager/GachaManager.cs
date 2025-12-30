@@ -14,8 +14,8 @@ public class GachaManager : Singleton<GachaManager>
     private int legendaryRate;
 
 
-    //인게임 레벨업시 뜨는 스킬들의 확률 시스템을 위한 변수들
-    List<IngameItemData> skillList = DataManager.Instance.GetAllIngameItemData();
+    //인게임 레벨업시 뜨는 스킬들의 확률 시스템을 위한 변수들    
+    List<IngameItemData> skillList;
     private bool hasSkill(IngameItemData item) => player.PlayerStat().playerSkillInven.Contains(item);
     private bool hasSup(IngameItemData item) => player.PlayerStat().playerSupportInven.Contains(item);
     private bool isMaxSkillLv(IngameItemData item) => player.PlayerStat().playerSkillInven.Exists(temp => temp.id == item.id && temp.level == 5);
@@ -30,11 +30,12 @@ public class GachaManager : Singleton<GachaManager>
     protected override void Init()
     {
         base.Init();
+        skillList = DataManager.Instance.GetAllIngameItemData();
     }
     //일반상자뽑기
     public void DrawItemNormalBox()
     {
-        if (GameManager.Instance.gameGold < 300) return;
+        //if (GameManager.Instance.gameGold < 300) return;
 
         EnumData.EquipmentTier tier = GetRarity(0);
         ItemData item = GetItemByRarity(tier);
@@ -44,7 +45,7 @@ public class GachaManager : Singleton<GachaManager>
 
     public void DrawItemEpicBox()
     {
-        if (GameManager.Instance.gameGold < 3000) return;
+       // if (GameManager.Instance.gameGold < 3000) return;
 
         EnumData.EquipmentTier tier = GetRarity(1);
         ItemData item = GetItemByRarity(tier);

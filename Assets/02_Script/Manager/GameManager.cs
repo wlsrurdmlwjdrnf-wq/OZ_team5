@@ -46,7 +46,7 @@ public class GameManager : Singleton<GameManager>
         base.Init();
         isPlay = false;
         gamePlayTime = 0f;
-        gameGold = 500f;
+        gameGold = 50000f;
     }
 
     private void Update()

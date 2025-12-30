@@ -11,7 +11,7 @@ public class ExpStone : ItemBase
         player.PlayerStat().playerCurExp += amount * ((100 + player.PlayerStat().playerExpPt) * 0.01f);
         if (player.PlayerStat().playerCurExp > player.PlayerStat().playerMaxExp)
         {
-            //PlayerLevelUpSystem.LevelUp(player);
+            PlayerLevelUpSystem.LevelUp(player);
         }
         Managers.Instance.Pool.ReturnPool(this);
     }

@@ -71,4 +71,28 @@ public static class EnumData
         Attack,
         Hp
     }
+
+    public enum BGM
+    {
+        BattleBGM,
+        Battle2BGM,
+        LobbyBGM,
+        Lobby2BGM
+    }
+
+    public enum SFX
+    {
+        Boss2JumpSFX,
+        Boss3SFX,
+        Button1SFX,
+        Button2SFX,
+        Button3SFX,
+        EnemyHitSFX,
+        EnemyHit2SFX,
+        GameClearSFX,
+        GameOverSFX,
+        LevelUpSFX,
+        LevelUp2SFX,
+        WarningSFX
+    }
 }
