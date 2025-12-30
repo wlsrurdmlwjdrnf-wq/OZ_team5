@@ -581,7 +581,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8326632404414466231}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.1}
   m_AnchorMax: {x: 1, y: 0.9}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -614,7 +614,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC77C\uBC18 \uB610\uB294 \uC6B0\uC218 \uC7A5\uBE44 \uD3EC\uD568"
+  m_text: "\uC77C\uBC18 ,\uB808\uC5B4, \uC5D8\uB9AC\uD2B8 \uC7A5\uBE44 \uD3EC\uD568"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd9522f7294ffc7498ce01d060303337, type: 2}
   m_sharedMaterial: {fileID: -5226286524069841486, guid: bd9522f7294ffc7498ce01d060303337, type: 2}
@@ -823,7 +823,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: x 100
+  m_text: x 300
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 51f3b8e25ae4a704b88cc624411c696d, type: 2}
   m_sharedMaterial: {fileID: 8980389016448975107, guid: 51f3b8e25ae4a704b88cc624411c696d, type: 2}

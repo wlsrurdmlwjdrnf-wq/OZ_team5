@@ -1,23 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+//장착 슬롯(무기/갑옷/목걸이/벨트/장갑/신발)
+// - 클릭했을 때 "해제"를 바로 하지 않고
+// - 컨트롤러에게 "몇번 슬롯 눌렀는지"만 알려준다
 public class InventorySlotEquipUI : BaseInventorySlotUI
 {
-    private void Start()
-    {
-        OnClickEquipSlot += PlayerManager.Instance.UnEquipItem;   
-    }
     protected override void OnSlotClick()
     {
+        //몇번 장착칸 클릭했는지 컨트롤러로 전달
         CallOnClickEuip(slotNum);
-    }
-    protected override void OnDestroy()
-    {
-        if (PlayerManager.Instance != null)
-        {
-            OnClickEquipSlot -= PlayerManager.Instance.UnEquipItem;
-        }
     }
 }
