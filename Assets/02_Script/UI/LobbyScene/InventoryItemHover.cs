@@ -11,20 +11,32 @@ public class InventoryItemHover : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (tooltip == null) return;
+        Debug.Log("//OnPointerEnter called");
+
+        if (tooltip == null)
+        {
+            Debug.LogError("//tooltip이 null임(인스펙터 연결 확인)");
+            return;
+        }
 
         //여기서 DataManager로부터 ItemData를 가져와야 함(동료 테이블 방식에 맞게 수정)
         //예시 형태만 만들어둠
         ItemData data = DataManager.Instance.GetItemData(itemId);
-        if (data == null) return;
+        if (data == null)
+        {
+            Debug.LogError($"//ItemData null: id={itemId}");
+            return;
+        }
 
+        Debug.Log($"//Tooltip Show id:{itemId} name:{data.name}");
         tooltip.Show(data, Input.mousePosition);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (tooltip == null) return;
-
-        tooltip.Hide();
+        if (tooltip != null)
+        {
+            tooltip.Hide();
+        }
     }
 }

@@ -1,41 +1,45 @@
 using UnityEngine;
 using static EnumData;
 
-//등급 배경/스탯 아이콘을 한 곳에서 관리하는 매핑(SO)
-[CreateAssetMenu(menuName = "UI/UIAssetMap", fileName = "UIAssetMap")]
+//UI에서 사용하는 스프라이트 매핑용 ScriptableObject
+//- enum → Sprite 변환만 담당
+//- 로직은 UI 코드에서 처리
+[CreateAssetMenu(menuName = "UI/UI Asset Map")]
 public class UIAssetMap : ScriptableObject
 {
     [Header("Grade Backgrounds")]
-    [SerializeField] private Sprite niceBg;      //Nice 배경
-    [SerializeField] private Sprite rareBg;      //Rare 배경
-    [SerializeField] private Sprite eliteBg;     //Elite 배경
-    [SerializeField] private Sprite epicBg;      //Epic 배경
-    [SerializeField] private Sprite legendaryBg; //Legendary 배경
+    [SerializeField] private Sprite niceBg;
+    [SerializeField] private Sprite rareBg;
+    [SerializeField] private Sprite eliteBg;
+    [SerializeField] private Sprite epicBg;
+    [SerializeField] private Sprite legendaryBg;
 
     [Header("Stat Icons")]
-    [SerializeField] private Sprite attackIcon;  //공격 아이콘
-    [SerializeField] private Sprite hpIcon;      //체력 아이콘
+    [SerializeField] private Sprite attackIcon;
+    [SerializeField] private Sprite hpIcon;
 
+    //아이템 등급 → 배경 이미지
     public Sprite GetGradeBackground(EquipmentTier tier)
     {
-        if (tier == EquipmentTier.Nice) return niceBg;
-        if (tier == EquipmentTier.Rare) return rareBg;
-        if (tier == EquipmentTier.Elite) return eliteBg;
-        if (tier == EquipmentTier.Epic) return epicBg;
-        if (tier == EquipmentTier.Legendary) return legendaryBg;
-        return null;
+        switch (tier)
+        {
+            case EquipmentTier.Nice: return niceBg;
+            case EquipmentTier.Rare: return rareBg;
+            case EquipmentTier.Elite: return eliteBg;
+            case EquipmentTier.Epic: return epicBg;
+            case EquipmentTier.Legendary: return legendaryBg;
+            default: return null;
+        }
     }
 
+    //스탯 종류 → 아이콘
     public Sprite GetStatIcon(StatKind kind)
     {
-        if (kind == StatKind.Attack) return attackIcon;
-        return hpIcon;
+        switch (kind)
+        {
+            case StatKind.Attack: return attackIcon;
+            case StatKind.Hp: return hpIcon;
+            default: return null;
+        }
     }
-}
-
-//표시용 스탯 종류(아이콘 선택용)
-public enum StatKind
-{
-    Attack,
-    Hp
 }

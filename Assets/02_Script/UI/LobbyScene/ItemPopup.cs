@@ -10,7 +10,7 @@ using static EnumData;
 public class ItemPopup : MonoBehaviour
 {
     [Header("Root")]
-    [SerializeField] private GameObject root; //전체 루트(켜기/끄기)
+    [SerializeField] private GameObject root;              //전체 루트(켜기/끄기)
 
     [Header("Main")]
     [SerializeField] private Image gradeBackground;        //등급 배경
@@ -22,35 +22,87 @@ public class ItemPopup : MonoBehaviour
     [SerializeField] private Image statIcon;               //공격/체력 아이콘
     [SerializeField] private TextMeshProUGUI statText;     //공격력/체력 증가 텍스트
 
-    [Header("Effects")]
-    [SerializeField] private TextMeshProUGUI effectText;   //특수효과/조합/진화 같은 정보(없으면 숨김)
-
     [Header("UI Asset Map")]
     [SerializeField] private UIAssetMap uiMap;             //등급 배경/스탯 아이콘 매핑
 
+    private Canvas parentCanvas;
+    private RectTransform canvasRect;
+    private RectTransform myRect;
+
     private void Awake()
     {
-        if (root != null) root.SetActive(false);
+        if (root != null)
+        {
+            root.SetActive(false);
+        }
+
+        //부모 Canvas 캐싱(툴팁은 Canvas 아래에 있어야 함)
+        parentCanvas = GetComponentInParent<Canvas>();
+        if (parentCanvas != null)
+        {
+            canvasRect = parentCanvas.transform as RectTransform;
+        }
+
+        myRect = transform as RectTransform;
     }
 
     public void Hide()
     {
-        if (root != null) root.SetActive(false);
+        if (root != null)
+        {
+            root.SetActive(false);
+        }
     }
 
-    //인벤토리 슬롯에서 ItemData를 받아서 툴팁 표시
+    //툴팁 표시(핵심: Screen Space - Camera 좌표 변환 포함)
     public void Show(ItemData data, Vector3 screenPos)
     {
         if (data == null) return;
+        if (root == null) return;
+        if (parentCanvas == null) return;
+        if (canvasRect == null) return;
+        if (myRect == null) return;
 
-        if (root != null) root.SetActive(true);
+        //툴팁 켜기
+        root.SetActive(true);
 
-        transform.position = screenPos;
+        //다른 UI에 가려지는 경우가 많아서 항상 최상단으로 올림
+        transform.SetAsLastSibling();
 
-        if (nameText != null) nameText.text = data.name;
-        if (gradeText != null) gradeText.text = data.tier.ToString();
+        //Screen Space - Camera에서 좌표 변환에 사용할 카메라 선택
+        Camera cam = parentCanvas.worldCamera;
+        if (cam == null)
+        {
+            cam = Camera.main;
+            Debug.LogWarning("//Canvas worldCamera가 null이라 Camera.main으로 대체");
+        }
 
-        //등급 배경
+        Vector2 localPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPos,
+            cam,
+            out localPos
+        );
+
+        //Canvas 기준 로컬 위치로 배치
+        myRect.anchoredPosition = localPos;
+
+        //디버그(보일 때까지 잠깐만 켜두고 나중에 지워도 됨)
+        Debug.Log($"//ItemPopup Show ok name:{data.name} screen:{screenPos} local:{localPos} active:{root.activeSelf}");
+
+        //UI 갱신
+        if (nameText != null)
+        {
+            nameText.text = data.name;
+        }
+
+        if (gradeText != null)
+        {
+            gradeText.text = data.tier.ToString();
+        }
+
+        //등급 배경(없으면 비활성)
         if (gradeBackground != null && uiMap != null)
         {
             Sprite bg = uiMap.GetGradeBackground(data.tier);
@@ -58,61 +110,40 @@ public class ItemPopup : MonoBehaviour
             gradeBackground.enabled = (bg != null);
         }
 
-        //아이콘은 현재 ItemData에 iconPath가 없어서 당장은 비워둠
-        //동료 테이블에 iconPath가 따로 있다면, 여기서 로드해서 넣으면 됨
+        //아이콘
         if (itemIcon != null)
         {
-            itemIcon.enabled = false;
+            //ItemData에 icon이 있다면 그대로 사용
+            itemIcon.sprite = data.icon;
+            itemIcon.enabled = (data.icon != null);
         }
 
-        //장비 타입에 따라 공격/체력 표시 규칙 적용
+        //아이템 타입 → 스탯 종류 결정(무기/목걸이/장갑:공격, 갑옷/벨트/신발:체력)
         StatKind statKind = GetStatKind(data.type);
 
         //스탯 아이콘
         if (statIcon != null && uiMap != null)
         {
-            Sprite sIcon = uiMap.GetStatIcon(statKind);
-            statIcon.sprite = sIcon;
-            statIcon.enabled = (sIcon != null);
+            Sprite icon = uiMap.GetStatIcon(statKind);
+            statIcon.sprite = icon;
+            statIcon.enabled = (icon != null);
         }
 
-        //스탯 텍스트
+        //스탯 텍스트(공격은 배수/퍼센트, 체력은 퍼센트)
         if (statText != null)
         {
             if (statKind == StatKind.Attack)
             {
-                //공격 장비: 배수/퍼센트 같이 보여주기
-                //atkMtp가 0이면 표시 안 하도록 방어
+                string percent = data.atkPercent != 0 ? $"+{data.atkPercent}%" : "";
                 string mtp = data.atkMtp > 0f ? $"x{data.atkMtp:0.##}" : "";
-                string pct = data.atkPercent != 0 ? $"+{data.atkPercent}%" : "";
 
-                //둘 다 없으면 "-"
-                string value = (mtp == "" && pct == "") ? "-" : $"{pct} {mtp}".Trim();
+                string value = (percent == "" && mtp == "") ? "-" : $"{percent} {mtp}".Trim();
                 statText.text = $"공격력 {value}";
             }
             else
             {
-                //체력 장비
                 string value = data.hpPercent != 0 ? $"+{data.hpPercent}%" : "-";
                 statText.text = $"체력 {value}";
-            }
-        }
-
-        //특수효과/조합/진화 정보는 현재는 ID만 존재
-        //나중에 SO/테이블 매핑해서 "텍스트"로 바꾸는 자리에 해당
-        if (effectText != null)
-        {
-            string effectLine = BuildEffectLine(data);
-
-            //표시할 내용이 없으면 숨김
-            if (string.IsNullOrEmpty(effectLine))
-            {
-                effectText.gameObject.SetActive(false);
-            }
-            else
-            {
-                effectText.gameObject.SetActive(true);
-                effectText.text = effectLine;
             }
         }
     }
@@ -126,38 +157,6 @@ public class ItemPopup : MonoBehaviour
 
         //갑옷/벨트/신발 = 체력
         return StatKind.Hp;
-    }
-
-    //ID 기반 정보 표시(나중에 실제 텍스트로 변환할 자리)
-    private string BuildEffectLine(ItemData data)
-    {
-        bool hasSpecial = data.specialEffectID >= 0;
-        bool hasEvolution = data.evolutionID >= 0;
-
-        bool hasPair = false;
-        if (data.pairID != null && data.pairID.Length > 0)
-        {
-            //-1만 있는 경우 제외하고 싶으면 추가 필터 가능
-            hasPair = true;
-        }
-
-        if (!hasSpecial && !hasPair && !hasEvolution) return "";
-
-        //지금은 "ID"만 표시
-        //나중에 여기서 DataManager로 이름/설명 가져와서 예쁘게 표기하면 됨
-        string line = "";
-
-        if (hasSpecial) line += $"특수효과ID:{data.specialEffectID} ";
-        if (hasPair) line += $"조합ID:{FormatPairIds(data.pairID)} ";
-        if (hasEvolution) line += $"진화ID:{data.evolutionID}";
-
-        return line.Trim();
-    }
-
-    private string FormatPairIds(int[] pairIds)
-    {
-        if (pairIds == null || pairIds.Length == 0) return "-";
-        return string.Join(",", pairIds);
     }
 }
 
