@@ -32,6 +32,8 @@ public class Spawner : MonoBehaviour
     [SerializeField] private EnemyProjectile enemyBigPjtPrefab;
     [SerializeField] private EnemyProjectile enemyGlowPjtPrefab;
 
+    [SerializeField] private GameObject WarningPanel;
+
     public static Spawner Instance { get; private set; }
 
     private float posX;
@@ -94,7 +96,9 @@ public class Spawner : MonoBehaviour
     {
         yield return new WaitForSeconds(waitBossTime);
         //보스경고 필요
+        WarningPanel.SetActive(true);
         yield return new WaitForSeconds(2f);
+        WarningPanel.SetActive(false);
         ClearField(player.position, 50f);
 
         WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 14f, 12f, 1.0f);
