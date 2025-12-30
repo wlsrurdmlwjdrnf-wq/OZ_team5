@@ -1,11 +1,13 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static EnumData;
 /*
  UI 전체를 관리하는 매니저
- - Screen(화면): 로비, 배틀HUD, 결과 등 "큰 화면" -> 보통 한 번에 1개만 유지
- - Popup(팝업): 일시정지/설정/보상/레벨업 선택 등 -> Stack으로 쌓고 최상단부터 닫기
- - toast(알림): 짧게 표시되는 알림창
+ - Screen: 로비/배틀HUD/결과 등 "큰 화면"(보통 1개 유지)
+ - Popup: 일시정지/상점/아이템상세/레벨업 등(스택으로 쌓고 최상단부터 닫기)
+ - System: 로딩/페이드 같은 시스템 UI
+ - Toast: 잠깐 뜨는 알림
 
  프로젝트 권장 원칙
  1) GameManager는 "게임 상태"를 관리(일시정지, 게임오버 등)
@@ -24,14 +26,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform systemRoot;  // 로딩(페이드 인/아웃) 같은 시스템 UI
     [SerializeField] private Transform toastRoot;   // 알림창 UI
 
-    //현재 활성화된 Screen 스택
-    private readonly Stack<UIScreen> screenStack = new();
+    private readonly Stack<UIScreen> screenStack = new();   //현재 Screen 스택
+    private readonly Stack<UIPopup> popupStack = new();     //현재 Popup 스택
 
-    //현재 열려있는 Popup 스택
-    private readonly Stack<UIPopup> popupStack = new();
-
-    //PopupId → UIPopup 매핑 테이블 (씬에 배치된 팝업들을 등록해서 사용)
-    private Dictionary<EnumData.PopupId, UIPopup> popupTable = new();
+    private readonly Dictionary<PopupId, UIPopup> popupTable = new();//PopupId -> UIPopup 등록 테이블
 
     private void Awake()
     {
@@ -44,7 +42,7 @@ public class UIManager : MonoBehaviour
 
         Instance = this;
 
-        //씬 전환 시에도 UI 유지
+        //씬 전환 시에도 UI 유지(지금은 각씬별로 ui매니저를 둠)
         //DontDestroyOnLoad(gameObject);
     }
 
@@ -69,9 +67,9 @@ public class UIManager : MonoBehaviour
             while (screenStack.Count > 0)
             {
                 UIScreen top = screenStack.Pop();
-                if (top != null) 
+                if (top != null)
                 {
-                    top.Hide(); 
+                    top.Hide();
                 }
             }
         }
@@ -80,7 +78,11 @@ public class UIManager : MonoBehaviour
             //이전 Screen만 숨김
             if (screenStack.Count > 0)
             {
-                screenStack.Peek()?.Hide();
+                UIScreen top = screenStack.Peek();
+                if (top != null)
+                {
+                    top.Hide();
+                }
             }
         }
 
@@ -109,19 +111,22 @@ public class UIManager : MonoBehaviour
         {
             popup.transform.SetParent(popupRoot, false);
         }
+
+        Debug.Log($"//Popup Registered: {id} -> {popup.name}");
     }
 
     //Popup(Open)
     //PopupId로 팝업 열기(외부에서 호출하는 메인 함수)
     public void ShowPopup(EnumData.PopupId id)
     {
+        Debug.Log($"//UIManager.ShowPopup 호출: {id}");
+
         //등록되지 않은 팝업 방어
         if (!popupTable.TryGetValue(id, out UIPopup popup))
         {
             Debug.LogError($"//등록되지않은팝업:{id}");
             return;
         }
-            popup.Open();
 
         //공통 팝업 표시 로직 호출
         ShowPopupInternal(popup);
@@ -131,6 +136,9 @@ public class UIManager : MonoBehaviour
     private void ShowPopupInternal(UIPopup popup)
     {
         if (popup == null) return;
+
+        //이미 같은 팝업이 스택에 있다면 중복으로 쌓이지 않게 방어
+        if (popupStack.Contains(popup)) return; 
 
         //스택에 쌓고 표시
         popupStack.Push(popup);
@@ -143,7 +151,10 @@ public class UIManager : MonoBehaviour
         if (popupStack.Count == 0) return;
 
         UIPopup top = popupStack.Pop();
-        top?.Close();
+        if (top != null)
+        {
+            top.Close();
+        }
     }
 
     //모든 팝업 닫기
@@ -153,7 +164,10 @@ public class UIManager : MonoBehaviour
         while (popupStack.Count > 0)
         {
             UIPopup top = popupStack.Pop();
-            top?.Close();
+            if (top != null)
+            {
+                top.Close();
+            }
         }
     }
 
@@ -162,7 +176,8 @@ public class UIManager : MonoBehaviour
     //SceneController에서 주로 호출
     public void AttachSystemUI(MonoBehaviour systemUI)
     {
-        if (systemUI == null || systemRoot == null) return;
+        if (systemUI == null) return;
+        if (systemRoot == null) return;
 
         systemUI.transform.SetParent(systemRoot, false);
     }
@@ -171,9 +186,26 @@ public class UIManager : MonoBehaviour
     //보통 일정 시간 후 자동으로 꺼짐
     public void ShowToast(MonoBehaviour toastUI)
     {
-        if (toastUI == null || toastRoot == null) return;
+        if (toastUI == null) return;
+        if (toastRoot == null) return;
 
         toastUI.transform.SetParent(toastRoot, false);
         toastUI.gameObject.SetActive(true);
+    }
+
+    //코루틴 러너
+    //팝업이 inactive일 수 있어서(=StartCoroutine 불가) UIManager가 대신 코루틴을 돌려준다
+    public Coroutine Run(IEnumerator routine)
+    {
+        if (routine == null) return null;
+
+        return StartCoroutine(routine);
+    }
+
+    public void Stop(Coroutine coroutine)
+    {
+        if (coroutine == null) return;
+
+        StopCoroutine(coroutine);
     }
 }

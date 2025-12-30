@@ -551,8 +551,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupId: 6
-  armyBoxPrefab: {fileID: 5099036187710536842}
-  earthBoxPrefab: {fileID: 6982356403007443276}
+  normalBoxPrefab: {fileID: 7585893586124742221, guid: 8646465cbd2dd1747961c6ab3210c218, type: 3}
+  highBoxPrefab: {fileID: 7585893586124742221, guid: a9b2501023a9d2e4ab6cc2093efdf56d, type: 3}
   boxSpawnRoot: {fileID: 3172050360134337294}
   itemIconImage: {fileID: 2652322962669300948}
   gradeIconImage: {fileID: 3477136892910369690}
@@ -1050,6 +1050,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HighQuality Box Image
       objectReference: {fileID: 0}
+    - target: {fileID: 7585893586124742221, guid: a9b2501023a9d2e4ab6cc2093efdf56d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9036029037013166360, guid: a9b2501023a9d2e4ab6cc2093efdf56d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1135,11 +1139,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9b2501023a9d2e4ab6cc2093efdf56d, type: 3}
---- !u!1 &6982356403007443276 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7585893586124742221, guid: a9b2501023a9d2e4ab6cc2093efdf56d, type: 3}
-  m_PrefabInstance: {fileID: 693785385289895681}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8414622587178919449 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9036029037013166360, guid: a9b2501023a9d2e4ab6cc2093efdf56d, type: 3}
@@ -1156,6 +1155,10 @@ PrefabInstance:
     - target: {fileID: 7585893586124742221, guid: 8646465cbd2dd1747961c6ab3210c218, type: 3}
       propertyPath: m_Name
       value: Normal Box Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 7585893586124742221, guid: 8646465cbd2dd1747961c6ab3210c218, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9036029037013166360, guid: 8646465cbd2dd1747961c6ab3210c218, type: 3}
       propertyPath: m_Pivot.x
@@ -1242,11 +1245,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8646465cbd2dd1747961c6ab3210c218, type: 3}
---- !u!1 &5099036187710536842 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7585893586124742221, guid: 8646465cbd2dd1747961c6ab3210c218, type: 3}
-  m_PrefabInstance: {fileID: 3424398606834606791}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5972763675724925919 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9036029037013166360, guid: 8646465cbd2dd1747961c6ab3210c218, type: 3}

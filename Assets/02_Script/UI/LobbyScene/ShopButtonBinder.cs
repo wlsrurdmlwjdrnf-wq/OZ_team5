@@ -5,7 +5,13 @@ public class ShopButtonBinder : MonoBehaviour
 {
     public void OnClickOpenShopPopup()
     {
-        if (UIManager.Instance == null) return;
+        Debug.Log("//상점 팝업 열기 버튼 클릭");
+
+        if (UIManager.Instance == null)
+        {
+            Debug.LogError("//UIManager.Instance 없음");
+            return;
+        }
 
         UIManager.Instance.ShowPopup(EnumData.PopupId.Shop);
     }
