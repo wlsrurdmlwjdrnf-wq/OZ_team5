@@ -36,16 +36,16 @@ public class DataManager : Singleton<DataManager>
         // LogData(); // 테스트용 로그함수
         SkillInfo = new Dictionary<int, string>()
         {
-            { 3000, "화염병" },
-            { 3001, "쉴드" },
-            { 3002, "수호자" },
-            { 3003, "축구공" },
-            { 3004, "드릴" },
-            { 4001, "총알" },
-            { 4002, "닌자스크롤" },
-            { 4003, "석유" },
-            { 4004, "에너지 드링크" },
-            { 4005, "운동화" },
+            { 3000, "화염병 투척" },
+            { 3001, "쉴드 생성" },
+            { 3002, "주위를 회전하는 수호자 소환" },
+            { 3003, "축구공을 던짐" },
+            { 3004, "드릴샷 발사" },
+            { 4001, "공격력 + 10%" },
+            { 4002, "경험치 획득량 + 8%" },
+            { 4003, "골드 획득량 + 8%" },
+            { 4004, "5초마다 최대 HP의 1% 만큼 체력 회복" },
+            { 4005, "이동속도 + 10%" },
             { 10001, "쿠나이" },
             { 10002, "샷건" },
             { 20001, "쿠나이 진화" },
@@ -91,6 +91,7 @@ public class DataManager : Singleton<DataManager>
                     continue;
                 }
                 data.name = Convert.ToString(d["Name"]);
+                data.icon = Resources.Load<Sprite>($"Icons/{data.name}");
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.EquipmentType ety)) ? ety : EnumData.EquipmentType.NONE;
                 data.tier = (d.ContainsKey("Tier") && Enum.TryParse(d["Tier"].ToString(), out EnumData.EquipmentTier etr)) ? etr : EnumData.EquipmentTier.NONE;
                 data.atkMtp = (d.ContainsKey("AtkMtp") && float.TryParse(d["AtkMtp"].ToString(), out float atkmtp)) ? atkmtp : -1.0f;
@@ -172,9 +173,7 @@ public class DataManager : Singleton<DataManager>
                 }
 
                 data.name = Convert.ToString(d["Name"]);
-
-                string itemName = (d.ContainsKey("Name") ? d["Name"].ToString() : "NONE");
-                data.icon = Resources.Load<Sprite>("Icons/" + itemName);
+                data.icon = Resources.Load<Sprite>($"Icons/{data.name}");
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.SkillType skty)) ? skty : EnumData.SkillType.NONE;
                 data.damage = (d.ContainsKey("Damage") && int.TryParse(d["Damage"].ToString(), out int dmg)) ? dmg : -1;
                 data.level = (d.ContainsKey("Level") && int.TryParse(d["Level"].ToString(), out int lv)) ? lv : 1;
@@ -262,6 +261,7 @@ public class DataManager : Singleton<DataManager>
     }
 
     //아이템 아이콘 스프라이트 리턴함수
+    
     public Sprite GetItemIcon(ItemData item)
     {
         if (itemIcon.TryGetValue(item, out Sprite sprite))
@@ -277,6 +277,7 @@ public class DataManager : Singleton<DataManager>
         }
         return null;
     }
+    
     public Sprite GetItemGrade(ItemData item)
     {
         if (itemGrade.TryGetValue(item, out Sprite sprite))
@@ -292,7 +293,7 @@ public class DataManager : Singleton<DataManager>
         }
         return null;
     }
-
+    
     public Sprite GetIngameItemIcon(IngameItemData item)
     {
         if (ingameItemIcon.TryGetValue(item, out Sprite sprite))

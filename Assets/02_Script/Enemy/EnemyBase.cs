@@ -75,7 +75,7 @@ public class EnemyBase : ForTargeting
     }
     protected virtual IEnumerator DieCo()
     {
-        //EnemyManager.Instance.enemyKillCount++;
+        EnemyManager.Instance.enemyKillCount++;
         GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(0.2f);
         ItemBase tmpStone = Managers.Instance.Pool.GetFromPool(expStone);
