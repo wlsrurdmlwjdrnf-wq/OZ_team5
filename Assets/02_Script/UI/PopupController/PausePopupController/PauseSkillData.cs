@@ -7,22 +7,32 @@ public class PauseSkillData : MonoBehaviour
 {
     [SerializeField] Image skillImage;
     [SerializeField] Image[] star;
-    [SerializeField] Sprite garyStar;
+    [SerializeField] Sprite grayStar;
     [SerializeField] Sprite yellowStar;
 
 
     public void SetData(IngameItemData item)
     {
         skillImage.sprite = item.icon;
-        for (int i = 0; i < star.Length; i++)
+        if (item.id != 0)
         {
-            if (i < item.level)
+            for (int i = 0; i < star.Length; i++)
             {
-                star[i].sprite = yellowStar;
+                if (i < item.level)
+                {
+                    star[i].sprite = yellowStar;
+                }
+                else
+                {
+                    star[i].sprite = grayStar;
+                }
             }
-            else
+        }
+        else
+        {
+            for (int i = 0;i < star.Length; i++)
             {
-                star[i].sprite = garyStar;
+                star[i].sprite = grayStar;
             }
         }
     }

@@ -68,17 +68,18 @@ public class PlayerData
             ItemData item = DataManager.Instance.GetItemData(0);
             playerEquipInven[(EnumData.EquipmentType)i] = item;
         }
+        // 플레이어 기본아이템 지급
         for (int i = 0; i < 50; i++)
         {
             if (i == 0)
             {
-                ItemData item = DataManager.Instance.GetItemData(2000);
+                ItemData item = DataManager.Instance.GetItemData(1010);
                 playerGeneralInven.Add(item);
             }
-            else if (i < 4)
+            else if (i < 6)
             {
                 int tempnum = 100 * i;
-                ItemData item = DataManager.Instance.GetItemData(2000 + tempnum);
+                ItemData item = DataManager.Instance.GetItemData(1900 + tempnum);
                 playerGeneralInven.Add(item);
             }
             else
@@ -98,31 +99,6 @@ public class PlayerData
             playerSupportInven.Add(temp);
         }
     }
-    /*
-    public void SetPlayerInven()
-    {
-        for (int i = 0; i < 6; i++)
-        {
-            ItemData item = DataManager.Instance.GetItemData(0);
-            playerEquipInven[(EnumData.EquipmentType)i] = item;
-        }
-        for (int i = 0; i < 50; i++)
-        {
-            ItemData temp = DataManager.Instance.GetItemData(0);
-            playerGeneralInven.Add(temp);
-        }
-        for (int i = 0; i < 6; i++)
-        {
-            IngameItemData temp = DataManager.Instance.GetIngameItemData(0);
-            playerSkillInven.Add(temp);
-        }
-        for (int i = 0; i < 6; i++)
-        {
-            IngameItemData temp = DataManager.Instance.GetIngameItemData(0);
-            playerSupportInven.Add(temp);
-        }
-    }
-    */
     public void SetBaseData(PlayerData other)
     {
         playerAtk = other.playerAtk;
