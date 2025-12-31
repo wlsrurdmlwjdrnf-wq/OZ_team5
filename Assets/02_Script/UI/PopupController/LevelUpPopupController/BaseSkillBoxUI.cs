@@ -12,9 +12,16 @@ public class BaseSkillBoxUI : MonoBehaviour
     [SerializeField] Image[] star;
     [SerializeField] Sprite yellowStar;
     [SerializeField] Sprite grayStar;
+    [SerializeField] Button btn;
+    private IngameItemData _item;
 
+    protected void Start()
+    {
+        btn.onClick.AddListener(OnClickGetSkill);
+    }
     public virtual void SetupSkillUIData(IngameItemData item)
     {
+        _item = item;
         nameText.text = item.name;
         _icon.sprite = item.icon;
         info.text = DataManager.Instance.GetSkillInfo(item.id);
@@ -29,5 +36,9 @@ public class BaseSkillBoxUI : MonoBehaviour
                 star[i].sprite = grayStar;
             }
         }
+    }
+    protected void OnClickGetSkill()
+    {
+        SkillSystem.Instance.SelectSkill(_item.id);
     }
 }

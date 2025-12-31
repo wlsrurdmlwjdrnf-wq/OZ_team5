@@ -224,6 +224,7 @@ MonoBehaviour:
   - {fileID: 5427659123500522031}
   yellowStar: {fileID: 21300000, guid: 547bd992a0c8df9429336ebfa87b8155, type: 3}
   grayStar: {fileID: 21300000, guid: 49f84433a25b1404695c1eebd3039743, type: 3}
+  btn: {fileID: 3732471420363768489}
   cbTab: {fileID: 9009306731529319649}
   cbText: {fileID: 7145432499882307475}
   cbPrefab: {fileID: 4613419430114022979}
