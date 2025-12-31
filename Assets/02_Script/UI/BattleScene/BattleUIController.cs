@@ -110,11 +110,7 @@ public class BattleUIController : MonoBehaviour
     {
         //UI 입력이 버튼에서 직접 들어옴
         //GameManager.GamePause()를 호출해서 이벤트 흐름을 통일
-        if (GameManager.Instance == null)
-        {
-            Debug.LogError("//GameManager.Instance가null임(배틀씬에GameManager오브젝트있는지확인)");
-            return;
-        }
+        if (GameManager.Instance == null || Time.timeScale == 0) return;
         //게임 상태 변경은 GameManager가 담당
         GameManager.Instance.GamePause();
     }

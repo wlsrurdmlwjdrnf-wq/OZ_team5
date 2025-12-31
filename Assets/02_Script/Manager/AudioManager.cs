@@ -42,6 +42,7 @@ public class AudioManager : Singleton<AudioManager>
             var newAudioSource = newGameObject.AddComponent<AudioSource>();
             newAudioSource.clip = audioClip;
             newAudioSource.loop = true;
+            newAudioSource.volume = 0.2f;
             newAudioSource.playOnAwake = false;
             newGameObject.transform.parent = BGMtrs;
 
@@ -67,6 +68,7 @@ public class AudioManager : Singleton<AudioManager>
             var newAudioSource = newGameObject.AddComponent<AudioSource>();
             newAudioSource.clip = audioClip;
             newAudioSource.loop = false;
+            newAudioSource.volume = 0.2f;
             newAudioSource.playOnAwake = false;
             newGameObject.transform.parent = SFXtrs;
 

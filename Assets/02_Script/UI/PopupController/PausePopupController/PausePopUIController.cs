@@ -13,6 +13,8 @@ public class PausePopUIController : MonoBehaviour
 
     private void OnEnable()
     {
+        coinText.text = $"{player.PlayerStat().playerGold}";
+        killText.text = $"{EnemyManager.Instance.enemyKillCount}";
         for (int i = 0; i < 6; i++)
         {
             atkInven[i].SetData(player.PlayerStat().playerSkillInven[i]);
