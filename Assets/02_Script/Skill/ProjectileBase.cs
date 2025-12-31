@@ -34,6 +34,8 @@ public abstract class ProjectileBase : MonoBehaviour
     protected virtual void OnEnable() 
     {
         SceneController.Instance.OnLoadLobbyScene += ReturnPool;
+        GameManager.Instance.OnGameClear += ReturnPool;
+        GameManager.Instance.OnGameOver += ReturnPool;
         spawntime = Time.time;
         if (rb != null)
         {
@@ -43,6 +45,8 @@ public abstract class ProjectileBase : MonoBehaviour
     protected virtual void OnDisable()
     {
         SceneController.Instance.OnLoadLobbyScene -= ReturnPool;
+        GameManager.Instance.OnGameClear -= ReturnPool;
+        GameManager.Instance.OnGameOver -= ReturnPool;
     }
     protected virtual void Update()
     {
