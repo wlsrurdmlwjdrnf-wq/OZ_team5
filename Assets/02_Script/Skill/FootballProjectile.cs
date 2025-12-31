@@ -75,11 +75,11 @@ public class FootballProjectile : ProjectileBase
     {
         if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
         {
-            DamageTextManager.Instance.ShowDamage(damage, enemy.transform.position);
+            DamageTextManager.Instance.ShowDamage(damage + player.PlayerStat().playerAtk, enemy.transform.position);
         }
         if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obj))
         {
-            obj.TakeDamage(damage);
+            obj.TakeDamage(damage + player.PlayerStat().playerAtk);
 
             Vector2 dir = (transform.position - collision.transform.position).normalized;
             shootDirection = Vector2.Reflect(shootDirection, dir).normalized;

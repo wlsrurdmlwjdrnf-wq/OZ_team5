@@ -166,5 +166,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageInterval: 0.5
-  damage: 5
+  damage: 10
   duration: 5

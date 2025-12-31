@@ -70,6 +70,7 @@ public class GameManager : Singleton<GameManager>
     //OnGameOver에 구독된 함수들이 모두 실행됩니다
     public void GameOver()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.GameOverSFX);
         Time.timeScale = 0f;
         isPlay = false;
         OnGameOver?.Invoke();
@@ -79,6 +80,7 @@ public class GameManager : Singleton<GameManager>
     //OnGameClear에 구독된 함수들이 모두 실행됩니다
     public void GameClear()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.GameClearSFX);
         Time.timeScale = 0f;
         isPlay = false;
         OnGameClear?.Invoke();
@@ -106,6 +108,7 @@ public class GameManager : Singleton<GameManager>
     //OnLevelUp에 구독된 함수들이 모두 실행됩니다
     public void LevelUp()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.LevelUpSFX);
         Time.timeScale = 0f;
         isPlay = false;
         OnLevelUp?.Invoke();

@@ -114,22 +114,4 @@ public class Player : MonoBehaviour
             shotgun.gameObject.SetActive(true);
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
-    //    {
-    //        if(input == Vector2.zero)
-    //        {
-    //            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-    //            GetComponent<Collider2D>().isTrigger = false;
-    //        }
-    //        else
-    //        {
-    //            rb.constraints = RigidbodyConstraints2D.None;
-    //            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-    //            GetComponent<Collider2D>().isTrigger = true;
-    //        }
-    //    }
-    //} 플레이어 충돌판정 일단 보류
 }

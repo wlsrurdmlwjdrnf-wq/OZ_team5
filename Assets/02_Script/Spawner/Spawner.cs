@@ -44,10 +44,11 @@ public class Spawner : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        player = GameObject.FindWithTag("Player").transform;
+        player = GameObject.FindWithTag("Player").transform; 
     }
     private void Start()
     {
+        #region 필요한 풀 생성
         if (Managers.Instance.Pool.isCreatePool == false)
         {
             Managers.Instance.Pool.CreatePool(itemBoxPrefab, 50);
@@ -81,6 +82,7 @@ public class Spawner : MonoBehaviour
 
             Managers.Instance.Pool.isCreatePool = true;
         }
+        #endregion 
 
         StartCoroutine(SpawnItemBox());
         StartCoroutine(SpawnEnemy(zombiePrefab, 1f));
@@ -95,19 +97,22 @@ public class Spawner : MonoBehaviour
     private IEnumerator SpawnBoss(EnemyBase boss, float waitBossTime)
     {
         yield return new WaitForSeconds(waitBossTime);
-        //보스경고 필요
+        AudioManager.Instance.PlaySFX(EnumData.SFX.WarningSFX);
         WarningPanel.SetActive(true);
         yield return new WaitForSeconds(4f);
         WarningPanel.SetActive(false);
+
         ClearField(player.position, 50f);
 
-        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 14f, 12f, 1.0f);
+        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 14f, 12f, 1.0f); // 벽몬스터들을 가로,세로,간격을 입력한대로 벽처럼 생성
 
         EnemyBase bossObj = Managers.Instance.Pool.GetFromPool(boss);
-        bossObj.transform.position = RandPos(6f, 5f, 4f) + player.position; 
+        bossObj.transform.position = RandPos(6f, 5f, 4f); 
 
         StopAllCoroutines();
     }
+
+    //필드 정리
     private void ClearField(Vector2 pos, float radius)
     {
         Collider2D[] cols = Physics2D.OverlapCircleAll(pos, radius);
@@ -156,7 +161,7 @@ public class Spawner : MonoBehaviour
         while (true)
         {
             ItemBox itembox = Managers.Instance.Pool.GetFromPool(itemBoxPrefab);
-            itembox.transform.position = RandPos(8f, 8f, 6f) + player.position;
+            itembox.transform.position = RandPos(8f, 8f, 6f);
             yield return new WaitForSeconds(10f);
         }
     }
@@ -166,16 +171,18 @@ public class Spawner : MonoBehaviour
         while (true)
         {
             EnemyBase enemy = Managers.Instance.Pool.GetFromPool(prefab);
-            enemy.transform.position = RandPos(5f, 7f, 4f) + player.position;
+            enemy.transform.position = RandPos(5f, 7f, 4f);
             yield return wfs;
         }
     }
+
+    //플레이어와 최소 거리를 보장하는 랜덤 좌표 리턴
     private Vector3 RandPos(float xPos, float yPos, float minDistance)
     {
         while (true)
         {
-            posX = Random.Range(-xPos, xPos);
-            posY = Random.Range(-yPos, yPos);
+            posX = Random.Range(-xPos, xPos) + player.position.x;
+            posY = Random.Range(-yPos, yPos) + player.position.y;
 
             tmpPos = new Vector3(posX, posY, 0f);
             if (Vector3.Distance(tmpPos, player.position) > minDistance) break;
