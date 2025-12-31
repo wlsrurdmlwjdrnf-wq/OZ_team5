@@ -27,7 +27,7 @@ public class AudioManager : Singleton<AudioManager>
     //Audio 폴더내 BGM 오디오 클립 딕셔너리에 저장
     private void LoadBGMPlayer()
     {
-        for (int i = 0; i < _BGMPlayer.Count; i++)
+        for (int i = 0; i < (int)EnumData.BGM.COUNT; i++)
         {
             var audioName = ((EnumData.BGM)i).ToString();
             var pathStr = $"{AUDIO_PATH}/{audioName}";
@@ -46,14 +46,13 @@ public class AudioManager : Singleton<AudioManager>
             newGameObject.transform.parent = BGMtrs;
 
             _BGMPlayer[(EnumData.BGM)i] = newAudioSource;
-            Debug.Log($"{audioName}");
         }
     }
 
     //Audio 폴더내 SFX 오디오 클립 딕셔너리에 저장
     private void LoadSFXPlayer()
     {
-        for(int i = 0; i < _SFXPlayer.Count; i++)
+        for(int i = 0; i < (int)EnumData.SFX.COUNT; i++)
         {
             var audioName = ((EnumData.SFX)i).ToString();
             var pathStr = $"{AUDIO_PATH}/{audioName}";
@@ -72,7 +71,6 @@ public class AudioManager : Singleton<AudioManager>
             newGameObject.transform.parent = SFXtrs;
 
             _SFXPlayer[(EnumData.SFX)i] = newAudioSource;
-            Debug.Log($"{audioName}");
         }
     }
     // BGM 함수

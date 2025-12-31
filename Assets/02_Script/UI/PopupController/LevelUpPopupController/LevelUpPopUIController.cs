@@ -4,9 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelUpPopUIController : MonoBehaviour
+public class LevelUpPopUIController : UIPopup
 {
-    private SkillBarUI skUI;
+    [SerializeField] SkillBarUI[] skUI;
+    [SerializeField] PlayerSkillPickController skpick;
     //플레이어 레벨 팝업
     [SerializeField] Image expBackground;
     [SerializeField] TextMeshProUGUI playerLv;
@@ -32,14 +33,13 @@ public class LevelUpPopUIController : MonoBehaviour
     private void Start()
     {
         refresh.onClick.AddListener(OnClickRefreshButton);      
-        skUI = GetComponent<SkillBarUI>();
     }
 
     private void OnEnable()
-    {
+    { 
+        refresh.gameObject.SetActive(true);
         ViewPlayerBattleInven();
         ResetUIData();
-        refresh.gameObject.SetActive(true);
     }
 
     private void ResetUIData()
@@ -49,7 +49,7 @@ public class LevelUpPopUIController : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var skillList = GachaManager.Instance.SelectSkill();
+        var skillList = skpick.SelectSkill();
 
         foreach (var data in skillList)
         {
@@ -74,12 +74,13 @@ public class LevelUpPopUIController : MonoBehaviour
 
     private void ViewPlayerBattleInven()
     {
-        skUI.GetPlayerInvenData();
+        skUI[0].GetPlayerInvenData();
+        skUI[1].GetPlayerInvenData();
     }
 
     private void OnClickRefreshButton()
     {
         ResetUIData();
-        refresh.gameObject.SetActive(false);
+        //refresh.gameObject.SetActive(false);
     }
 }

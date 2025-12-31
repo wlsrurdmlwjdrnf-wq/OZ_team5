@@ -162,7 +162,7 @@ public class ItemPopupController : MonoBehaviour
         if (itemIcon != null)
         {
             //DataManager가 아이콘을 Resources에서 뽑아주는 구조가 이미 있음 :contentReference[oaicite:4]{index=4}
-            Sprite icon = DataManager.Instance.GetItemIcon(data);
+            Sprite icon = data.icon;
             itemIcon.sprite = icon;
             itemIcon.enabled = (icon != null);
         }

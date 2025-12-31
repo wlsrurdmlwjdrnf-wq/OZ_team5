@@ -16,10 +16,7 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
     private Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
 
-    //이미지 파일 컨테이너
-    private Dictionary<ItemData, Sprite> itemIcon = new Dictionary<ItemData, Sprite>();
     private Dictionary<ItemData, Sprite> itemGrade = new Dictionary<ItemData, Sprite>();
-    private Dictionary<IngameItemData, Sprite> ingameItemIcon = new Dictionary<IngameItemData, Sprite>();
     private Dictionary<IngameItemData, Sprite> ingameItemGrade = new Dictionary<IngameItemData, Sprite>();  
     
     //뽑기를 위한 티어별 아이템 컨테이너
@@ -259,24 +256,6 @@ public class DataManager : Singleton<DataManager>
         if (itemRarityDic.ContainsKey(tier)) return itemRarityDic[tier];
         return null;
     }
-
-    //아이템 아이콘 스프라이트 리턴함수
-    
-    public Sprite GetItemIcon(ItemData item)
-    {
-        if (itemIcon.TryGetValue(item, out Sprite sprite))
-        {
-            return sprite;
-        }
-
-        Sprite newSprite = Resources.Load<Sprite>($"Icons/{item.name}");
-        if (newSprite != null)
-        {
-            itemIcon.Add(item, newSprite);
-            return newSprite;
-        }
-        return null;
-    }
     
     public Sprite GetItemGrade(ItemData item)
     {
@@ -293,23 +272,6 @@ public class DataManager : Singleton<DataManager>
         }
         return null;
     }
-    
-    public Sprite GetIngameItemIcon(IngameItemData item)
-    {
-        if (ingameItemIcon.TryGetValue(item, out Sprite sprite))
-        {
-            return sprite;
-        }
-
-        Sprite newSprite = Resources.Load<Sprite>($"Icons/{item.name}");
-        if (newSprite != null)
-        {
-            ingameItemIcon.Add(item, newSprite);
-            return newSprite;
-        }
-        return null;
-    }
-
     public Sprite GetIngameItemGrade(IngameItemData item)
     {
         if (ingameItemGrade.TryGetValue(item, out Sprite sprite))
@@ -346,11 +308,14 @@ public class DataManager : Singleton<DataManager>
     }
 
     public IngameItemData[] GetPairList(IngameItemData item)
-    {
+    {       
+        if (item.pairID[0] == -1)
+        {
+            return new IngameItemData[0];
+        }
         IngameItemData[] temp = new IngameItemData[item.pairID.Length];
         for (int i = 0; i < item.pairID.Length; i++)
         {
-            if (item.pairID[i] == -1) return null;
             temp[i] = GetIngameItemData(item.pairID[i]);
         }
         return temp;

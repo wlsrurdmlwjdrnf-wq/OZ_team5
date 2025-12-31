@@ -721,12 +721,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5c5d9201a6caf64c9a02dbf37458eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillImage: {fileID: 0}
+  skillImage: {fileID: 5824757410410790942}
   star:
   - {fileID: 613491967567219738}
   - {fileID: 3618508959085617486}
   - {fileID: 604202652041061205}
   - {fileID: 5699424000138711825}
   - {fileID: 7694818666612299274}
-  garyStar: {fileID: 21300000, guid: 49f84433a25b1404695c1eebd3039743, type: 3}
+  grayStar: {fileID: 21300000, guid: 49f84433a25b1404695c1eebd3039743, type: 3}
   yellowStar: {fileID: 21300000, guid: 547bd992a0c8df9429336ebfa87b8155, type: 3}

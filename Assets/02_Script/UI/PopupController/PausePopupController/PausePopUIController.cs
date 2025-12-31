@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PausePopUIController : MonoBehaviour
 {
-    Player player;
+    [SerializeField] Player player;
     [SerializeField] TextMeshProUGUI coinText;
     [SerializeField] TextMeshProUGUI killText;
     [SerializeField] PauseSkillData[] atkInven;

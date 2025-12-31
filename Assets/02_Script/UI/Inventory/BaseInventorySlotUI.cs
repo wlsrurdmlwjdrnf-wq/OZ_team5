@@ -29,7 +29,7 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
         if (DataManager.Instance.GetItemData(id) != null)
         {
             ItemData temp = DataManager.Instance.GetItemData(id);
-            icon.sprite = DataManager.Instance.GetItemIcon(temp);            
+            icon.sprite = temp.icon;            
             grade.sprite = DataManager.Instance.GetItemGrade(temp);
             icon.enabled = true;
             grade.enabled = true;
@@ -37,7 +37,7 @@ public abstract class BaseInventorySlotUI : MonoBehaviour
         else if (DataManager.Instance.GetIngameItemData(id) != null)
         {
             IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-            icon.sprite = DataManager.Instance.GetIngameItemIcon(temp);
+            icon.sprite = temp.icon;
             icon.enabled = true;
             grade.enabled = true;
         }

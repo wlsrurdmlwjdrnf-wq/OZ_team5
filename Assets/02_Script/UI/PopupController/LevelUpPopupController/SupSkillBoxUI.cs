@@ -16,13 +16,18 @@ public class SupSkillBoxUI : BaseSkillBoxUI
         base.SetupSkillUIData(item);
         IngameItemData[] temp = DataManager.Instance.GetPairList(item);
 
-        if (temp == null ) cbPrefab.SetActive(false);
-
-        for (int i = 0; i < temp.Length; i++)
+        if (temp.Length == 0)
         {
-            GameObject newCbPrefab = Instantiate(cbPrefab, cbTab);
-            Image newCbImage = newCbPrefab.GetComponent<Image>();
-            newCbImage.sprite = DataManager.Instance.GetIngameItemIcon(temp[i]);
+            cbPrefab.SetActive(false);
+        }
+        else
+        {
+            for (int i = 0; i < temp.Length; i++)
+            {
+                GameObject newCbPrefab = Instantiate(cbPrefab, cbTab);
+                Image newCbImage = newCbPrefab.GetComponent<Image>();
+                newCbImage.sprite = temp[i].icon;
+            }
         }
     }
 }

@@ -3,34 +3,34 @@ using UnityEngine;
 using UnityEngine.UI;
 using static EnumData;
 
-//∑Œ∫Ò ¿Œ∫•øÎ æ∆¿Ã≈€ ∆Àæ˜
-//- ΩΩ∑‘ ≈¨∏Ø¿∏∑Œ ø≠∏≤
-//- "¿Â¬¯/«ÿ¡¶"¥¬ ∆Àæ˜ πˆ∆∞ø°º≠∏∏ Ω««‡
+//Î°úÎπÑ Ïù∏Î≤§Ïö© ÏïÑÏù¥ÌÖú ÌåùÏóÖ
+//- Ïä¨Î°Ø ÌÅ¥Î¶≠ÏúºÎ°ú Ïó¥Î¶º
+//- "Ïû•Ï∞©/Ìï¥Ï†ú"Îäî ÌåùÏóÖ Î≤ÑÌäºÏóêÏÑúÎßå Ïã§Ìñâ
 public class InventoryItemPopup : UIPopup
 {
     [Header("Main")]
-    [SerializeField] private Image gradeBackground;     //µÓ±ﬁ πË∞Ê
-    [SerializeField] private Image itemIcon;            //æ∆¿Ã≈€ æ∆¿Ãƒ‹
-    [SerializeField] private TextMeshProUGUI nameText;  //æ∆¿Ã≈€ ¿Ã∏ß
-    [SerializeField] private TextMeshProUGUI gradeText; //µÓ±ﬁ ≈ÿΩ∫∆Æ(√ﬂ∞°«ÿ¥ﬁ∂Û∞Ì «ﬂ¥¯∞≈)
+    [SerializeField] private Image gradeBackground;     //Îì±Í∏â Î∞∞Í≤Ω
+    [SerializeField] private Image itemIcon;            //ÏïÑÏù¥ÌÖú ÏïÑÏù¥ÏΩò
+    [SerializeField] private TextMeshProUGUI nameText;  //ÏïÑÏù¥ÌÖú Ïù¥Î¶Ñ
+    [SerializeField] private TextMeshProUGUI gradeText; //Îì±Í∏â ÌÖçÏä§Ìä∏(Ï∂îÍ∞ÄÌï¥Îã¨ÎùºÍ≥† ÌñàÎçòÍ±∞)
 
     [Header("Stat")]
-    [SerializeField] private Image statIcon;            //∞¯∞›/√º∑¬ æ∆¿Ãƒ‹
-    [SerializeField] private TextMeshProUGUI statText;  //∞¯∞›∑¬/√º∑¬ ¡ı∞° ≈ÿΩ∫∆Æ
+    [SerializeField] private Image statIcon;            //Í≥µÍ≤©/Ï≤¥Î†• ÏïÑÏù¥ÏΩò
+    [SerializeField] private TextMeshProUGUI statText;  //Í≥µÍ≤©Î†•/Ï≤¥Î†• Ï¶ùÍ∞Ä ÌÖçÏä§Ìä∏
 
     [Header("Buttons")]
-    [SerializeField] private Button equipButton;        //¿Â¬¯ πˆ∆∞
-    [SerializeField] private Button unequipButton;      //«ÿ¡¶ πˆ∆∞
-    [SerializeField] private Button closeButton;        //¥›±‚ πˆ∆∞
+    [SerializeField] private Button equipButton;        //Ïû•Ï∞© Î≤ÑÌäº
+    [SerializeField] private Button unequipButton;      //Ìï¥Ï†ú Î≤ÑÌäº
+    [SerializeField] private Button closeButton;        //Îã´Í∏∞ Î≤ÑÌäº
 
     [Header("UI Asset Map")]
-    [SerializeField] private UIAssetMap uiMap;          //µÓ±ﬁ πË∞Ê/Ω∫≈» æ∆¿Ãƒ‹ ∏≈«Œ
+    [SerializeField] private UIAssetMap uiMap;          //Îì±Í∏â Î∞∞Í≤Ω/Ïä§ÌÉØ ÏïÑÏù¥ÏΩò Îß§Ìïë
 
     private int slotIndex = -1;
-    private bool fromGeneral;           //true=∞°πÊΩΩ∑‘(¿Â¬¯),false=¿Â∫ÒΩΩ∑‘(«ÿ¡¶)
+    private bool fromGeneral;           //true=Í∞ÄÎ∞©Ïä¨Î°Ø(Ïû•Ï∞©),false=Ïû•ÎπÑÏä¨Î°Ø(Ìï¥Ï†ú)
     private ItemData cachedData;
 
-    //ø‹∫Œø°º≠ ø≠±‚ ¿¸ø° µ•¿Ã≈Õ/ΩΩ∑‘¡§∫∏∏¶ ≥÷æÓ¡÷¥¬ «‘ºˆ
+    //Ïô∏Î∂ÄÏóêÏÑú Ïó¥Í∏∞ Ï†ÑÏóê Îç∞Ïù¥ÌÑ∞/Ïä¨Î°ØÏ†ïÎ≥¥Î•º ÎÑ£Ïñ¥Ï£ºÎäî Ìï®Ïàò
     public void Bind(ItemData data, int slot, bool isGeneralSlot)
     {
         if (data == null)
@@ -45,7 +45,7 @@ public class InventoryItemPopup : UIPopup
 
         Debug.Log($"//InventoryItemPopup Bind id:{data.id} slot:{slot} fromGeneral:{isGeneralSlot}");
 
-        //¿ÃπÃ ƒ—¡Æ¿÷¿∏∏È ¡ÔΩ√ ∞ªΩ≈(ø¨º” ≈¨∏Ø UX)
+        //Ïù¥ÎØ∏ ÏºúÏ†∏ÏûàÏúºÎ©¥ Ï¶âÏãú Í∞±Ïã†(Ïó∞ÏÜç ÌÅ¥Î¶≠ UX)
         if (gameObject.activeInHierarchy)
         {
             RefreshUI(cachedData);
@@ -55,7 +55,7 @@ public class InventoryItemPopup : UIPopup
 
     protected override void OnInit()
     {
-        //πˆ∆∞¿∫ «—π¯∏∏ ø¨∞·
+        //Î≤ÑÌäºÏùÄ ÌïúÎ≤àÎßå Ïó∞Í≤∞
         if (equipButton != null)
         {
             equipButton.onClick.RemoveAllListeners();
@@ -77,7 +77,7 @@ public class InventoryItemPopup : UIPopup
 
     protected override void OnOpen()
     {
-        //µ•¿Ã≈Õ∞° æ¯¿∏∏È ±◊≥… ¥›æ∆πˆ∏≤
+        //Îç∞Ïù¥ÌÑ∞Í∞Ä ÏóÜÏúºÎ©¥ Í∑∏ÎÉ• Îã´ÏïÑÎ≤ÑÎ¶º
         if (cachedData == null)
         {
             Debug.LogError("//InventoryItemPopup OnOpen cachedData == null");
@@ -85,7 +85,7 @@ public class InventoryItemPopup : UIPopup
             return;
         }
 
-        //∫Û æ∆¿Ã≈€¿Ã∏È ¥›±‚
+        //Îπà ÏïÑÏù¥ÌÖúÏù¥Î©¥ Îã´Í∏∞
         if (cachedData.id == 0 || cachedData.type == EquipmentType.NONE)
         {
             Debug.Log($"//InventoryItemPopup OnOpen empty item id:{cachedData.id} type:{cachedData.type}");
@@ -93,10 +93,10 @@ public class InventoryItemPopup : UIPopup
             return;
         }
 
-        //UI ∏  ø¨∞· ¥©∂Ù¿∫ ±‚¥…ªÛ ƒ°∏Ì¿˚¿Ã¡¯ æ ¡ˆ∏∏, ¿€æ˜ ¡ﬂø°¥¬ ª°∏Æ ¿‚»˜∞‘ ∑Œ±◊
+        //UI Îßµ Ïó∞Í≤∞ ÎàÑÎùΩÏùÄ Í∏∞Îä•ÏÉÅ ÏπòÎ™ÖÏ†ÅÏù¥ÏßÑ ÏïäÏßÄÎßå, ÏûëÏóÖ Ï§ëÏóêÎäî Îπ®Î¶¨ Ïû°ÌûàÍ≤å Î°úÍ∑∏
         if (uiMap == null)
         {
-            Debug.LogWarning("//InventoryItemPopup uiMap == null (µÓ±ﬁ/Ω∫≈» æ∆¿Ãƒ‹¿Ã ∫ÒæÓ∫∏¿œ ºˆ ¿÷¿Ω)");
+            Debug.LogWarning("//InventoryItemPopup uiMap == null (Îì±Í∏â/Ïä§ÌÉØ ÏïÑÏù¥ÏΩòÏù¥ ÎπÑÏñ¥Î≥¥Ïùº Ïàò ÏûàÏùå)");
         }
 
         RefreshUI(cachedData);
@@ -105,19 +105,19 @@ public class InventoryItemPopup : UIPopup
 
     protected override void OnClose()
     {
-        //¥Ÿ¿Ω ø¿«¬ø°º≠ πˆ∆∞ ∏µÂ ≤ø¿Ã¥¬ ∞… πÊ¡ˆ
+        //Îã§Ïùå Ïò§ÌîàÏóêÏÑú Î≤ÑÌäº Î™®Îìú Íº¨Ïù¥Îäî Í±∏ Î∞©ÏßÄ
         slotIndex = -1;
         fromGeneral = false;
 
-        //µ•¿Ã≈Õ∏¶ null∑Œ ¡ˆøÏ∏È, Open¿Ã »£√‚µ«¡ˆ æ ¥¬ ƒ…¿ÃΩ∫ø°º≠
-        //Bind∏∏ πŸ≤Óæ˙¥¬µ• UI∞° ∞ªΩ≈µ«¡ˆ æ ¥¬ ªÛ»≤¿Ã ª˝±Ê ºˆ ¿÷¿Ω
+        //Îç∞Ïù¥ÌÑ∞Î•º nullÎ°ú ÏßÄÏö∞Î©¥, OpenÏù¥ Ìò∏Ï∂úÎêòÏßÄ ÏïäÎäî ÏºÄÏù¥Ïä§ÏóêÏÑú
+        //BindÎßå Î∞îÎÄåÏóàÎäîÎç∞ UIÍ∞Ä Í∞±Ïã†ÎêòÏßÄ ÏïäÎäî ÏÉÅÌô©Ïù¥ ÏÉùÍ∏∏ Ïàò ÏûàÏùå
         //cachedData = null;
 
-        //ø¯«œ∏È UI∏∏ ∫Òøˆº≠ ¿‹ªÛ πÊ¡ˆ
+        //ÏõêÌïòÎ©¥ UIÎßå ÎπÑÏõåÏÑú ÏûîÏÉÅ Î∞©ÏßÄ
         //ClearUI();
     }
 
-    //∞°πÊΩΩ∑‘¿Ã∏È ¿Â¬¯ πˆ∆∞∏∏, ¿Â∫ÒΩΩ∑‘¿Ã∏È «ÿ¡¶ πˆ∆∞∏∏
+    //Í∞ÄÎ∞©Ïä¨Î°ØÏù¥Î©¥ Ïû•Ï∞© Î≤ÑÌäºÎßå, Ïû•ÎπÑÏä¨Î°ØÏù¥Î©¥ Ìï¥Ï†ú Î≤ÑÌäºÎßå
     private void ApplyButtonMode()
     {
         if (equipButton != null)
@@ -161,7 +161,7 @@ public class InventoryItemPopup : UIPopup
             }
             else
             {
-                //æ∆¿Ãƒ‹¿∫ DataManager ≈Î«ÿ ∞°¡Æø¿¥¬∞‘ æ»¿¸(«¡∑Œ¡ß∆Æ ±∏¡∂ªÛ)
+                //ÏïÑÏù¥ÏΩòÏùÄ DataManager ÌÜµÌï¥ Í∞ÄÏ†∏Ïò§ÎäîÍ≤å ÏïàÏ†Ñ(ÌîÑÎ°úÏ†ùÌä∏ Íµ¨Ï°∞ÏÉÅ)
                 Sprite icon = DataManager.Instance.GetItemIcon(data);
                 itemIcon.sprite = icon;
                 itemIcon.enabled = (icon != null);
@@ -184,12 +184,12 @@ public class InventoryItemPopup : UIPopup
                 string percent = data.atkPercent != 0 ? $"+{data.atkPercent}%" : "";
                 string mtp = data.atkMtp > 0f ? $"x{data.atkMtp:0.##}" : "";
                 string value = (percent == "" && mtp == "") ? "-" : $"{percent} {mtp}".Trim();
-                statText.text = $"∞¯∞›∑¬ {value}";
+                statText.text = $"Í≥µÍ≤©Î†• {value}";
             }
             else
             {
                 string value = data.hpPercent != 0 ? $"+{data.hpPercent}%" : "-";
-                statText.text = $"√º∑¬ {value}";
+                statText.text = $"Ï≤¥Î†• {value}";
             }
         }
     }
@@ -210,7 +210,7 @@ public class InventoryItemPopup : UIPopup
 
         Debug.Log($"//InventoryItemPopup Equip slot:{slotIndex} id:{cachedData?.id}");
 
-        //∞°πÊ ΩΩ∑‘ ¿Œµ¶Ω∫∑Œ ¿Â¬¯
+        //Í∞ÄÎ∞© Ïä¨Î°Ø Ïù∏Îç±Ïä§Î°ú Ïû•Ï∞©
         PlayerManager.Instance.EquipItem(slotIndex);
 
         Close();
@@ -224,7 +224,7 @@ public class InventoryItemPopup : UIPopup
 
         Debug.Log($"//InventoryItemPopup UnEquip slot:{slotIndex} id:{cachedData?.id}");
 
-        //¿Â∫Ò ΩΩ∑‘ ¿Œµ¶Ω∫∑Œ «ÿ¡¶(0~5)
+        //Ïû•ÎπÑ Ïä¨Î°Ø Ïù∏Îç±Ïä§Î°ú Ìï¥Ï†ú(0~5)
         PlayerManager.Instance.UnEquipItem(slotIndex);
 
         Close();

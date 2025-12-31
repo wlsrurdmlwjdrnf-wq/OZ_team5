@@ -7,20 +7,27 @@ using UnityEngine.UI;
 public class BaseSkillBoxUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] Image icon;
+    [SerializeField] Image _icon;
     [SerializeField] TextMeshProUGUI info;
     [SerializeField] Image[] star;
     [SerializeField] Sprite yellowStar;
     [SerializeField] Sprite grayStar;
+    [SerializeField] Button btn;
+    private IngameItemData _item;
 
+    protected void Start()
+    {
+        btn.onClick.AddListener(OnClickGetSkill);
+    }
     public virtual void SetupSkillUIData(IngameItemData item)
     {
+        _item = item;
         nameText.text = item.name;
-        icon.sprite = item.icon;
+        _icon.sprite = item.icon;
         info.text = DataManager.Instance.GetSkillInfo(item.id);
         for (int i = 0; i < star.Length; i++)
         {
-            if ( i < item.level + 1)
+            if ( i < item.level)
             {
                 star[i].sprite = yellowStar;
             }
@@ -29,5 +36,9 @@ public class BaseSkillBoxUI : MonoBehaviour
                 star[i].sprite = grayStar;
             }
         }
+    }
+    protected void OnClickGetSkill()
+    {
+        SkillSystem.Instance.SelectSkill(_item.id);
     }
 }
