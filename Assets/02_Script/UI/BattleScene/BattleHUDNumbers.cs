@@ -17,7 +17,6 @@ public class BattleHUDNumbers : MonoBehaviour
     [SerializeField] private Slider expSlider; //경험치 슬라이더(0~1)
 
     private Player player;          //씬에 존재하는 플레이어 참조
-    private PlayerData playerData;  //플레이어 스탯 데이터
     private float bestSurvivalTime; //이번 플레이 최고 생존 시간 기록용
     private int killCount;          //이번 플레이 동안의 적 처치 수
 
@@ -25,12 +24,6 @@ public class BattleHUDNumbers : MonoBehaviour
     {
         //씬에 Player는 하나이므로 1회 탐색
         player = FindObjectOfType<Player>();
-
-        if (player != null)
-        {
-            playerData = player.PlayerStat();
-        }
-
         //경험치 슬라이더 기본값 설정
         if (expSlider != null)
         {
@@ -45,11 +38,15 @@ public class BattleHUDNumbers : MonoBehaviour
         //HUD가 활성화될 때 전체 UI를 한 번 갱신
         RefreshAll();
     }
-
+    private void OnDestroy()
+    {
+        //게임매니저 플레이 타임 리셋
+    }
     private void Update()
     {
         //생존 시간은 매 프레임 갱신
-        UpdateTime();
+        //UpdateTime();
+        RefreshAll();
     }
 
     //외부에서 한 번에 모든 HUD 값을 갱신하고 싶을 때 호출
@@ -68,30 +65,19 @@ public class BattleHUDNumbers : MonoBehaviour
         {
             return;
         }
-
-        if (playerData == null)
-        {
-            return;
-        }
-
-        levelText.text = $"{playerData.playerLevel}";
+        levelText.text = $"{player.PlayerStat().playerLevel}";
     }
 
     //경험치 슬라이더 갱신
     public void UpdateExp()
     {
-        if (playerData == null)
-        {
-            return;
-        }
-
         if (expSlider == null)
         {
             return;
         }
 
-        float curExp = playerData.playerCurExp;
-        float maxExp = playerData.playerMaxExp;
+        float curExp = player.PlayerStat().playerCurExp;
+        float maxExp = player.PlayerStat().playerMaxExp;
 
         if (maxExp <= 0f)
         {
@@ -105,14 +91,11 @@ public class BattleHUDNumbers : MonoBehaviour
     //코인과 처치 수는 항상 같이 표시되므로 한 함수에서 갱신
     public void UpdateGoldAndKill()
     {
-        if (goldText != null && playerData != null)
-        {
-            goldText.text = $"{(int)playerData.playerGold}";
-        }
+        goldText.text = $"{player.PlayerStat().playerGold}";
 
         if (killText != null)
         {
-            killText.text = $"{killCount}";
+            killText.text = $"{EnemyManager.Instance.enemyKillCount}";
         }
     }
 

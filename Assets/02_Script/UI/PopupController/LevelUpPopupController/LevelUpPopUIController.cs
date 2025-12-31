@@ -8,9 +8,6 @@ public class LevelUpPopUIController : UIPopup
 {
     [SerializeField] SkillBarUI[] skUI;
     [SerializeField] PlayerSkillPickController skpick;
-    //플레이어 레벨 팝업
-    [SerializeField] Image expBackground;
-    [SerializeField] TextMeshProUGUI playerLv;
 
     //스킬선택 팝업
     [SerializeField] Image stringBackground;
