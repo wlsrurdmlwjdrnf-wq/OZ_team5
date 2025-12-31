@@ -1142,6 +1142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efd5fd914a75abb4895f18b03a2e2ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyKillCount: 0
   enemies: []
 --- !u!114 &1760147567 stripped
 MonoBehaviour:
@@ -1490,7 +1491,7 @@ PrefabInstance:
       objectReference: {fileID: 274465887}
     - target: {fileID: 5996973330761822324, guid: ac9f8eff9e5553c47a62cc9546cac444, type: 3}
       propertyPath: testNumber
-      value: 20001
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 5996973330761822324, guid: ac9f8eff9e5553c47a62cc9546cac444, type: 3}
       propertyPath: oilTicketSS
