@@ -6,6 +6,7 @@ using static EnumData;
 //로비 인벤용 아이템 팝업
 //- 슬롯 클릭으로 열림
 //- "장착/해제"는 팝업 버튼에서만 실행
+//- 닫을 때는 반드시 UIManager를 통해 닫아서 스택을 정리함
 public class InventoryItemPopup : UIPopup
 {
     [Header("Main")]
@@ -30,7 +31,8 @@ public class InventoryItemPopup : UIPopup
     private bool fromGeneral;           //true=가방슬롯(장착),false=장비슬롯(해제)
     private ItemData cachedData;
 
-    //외부에서 열기 전에 데이터/슬롯정보를 넣어주는 함수
+    //외부에서 팝업을 열기 전에 반드시 호출
+    //데이터와 슬롯 정보를 캐싱
     public void Bind(ItemData data, int slot, bool isGeneralSlot)
     {
         if (data == null)
@@ -45,7 +47,7 @@ public class InventoryItemPopup : UIPopup
 
         Debug.Log($"//InventoryItemPopup Bind id:{data.id} slot:{slot} fromGeneral:{isGeneralSlot}");
 
-        //이미 켜져있으면 즉시 갱신(연속 클릭 UX)
+        //이미 열려있는 상태라면 즉시 UI만 갱신
         if (gameObject.activeInHierarchy)
         {
             RefreshUI(cachedData);
@@ -53,9 +55,9 @@ public class InventoryItemPopup : UIPopup
         }
     }
 
+    //최초 1회 초기화
     protected override void OnInit()
     {
-        //버튼은 한번만 연결
         if (equipButton != null)
         {
             equipButton.onClick.RemoveAllListeners();
@@ -75,49 +77,50 @@ public class InventoryItemPopup : UIPopup
         }
     }
 
+    //팝업이 열릴 때마다 호출
     protected override void OnOpen()
     {
         //데이터가 없으면 그냥 닫아버림
         if (cachedData == null)
         {
-            Debug.LogError("//InventoryItemPopup OnOpen cachedData == null");
-            Close();
-            return;
-        }
+            if (cachedData == null)
+            {
+                Debug.LogError("//InventoryItemPopup OnOpen cachedData == null");
+                CloseSelf();
+                return;
+            }
 
-        //빈 아이템이면 닫기
-        if (cachedData.id == 0 || cachedData.type == EquipmentType.NONE)
-        {
-            Debug.Log($"//InventoryItemPopup OnOpen empty item id:{cachedData.id} type:{cachedData.type}");
-            Close();
-            return;
-        }
+            //빈 아이템이면 닫기
+            if (cachedData.id == 0 || cachedData.type == EquipmentType.NONE)
+            {
+                Debug.Log($"//InventoryItemPopup OnOpen invalid item id:{cachedData.id}");
+                CloseSelf();
+                return;
+            }
 
-        //UI 맵 연결 누락은 기능상 치명적이진 않지만, 작업 중에는 빨리 잡히게 로그
-        if (uiMap == null)
-        {
-            Debug.LogWarning("//InventoryItemPopup uiMap == null (등급/스탯 아이콘이 비어보일 수 있음)");
-        }
+            //UI 맵 연결 누락은 기능상 치명적이진 않지만, 작업 중에는 빨리 잡히게 로그
+            if (uiMap == null)
+            {
+                Debug.LogWarning("//InventoryItemPopup uiMap == null");
+            }
 
-        RefreshUI(cachedData);
-        ApplyButtonMode();
+            RefreshUI(cachedData);
+            ApplyButtonMode();
+        }
     }
 
+    //팝업이 닫힐 때 호출
     protected override void OnClose()
     {
-        //다음 오픈에서 버튼 모드 꼬이는 걸 방지
+        //다음 오픈에서 상태 꼬임 방지
         slotIndex = -1;
         fromGeneral = false;
 
-        //데이터를 null로 지우면, Open이 호출되지 않는 케이스에서
-        //Bind만 바뀌었는데 UI가 갱신되지 않는 상황이 생길 수 있음
-        //cachedData = null;
-
-        //원하면 UI만 비워서 잔상 방지
-        //ClearUI();
+        //cachedData는 유지
+        //Bind만 갱신되고 Open이 다시 안 불리는 케이스 방어용
     }
 
-    //가방슬롯이면 장착 버튼만, 장비슬롯이면 해제 버튼만
+    //가방 슬롯이면 장착 버튼만, 장비 슬롯이면 해제 버튼만 표시
     private void ApplyButtonMode()
     {
         if (equipButton != null)
@@ -131,14 +134,14 @@ public class InventoryItemPopup : UIPopup
         }
     }
 
+    //아이템 정보 UI 갱신
     private void RefreshUI(ItemData data)
     {
-        if (data == null) return;
-
         if (nameText != null)
         {
             nameText.text = data.name;
         }
+
         if (gradeText != null)
         {
             gradeText.text = data.tier.ToString();
@@ -200,6 +203,17 @@ public class InventoryItemPopup : UIPopup
         return StatKind.Hp;
     }
 
+    private void CloseSelf()
+    {
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ClosePopup(PopupId.Item);
+            return;
+        }
+
+        Close();
+    }
+
     private void OnClickEquip()
     {
         if (PlayerManager.Instance == null) return;
@@ -208,10 +222,9 @@ public class InventoryItemPopup : UIPopup
 
         Debug.Log($"//InventoryItemPopup Equip slot:{slotIndex} id:{cachedData?.id}");
 
-        //가방 슬롯 인덱스로 장착
         PlayerManager.Instance.EquipItem(slotIndex);
 
-        Close();
+        CloseSelf();
     }
 
     private void OnClickUnequip()
@@ -222,14 +235,14 @@ public class InventoryItemPopup : UIPopup
 
         Debug.Log($"//InventoryItemPopup UnEquip slot:{slotIndex} id:{cachedData?.id}");
 
-        //장비 슬롯 인덱스로 해제(0~5)
         PlayerManager.Instance.UnEquipItem(slotIndex);
 
-        Close();
+        CloseSelf();
     }
 
     private void OnClickClose()
     {
-        Close();
+        Debug.Log("//InventoryItemPopup Click Close");
+        CloseSelf();
     }
 }
