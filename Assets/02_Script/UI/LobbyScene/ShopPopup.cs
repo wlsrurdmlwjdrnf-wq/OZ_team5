@@ -190,12 +190,6 @@ public class ShopPopup : UIPopup
 
         Debug.Log($"//Draw Item: {item.name} ({item.tier})");
 
-        //플레이어 인벤토리에 아이템 추가
-        if (PlayerManager.Instance != null)
-        {
-            PlayerManager.Instance.AddItemInven(item);
-        }
-
         //아이콘 및 등급 UI 갱신
         if (DataManager.Instance != null)
         {

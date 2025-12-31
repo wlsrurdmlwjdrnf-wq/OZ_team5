@@ -31,6 +31,28 @@ public class LobbyTopHUD : MonoBehaviour
         UpdateUIRefresh();
     }
 
+    //에너지 선차감
+    public bool TrySpendEnergy(int cost)
+    {
+        if (energy < cost)
+        {
+            Debug.Log($"//LobbyTopHUD Not enough energy cur:{energy} cost:{cost}");
+            return false;
+        }
+
+        energy -= cost;
+
+        if (energy < 0)
+        {
+            energy = 0;
+        }
+
+        Debug.Log($"//LobbyTopHUD SpendEnergy cost:{cost} remain:{energy}");
+        RefreshUI();
+        return true;
+    }
+
+
     private void UpdateEnergy()
     {
         if (energy >= MaxEnergy)
@@ -86,7 +108,7 @@ public class LobbyTopHUD : MonoBehaviour
 
             if (playerLevelText != null)
             {
-                playerLevelText.text = $"Lv.{playerData.playerLevel}";
+                playerLevelText.text = $"{playerData.playerLevel}";
             }
 
             if (playerNameText != null)
