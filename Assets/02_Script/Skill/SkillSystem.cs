@@ -14,7 +14,7 @@ public class SkillSystem : Singleton<SkillSystem>
     [SerializeField] private SkillBase football;
     [SerializeField] private SkillBase drillShot;
     [SerializeField] private SkillBase ghostKunai;
-    [SerializeField] private SkillBase gatlingGun;
+    [SerializeField] private GameObject gatlingGun;
 
     [SerializeField] private SupportSkillBase bulletSS;
     [SerializeField] private SupportSkillBase ninjaScrollSS;
@@ -25,6 +25,7 @@ public class SkillSystem : Singleton<SkillSystem>
     [SerializeField] int testNumber;
 
     private int invenItemCount = 1;
+    private int invenSupportItemCount = 0;
     protected override void Init()
     {
         _IsDestroyOnLoad = false;
@@ -181,10 +182,16 @@ public class SkillSystem : Singleton<SkillSystem>
     {
         IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
 
-        if (id > 4000 && id < 4006) player.PlayerStat().playerSupportInven[invenItemCount] = temp;
-        else player.PlayerStat().playerSkillInven[invenItemCount] = temp;
-
-        invenItemCount++;
+        if (id > 4000 && id < 4006)
+        {
+            player.PlayerStat().playerSupportInven[invenSupportItemCount] = temp;
+            invenSupportItemCount++;
+        }
+        else
+        {
+            player.PlayerStat().playerSkillInven[invenItemCount] = temp;
+            invenItemCount++;
+        }
     }
     private void LevelUpIngameItem(int id)
     {
