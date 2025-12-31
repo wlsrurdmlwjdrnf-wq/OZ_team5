@@ -23,6 +23,8 @@ public class SkillSystem : Singleton<SkillSystem>
     [SerializeField] private SupportSkillBase sneakersSS;
 
     [SerializeField] int testNumber;
+
+    private int invenItemCount = 1;
     protected override void Init()
     {
         _IsDestroyOnLoad = false;
@@ -38,67 +40,69 @@ public class SkillSystem : Singleton<SkillSystem>
                 if (!fireBomb.gameObject.activeSelf)
                 {
                     fireBomb.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSkillInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     fireBomb.SkillLevelUp();
+                    LevelUpIngameItem(id);            
                 }
                 break;
             case 3001:
                 if (!barrier.gameObject.activeSelf)
                 {
                     barrier.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSkillInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     barrier.SkillLevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
             case 3002:
                 if (!defender.gameObject.activeSelf)
                 {
                     defender.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSkillInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     defender.SkillLevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
             case 3003:
                 if (!football.gameObject.activeSelf)
                 {
                     football.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSkillInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     football.SkillLevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
             case 3004:
                 if (!drillShot.gameObject.activeSelf)
                 {
                     drillShot.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSkillInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     drillShot.SkillLevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
             case 10001:
                 kunai.SkillLevelUp();
+                LevelUpIngameItem(id);
                 break;
             case 10002:
                 shotgun.SkillLevelUp();
+                LevelUpIngameItem(id);
                 break;
             case 20001:
                 kunai.gameObject.SetActive(false);
@@ -110,66 +114,89 @@ public class SkillSystem : Singleton<SkillSystem>
                 gatlingGun.gameObject.SetActive(true);
                 player.PlayerStat().playerSkillInven[0] = DataManager.Instance.GetIngameItemData(id);
                 break;
+
             case 4001:
                 if (!bulletSS.gameObject.activeSelf)
                 {
                     bulletSS.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSupportInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     bulletSS.LevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
             case 4002:
                 if (!ninjaScrollSS.gameObject.activeSelf)
                 {
                     ninjaScrollSS.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSupportInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     ninjaScrollSS.LevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
             case 4003:
                 if (!oilTicketSS.gameObject.activeSelf)
                 {
                     oilTicketSS.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSupportInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     oilTicketSS.LevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
             case 4004:
                 if (!energyDrinkSS.gameObject.activeSelf)
                 {
                     energyDrinkSS.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSupportInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     energyDrinkSS.LevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
             case 4005:
                 if (!sneakersSS.gameObject.activeSelf)
                 {
                     sneakersSS.gameObject.SetActive(true);
-                    IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
-                    player.PlayerStat().playerSupportInven.Add(temp);
+                    AddIngameItem(id);
                 }
                 else
                 {
                     sneakersSS.LevelUp();
+                    LevelUpIngameItem(id);
                 }
                 break;
+        }
+    }
+    private void AddIngameItem(int id)
+    {
+        IngameItemData temp = DataManager.Instance.GetIngameItemData(id);
+
+        if (id > 4000 && id < 4006) player.PlayerStat().playerSupportInven[invenItemCount] = temp;
+        else player.PlayerStat().playerSkillInven[invenItemCount] = temp;
+
+        invenItemCount++;
+    }
+    private void LevelUpIngameItem(int id)
+    {
+        if (id > 4000 && id < 4006)
+        {
+            int index = player.PlayerStat().playerSupportInven.FindIndex(x => x.id == id);
+            player.PlayerStat().playerSupportInven[index].level++;
+        }
+        else
+        {
+            int index = player.PlayerStat().playerSkillInven.FindIndex(x => x.id == id);
+            player.PlayerStat().playerSkillInven[index].level++;
         }
     }
 
@@ -177,5 +204,6 @@ public class SkillSystem : Singleton<SkillSystem>
     public void OnSkillClick()
     {
         SelectSkill(testNumber);
+        Debug.Log($"{player.PlayerStat().playerSkillInven[1].name}");
     }
 }

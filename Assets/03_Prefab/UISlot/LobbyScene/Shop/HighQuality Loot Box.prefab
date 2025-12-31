@@ -1077,9 +1077,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8697679279089803120}
-        m_TargetAssemblyTypeName: ShopButtonBinder, Assembly-CSharp
-        m_MethodName: OnClickOpenShopPopup
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ShopUIController, Assembly-CSharp
+        m_MethodName: OnClickHighBox
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1101,7 +1101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aba1c2d235ed2b4886fc89dbc4a2e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopPopup: {fileID: 0}
 --- !u!1 &9146710587413680515
 GameObject:
   m_ObjectHideFlags: 0

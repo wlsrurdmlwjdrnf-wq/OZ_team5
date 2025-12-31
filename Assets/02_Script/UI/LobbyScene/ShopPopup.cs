@@ -1,62 +1,61 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-//·Îºñ »óÁ¡ ÆË¾÷
-//- PopupId.Shop À¸·Î UIManager°¡ ¿­°í ´İÀ½
-//- ¹öÆ° 2°³(±ºÁö¿ø/Áö±¸¹æÀ§) Áß ´©¸¥ Å¸ÀÔ¿¡ ¸Â´Â ¹Ú½º ÇÁ¸®ÆÕÀ» º¸¿©ÁÜ
-//- »Ì±â °á°ú(¾ÆÀÌÅÛ ¾ÆÀÌÄÜ/µî±Ş ¾ÆÀÌÄÜ/ÀÌ¸§)¸¦ Ç¥½Ã
-//- ÆË¾÷ÀÌ ¿­¸° µÚ 2ÃÊ°¡ Áö³ª¸é È­¸é Å¬¸¯À¸·Î ´İÀ» ¼ö ÀÖÀ½
+//ë¡œë¹„ ìƒì  íŒì—…
+//- PopupId.Shop ìœ¼ë¡œ UIManagerê°€ ì—´ê³  ë‹«ìŒ
+//- ë²„íŠ¼ 2ê°œ(êµ°ì§€ì›/ì§€êµ¬ë°©ìœ„) ì¤‘ ëˆ„ë¥¸ íƒ€ì…ì— ë§ëŠ” ë°•ìŠ¤ í”„ë¦¬íŒ¹ì„ ë³´ì—¬ì¤Œ
+//- ë½‘ê¸° ê²°ê³¼(ì•„ì´í…œ ì•„ì´ì½˜/ë“±ê¸‰ ì•„ì´ì½˜/ì´ë¦„)ë¥¼ í‘œì‹œ
+//- íŒì—…ì´ ì—´ë¦° ë’¤ 2ì´ˆê°€ ì§€ë‚˜ë©´ í™”ë©´ í´ë¦­ìœ¼ë¡œ ë‹«ì„ ìˆ˜ ìˆìŒ
 public class ShopPopup : UIPopup
 {
-    [Header("Box Prefabs (ÇÁ¸®ÆÕ 2°³ ¿¬°á)")]
-    [SerializeField] private GameObject armyBoxPrefab;      //±ºÁö¿ø»óÀÚ ¹Ú½º ÇÁ¸®ÆÕ
-    [SerializeField] private GameObject earthBoxPrefab;     //Áö±¸¹æÀ§ º¸±ŞÇ° ¹Ú½º ÇÁ¸®ÆÕ
+    [Header("Box Prefabs (í”„ë¦¬íŒ¹ 2ê°œ ì—°ê²°)")]
+    [SerializeField] private GameObject normalBoxPrefab;    //ì¼ë°˜ ìƒì í”„ë¦¬íŒ¹(êµ°ì§€ì› ìƒì)
+    [SerializeField] private GameObject highBoxPrefab;      //ê³ ê¸‰ ìƒì í”„ë¦¬íŒ¹(ì§€êµ¬ë°©ìœ„ ë³´ê¸‰í’ˆ)
 
-    [Header("Box Spawn Root (Å« ¹Ú½º°¡ Ç¥½ÃµÉ ÀÚ¸®)")]
-    [SerializeField] private Transform boxSpawnRoot;        //ÇÁ¸®ÆÕÀ» InstantiateÇÒ ºÎ¸ğ(Panel ¾È ºó ¿ÀºêÁ§Æ® ÃßÃµ)
+    [Header("Box Spawn Root (í° ë°•ìŠ¤ê°€ í‘œì‹œë  ìë¦¬)")]
+    [SerializeField] private Transform boxSpawnRoot;        //í”„ë¦¬íŒ¹ì´ ë¶™ì„ ë¶€ëª¨(ë¹ˆ ì˜¤ë¸Œì íŠ¸ ì¶”ì²œ)
 
     [Header("Draw Result UI")]
-    [SerializeField] private Image itemIconImage;           //»ÌÀº ¾ÆÀÌÅÛ ÀÌ¹ÌÁö
-    [SerializeField] private Image gradeIconImage;          //»ÌÀº µî±Ş ÀÌ¹ÌÁö
-    [SerializeField] private TextMeshProUGUI itemNameText;  //»ÌÀº ¾ÆÀÌÅÛ ÀÌ¸§
-    [SerializeField] private TextMeshProUGUI gradeText;     //»ÌÀº ¾ÆÀÌÅÛ µî±Ş ÅØ½ºÆ®
+    [SerializeField] private Image itemIconImage;           //ë½‘ì€ ì•„ì´í…œ ì´ë¯¸ì§€
+    [SerializeField] private Image gradeIconImage;          //ë½‘ì€ ë“±ê¸‰ ì´ë¯¸ì§€
+    [SerializeField] private TextMeshProUGUI itemNameText;  //ë½‘ì€ ì•„ì´í…œ ì´ë¦„
+    [SerializeField] private TextMeshProUGUI gradeText;     //ë½‘ì€ ì•„ì´í…œ ë“±ê¸‰ í…ìŠ¤íŠ¸
 
     [Header("Close Rule")]
-    [SerializeField] private float closeDelay = 2f;         //2ÃÊ ÈÄ ´İ±â Çã¿ë
+    [SerializeField] private float closeDelay = 1f;         //ì´ ì‹œê°„ ì´í›„ë¶€í„° ë°°ê²½ í´ë¦­ìœ¼ë¡œ ë‹«ê¸° í—ˆìš©
 
-    private bool canClose;
-    private Coroutine delayCo;
-    private GameObject currentBox;
+    private EnumData.BoxType selectedBoxType = EnumData.BoxType.Normal; //ì„ íƒëœ ìƒì íƒ€ì…
 
-    //ÆË¾÷ÀÌ ¿­¸± ¶§¸¶´Ù È£Ãâ
-    protected override void OnOpen()
+    private bool canClose;          //ë‹«ê¸° ê°€ëŠ¥ ì—¬ë¶€(ë”œë ˆì´ ì´í›„ true)
+    private Coroutine delayCo;      //ë‹«ê¸° ë”œë ˆì´ ì½”ë£¨í‹´
+    private GameObject currentBox;  //í˜„ì¬ í‘œì‹œ ì¤‘ì¸ ìƒì í”„ë¦¬íŒ¹
+    private bool subscribed;        //ê°€ì±  ì´ë²¤íŠ¸ êµ¬ë… ì—¬ë¶€
+
+    //ShopUIControllerì—ì„œ í˜¸ì¶œ
+    //- ì–´ë–¤ ìƒìë¥¼ ë³´ì—¬ì¤„ì§€ ë¯¸ë¦¬ ì„¸íŒ…
+    public void ShowSelectedBox(EnumData.BoxType type)
     {
-        //¿­¸± ¶§¸¶´Ù ´İ±â µô·¹ÀÌ ÃÊ±âÈ­
-        canClose = false;
-
-        if (delayCo != null)
-        {
-            StopCoroutine(delayCo);
-        }
-        delayCo = StartCoroutine(CoEnableClose());
-
-        //ÆË¾÷À» ¿­¸é ±âº» ¹Ú½º(¿øÇÏ¸é) ÇÏ³ª º¸¿©ÁÖ±â
-        ShowBox(armyBoxPrefab);
-
-        //ÀÌº¥Æ® Áßº¹ ±¸µ¶ ¹æÁö
-        if (GachaManager.Instance == null) return;
-        GachaManager.Instance.OnDrawItem -= HandleDrawItem;
-        GachaManager.Instance.OnDrawItem += HandleDrawItem;
-
-        //ÀÌÀü¿¡ °á°ú°¡ ³²¾ÆÀÖÀ» ¼ö ÀÖÀ¸´Ï ±âº» ÃÊ±âÈ­
-        ClearResultUI();
+        selectedBoxType = type;
+        Debug.Log($"//ShopPopup SelectedBoxType = {type}");
     }
 
-    //ÆË¾÷ÀÌ ´İÈú ¶§¸¶´Ù È£Ãâ
+    //íŒì—…ì´ ì—´ë¦´ ë•Œ í˜¸ì¶œ(UIManager.ShowPopup)
+    protected override void OnOpen()
+    {
+        Debug.Log("//ShopPopup Open");
+
+        SafeSetup();
+        ShowBox();
+    }
+
+    //íŒì—…ì´ ë‹«í ë•Œ í˜¸ì¶œ(UIManager.ClosePopup)
     protected override void OnClose()
     {
+        Debug.Log("//ShopPopup Close");
+
         canClose = false;
 
         if (delayCo != null)
@@ -65,110 +64,167 @@ public class ShopPopup : UIPopup
             delayCo = null;
         }
 
-        //°¡Ã­ ÀÌº¥Æ® ÇØÁ¦(´İÇû´Âµ¥µµ °á°ú°¡ µé¾î¿À¸é UI°¡ ²¿ÀÏ ¼ö ÀÖÀ½)
-        if (GachaManager.Instance != null)
-        {
-            GachaManager.Instance.OnDrawItem -= HandleDrawItem;
-        }
-
-        //¹Ú½º ÇÁ¸®ÆÕ ÀÎ½ºÅÏ½º Á¤¸®(´ÙÀ½¿¡ ¿­¾úÀ» ¶§ ±ò²ûÇÏ°Ô)
+        UnsubscribeGacha();
         ClearBox();
+        ClearResultUI();
     }
 
+    //íŒì—…ì´ ì—´ë¦° ìƒíƒœì—ì„œ í•„ìš”í•œ ì´ˆê¸°í™” ì²˜ë¦¬
+    private void SafeSetup()
+    {
+        canClose = false;
+
+        if (delayCo != null)
+        {
+            StopCoroutine(delayCo);
+        }
+
+        //ë‹«ê¸° ë”œë ˆì´ ì‹œì‘
+        delayCo = StartCoroutine(CoEnableClose());
+
+        ClearResultUI();
+        SubscribeGacha();
+    }
+
+    //closeDelay ì´í›„ë¶€í„° ë‹«ê¸° ê°€ëŠ¥ ìƒíƒœë¡œ ì „í™˜
     private IEnumerator CoEnableClose()
     {
         yield return new WaitForSecondsRealtime(closeDelay);
+
         canClose = true;
+        Debug.Log("//ShopPopup canClose = true");
     }
 
+    //1ì´ˆ ì´í›„ í™”ë©´ ì•„ë¬´ ê³³ì´ë‚˜ í´ë¦­ ì‹œ íŒì—… ë‹«ê¸°
     private void Update()
     {
-        //ÆË¾÷ÀÌ ÄÑÁ®ÀÖ´Â µ¿¾È¸¸ ÀÔ·Â Ã³¸®
         if (!gameObject.activeInHierarchy) return;
         if (!canClose) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            //UIManager°¡ Close¸¦ È£ÃâÇØÁÖ´Â ±¸Á¶¶ó¸é CloseTopPopupÀ¸·Î ´İ´Â °Ô Á¦ÀÏ ¾ÈÀü
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.CloseTopPopup();
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            Debug.Log("//ShopPopup Screen Click -> Close");
+            CloseSelf();
         }
     }
 
-    //±ºÁö¿ø»óÀÚ ¹öÆ°
-    public void OnClickArmyBox()
-    {        
-        ShowBox(armyBoxPrefab);
-
-        if (GachaManager.Instance == null) return;
-        GachaManager.Instance.DrawItemNormalBox();
-    }
-
-    //Áö±¸¹æÀ§ º¸±ŞÇ° ¹öÆ°
-    public void OnClickEarthBox()
+    //ìê¸° ìì‹ (ìƒì  íŒì—…) ë‹«ê¸°
+    private void CloseSelf()
     {
-        ShowBox(earthBoxPrefab);
-
-        if (GachaManager.Instance == null) return;
-        GachaManager.Instance.DrawItemEpicBox();
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ClosePopup(EnumData.PopupId.Shop);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
-    //»Ì±â °á°ú°¡ ³ª¿À¸é È£ÃâµÊ(GachaManager ÀÌº¥Æ®)
+    //ì„ íƒí•œ ìƒì í”„ë¦¬íŒ¹ì„ í™”ë©´ì— í‘œì‹œ
+    private void ShowBox()
+    {
+        if (boxSpawnRoot == null)
+        {
+            Debug.LogError("//ShopPopup boxSpawnRoot == null");
+            return;
+        }
+
+        GameObject prefab = null;
+
+        if (selectedBoxType == EnumData.BoxType.Normal)
+        {
+            prefab = normalBoxPrefab;
+        }
+        else if (selectedBoxType == EnumData.BoxType.High)
+        {
+            prefab = highBoxPrefab;
+        }
+
+        if (prefab == null)
+        {
+            Debug.LogError("//ShopPopup box prefab == null");
+            return;
+        }
+
+        ClearBox();
+        currentBox = Instantiate(prefab, boxSpawnRoot, false);
+
+        Debug.Log($"//ShopPopup ShowBox -> {prefab.name}");
+    }
+
+    //ê°€ì±  ê²°ê³¼ ì´ë²¤íŠ¸ êµ¬ë…(íŒì—…ì´ ì—´ë ¤ìˆëŠ” ë™ì•ˆë§Œ)
+    private void SubscribeGacha()
+    {
+        if (subscribed) return;
+        if (GachaManager.Instance == null) return;
+
+        GachaManager.Instance.OnDrawItem -= HandleDrawItem;
+        GachaManager.Instance.OnDrawItem += HandleDrawItem;
+
+        subscribed = true;
+        Debug.Log("//ShopPopup SubscribeGacha");
+    }
+
+    //ê°€ì±  ê²°ê³¼ ì´ë²¤íŠ¸ í•´ì œ
+    private void UnsubscribeGacha()
+    {
+        if (!subscribed) return;
+
+        if (GachaManager.Instance != null)
+        {
+            GachaManager.Instance.OnDrawItem -= HandleDrawItem;
+        }
+
+        subscribed = false;
+    }
+
+    //ê°€ì±  ê²°ê³¼ ìˆ˜ì‹  í›„ UI ë°˜ì˜
     private void HandleDrawItem(ItemData item)
     {
-        if (item == null) return;
+        if (item == null)
+        {
+            Debug.LogError("//HandleDrawItem item == null");
+            return;
+        }
 
-        //ÀÎº¥Åä¸®¿¡ ÀúÀå
+        Debug.Log($"//Draw Item: {item.name} ({item.tier})");
+
+        //í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ì— ì•„ì´í…œ ì¶”ê°€
         if (PlayerManager.Instance != null)
         {
             PlayerManager.Instance.AddItemInven(item);
         }
 
-        //¾ÆÀÌÄÜ / µî±Ş ÀÌ¹ÌÁö Ç¥½Ã
+        //ì•„ì´ì½˜ ë° ë“±ê¸‰ UI ê°±ì‹ 
         if (DataManager.Instance != null)
         {
             if (itemIconImage != null)
             {
-                itemIconImage.sprite = item.icon;
-                itemIconImage.enabled = (itemIconImage.sprite != null);
+                itemIconImage.sprite = DataManager.Instance.GetItemIcon(item);
+                itemIconImage.enabled = true;
             }
 
             if (gradeIconImage != null)
             {
                 gradeIconImage.sprite = DataManager.Instance.GetItemGrade(item);
-                gradeIconImage.enabled = (gradeIconImage.sprite != null);
+                gradeIconImage.enabled = true;
             }
         }
 
-        //¾ÆÀÌÅÛ ÀÌ¸§
         if (itemNameText != null)
         {
             itemNameText.text = item.name;
         }
 
-        //¾ÆÀÌÅÛ µî±Ş ÅØ½ºÆ®
         if (gradeText != null)
         {
-            gradeText.text = item.tier.ToString(); //Nice / Rare / Epic µî
+            gradeText.text = item.tier.ToString();
         }
     }
 
-    //¹Ú½º ÇÁ¸®ÆÕ Ç¥½Ã(±âÁ¸ ÀÎ½ºÅÏ½º°¡ ÀÖÀ¸¸é ±³Ã¼)
-    private void ShowBox(GameObject boxPrefab)
-    {
-        if (boxSpawnRoot == null) return;
-        if (boxPrefab == null) return;
 
-        ClearBox();
-        currentBox = Instantiate(boxPrefab, boxSpawnRoot, false);
-    }
-
+    //ê¸°ì¡´ì— í‘œì‹œ ì¤‘ì´ë˜ ìƒì ì œê±°
     private void ClearBox()
     {
         if (currentBox == null) return;
@@ -177,6 +233,7 @@ public class ShopPopup : UIPopup
         currentBox = null;
     }
 
+    //ê²°ê³¼ UI ì´ˆê¸°í™”
     private void ClearResultUI()
     {
         if (itemIconImage != null)

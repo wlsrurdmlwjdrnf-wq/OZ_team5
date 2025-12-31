@@ -3,44 +3,59 @@ using UnityEngine;
 using UnityEngine.UI;
 using static EnumData;
 
-//·Îºñ ÀÎº¥¿ë ¾ÆÀÌÅÛ ÆË¾÷
-//- ½½·Ô Å¬¸¯À¸·Î ¿­¸²
-//- "ÀåÂø/ÇØÁ¦"´Â ÆË¾÷ ¹öÆ°¿¡¼­¸¸ ½ÇÇà
+//ë¡œë¹„ ì¸ë²¤ìš© ì•„ì´í…œ íŒì—…
+//- ìŠ¬ë¡¯ í´ë¦­ìœ¼ë¡œ ì—´ë¦¼
+//- "ìž¥ì°©/í•´ì œ"ëŠ” íŒì—… ë²„íŠ¼ì—ì„œë§Œ ì‹¤í–‰
 public class InventoryItemPopup : UIPopup
 {
     [Header("Main")]
-    [SerializeField] private Image gradeBackground;//µî±Þ ¹è°æ
-    [SerializeField] private Image itemIcon;//¾ÆÀÌÅÛ ¾ÆÀÌÄÜ
-    [SerializeField] private TextMeshProUGUI nameText;//¾ÆÀÌÅÛ ÀÌ¸§
-    [SerializeField] private TextMeshProUGUI gradeText;//µî±Þ ÅØ½ºÆ®(Ãß°¡ÇØ´Þ¶ó°í Çß´ø°Å)
+    [SerializeField] private Image gradeBackground;     //ë“±ê¸‰ ë°°ê²½
+    [SerializeField] private Image itemIcon;            //ì•„ì´í…œ ì•„ì´ì½˜
+    [SerializeField] private TextMeshProUGUI nameText;  //ì•„ì´í…œ ì´ë¦„
+    [SerializeField] private TextMeshProUGUI gradeText; //ë“±ê¸‰ í…ìŠ¤íŠ¸(ì¶”ê°€í•´ë‹¬ë¼ê³  í–ˆë˜ê±°)
 
     [Header("Stat")]
-    [SerializeField] private Image statIcon;//°ø°Ý/Ã¼·Â ¾ÆÀÌÄÜ
-    [SerializeField] private TextMeshProUGUI statText;//°ø°Ý·Â/Ã¼·Â Áõ°¡ ÅØ½ºÆ®
+    [SerializeField] private Image statIcon;            //ê³µê²©/ì²´ë ¥ ì•„ì´ì½˜
+    [SerializeField] private TextMeshProUGUI statText;  //ê³µê²©ë ¥/ì²´ë ¥ ì¦ê°€ í…ìŠ¤íŠ¸
 
     [Header("Buttons")]
-    [SerializeField] private Button equipButton;//ÀåÂø ¹öÆ°
-    [SerializeField] private Button unequipButton;//ÇØÁ¦ ¹öÆ°
-    [SerializeField] private Button closeButton;//´Ý±â ¹öÆ°(ÀÖÀ¸¸é)
+    [SerializeField] private Button equipButton;        //ìž¥ì°© ë²„íŠ¼
+    [SerializeField] private Button unequipButton;      //í•´ì œ ë²„íŠ¼
+    [SerializeField] private Button closeButton;        //ë‹«ê¸° ë²„íŠ¼
 
     [Header("UI Asset Map")]
-    [SerializeField] private UIAssetMap uiMap;//µî±Þ ¹è°æ/½ºÅÈ ¾ÆÀÌÄÜ ¸ÅÇÎ
+    [SerializeField] private UIAssetMap uiMap;          //ë“±ê¸‰ ë°°ê²½/ìŠ¤íƒ¯ ì•„ì´ì½˜ ë§¤í•‘
 
     private int slotIndex = -1;
-    private bool fromGeneral;//true=°¡¹æ½½·Ô(ÀåÂø),false=Àåºñ½½·Ô(ÇØÁ¦)
+    private bool fromGeneral;           //true=ê°€ë°©ìŠ¬ë¡¯(ìž¥ì°©),false=ìž¥ë¹„ìŠ¬ë¡¯(í•´ì œ)
     private ItemData cachedData;
 
-    //¿ÜºÎ¿¡¼­ ¿­±â Àü¿¡ µ¥ÀÌÅÍ/½½·ÔÁ¤º¸¸¦ ³Ö¾îÁÖ´Â ÇÔ¼ö
+    //ì™¸ë¶€ì—ì„œ ì—´ê¸° ì „ì— ë°ì´í„°/ìŠ¬ë¡¯ì •ë³´ë¥¼ ë„£ì–´ì£¼ëŠ” í•¨ìˆ˜
     public void Bind(ItemData data, int slot, bool isGeneralSlot)
     {
+        if (data == null)
+        {
+            Debug.LogError("//InventoryItemPopup Bind data == null");
+            return;
+        }
+
         cachedData = data;
         slotIndex = slot;
         fromGeneral = isGeneralSlot;
+
+        Debug.Log($"//InventoryItemPopup Bind id:{data.id} slot:{slot} fromGeneral:{isGeneralSlot}");
+
+        //ì´ë¯¸ ì¼œì ¸ìžˆìœ¼ë©´ ì¦‰ì‹œ ê°±ì‹ (ì—°ì† í´ë¦­ UX)
+        if (gameObject.activeInHierarchy)
+        {
+            RefreshUI(cachedData);
+            ApplyButtonMode();
+        }
     }
 
     protected override void OnInit()
     {
-        //¹öÆ°Àº ÇÑ¹ø¸¸ ¿¬°á
+        //ë²„íŠ¼ì€ í•œë²ˆë§Œ ì—°ê²°
         if (equipButton != null)
         {
             equipButton.onClick.RemoveAllListeners();
@@ -62,23 +77,72 @@ public class InventoryItemPopup : UIPopup
 
     protected override void OnOpen()
     {
-        //µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é ±×³É ´Ý¾Æ¹ö¸²
-        if (cachedData == null) { Close(); return; }
+        //ë°ì´í„°ê°€ ì—†ìœ¼ë©´ ê·¸ëƒ¥ ë‹«ì•„ë²„ë¦¼
+        if (cachedData == null)
+        {
+            Debug.LogError("//InventoryItemPopup OnOpen cachedData == null");
+            Close();
+            return;
+        }
 
-        //ºó ¾ÆÀÌÅÛÀÌ¸é ´Ý±â
-        if (cachedData.id == 0 || cachedData.type == EquipmentType.NONE) { Close(); return; }
+        //ë¹ˆ ì•„ì´í…œì´ë©´ ë‹«ê¸°
+        if (cachedData.id == 0 || cachedData.type == EquipmentType.NONE)
+        {
+            Debug.Log($"//InventoryItemPopup OnOpen empty item id:{cachedData.id} type:{cachedData.type}");
+            Close();
+            return;
+        }
+
+        //UI ë§µ ì—°ê²° ëˆ„ë½ì€ ê¸°ëŠ¥ìƒ ì¹˜ëª…ì ì´ì§„ ì•Šì§€ë§Œ, ìž‘ì—… ì¤‘ì—ëŠ” ë¹¨ë¦¬ ìž¡ížˆê²Œ ë¡œê·¸
+        if (uiMap == null)
+        {
+            Debug.LogWarning("//InventoryItemPopup uiMap == null (ë“±ê¸‰/ìŠ¤íƒ¯ ì•„ì´ì½˜ì´ ë¹„ì–´ë³´ì¼ ìˆ˜ ìžˆìŒ)");
+        }
 
         RefreshUI(cachedData);
+        ApplyButtonMode();
+    }
 
-        //°¡¹æ½½·ÔÀÌ¸é ÀåÂø ¹öÆ°¸¸,Àåºñ½½·ÔÀÌ¸é ÇØÁ¦ ¹öÆ°¸¸
-        if (equipButton != null) equipButton.gameObject.SetActive(fromGeneral);
-        if (unequipButton != null) unequipButton.gameObject.SetActive(!fromGeneral);
+    protected override void OnClose()
+    {
+        //ë‹¤ìŒ ì˜¤í”ˆì—ì„œ ë²„íŠ¼ ëª¨ë“œ ê¼¬ì´ëŠ” ê±¸ ë°©ì§€
+        slotIndex = -1;
+        fromGeneral = false;
+
+        //ë°ì´í„°ë¥¼ nullë¡œ ì§€ìš°ë©´, Openì´ í˜¸ì¶œë˜ì§€ ì•ŠëŠ” ì¼€ì´ìŠ¤ì—ì„œ
+        //Bindë§Œ ë°”ë€Œì—ˆëŠ”ë° UIê°€ ê°±ì‹ ë˜ì§€ ì•ŠëŠ” ìƒí™©ì´ ìƒê¸¸ ìˆ˜ ìžˆìŒ
+        //cachedData = null;
+
+        //ì›í•˜ë©´ UIë§Œ ë¹„ì›Œì„œ ìž”ìƒ ë°©ì§€
+        //ClearUI();
+    }
+
+    //ê°€ë°©ìŠ¬ë¡¯ì´ë©´ ìž¥ì°© ë²„íŠ¼ë§Œ, ìž¥ë¹„ìŠ¬ë¡¯ì´ë©´ í•´ì œ ë²„íŠ¼ë§Œ
+    private void ApplyButtonMode()
+    {
+        if (equipButton != null)
+        {
+            equipButton.gameObject.SetActive(fromGeneral);
+        }
+
+        if (unequipButton != null)
+        {
+            unequipButton.gameObject.SetActive(!fromGeneral);
+        }
     }
 
     private void RefreshUI(ItemData data)
     {
-        if (nameText != null) nameText.text = data.name;
-        if (gradeText != null) gradeText.text = data.tier.ToString();
+        if (data == null) return;
+
+        if (nameText != null)
+        {
+            nameText.text = data.name;
+        }
+        if (gradeText != null)
+        {
+            gradeText.text = data.tier.ToString();
+        }
 
         if (gradeBackground != null && uiMap != null)
         {
@@ -89,11 +153,19 @@ public class InventoryItemPopup : UIPopup
 
         if (itemIcon != null)
         {
-            //µ¿·áÂÊ DataManager°¡ ¾ÆÀÌÄÜÀ» Resources¿¡¼­ °¡Á®¿À´Â ±¸Á¶¶ó¼­
-            //¿©±â¼­´Â DataManager¸¦ ÅëÇØ °¡Á®¿À´Â°Ô ¾ÈÀüÇÔ
-            Sprite icon = data.icon;
-            itemIcon.sprite = icon;
-            itemIcon.enabled = (icon != null);
+            if (DataManager.Instance == null)
+            {
+                Debug.LogError("//InventoryItemPopup DataManager.Instance == null");
+                itemIcon.sprite = null;
+                itemIcon.enabled = false;
+            }
+            else
+            {
+                //ì•„ì´ì½˜ì€ DataManager í†µí•´ ê°€ì ¸ì˜¤ëŠ”ê²Œ ì•ˆì „(í”„ë¡œì íŠ¸ êµ¬ì¡°ìƒ)
+                Sprite icon = DataManager.Instance.GetItemIcon(data);
+                itemIcon.sprite = icon;
+                itemIcon.enabled = (icon != null);
+            }
         }
 
         StatKind statKind = GetStatKind(data.type);
@@ -112,12 +184,12 @@ public class InventoryItemPopup : UIPopup
                 string percent = data.atkPercent != 0 ? $"+{data.atkPercent}%" : "";
                 string mtp = data.atkMtp > 0f ? $"x{data.atkMtp:0.##}" : "";
                 string value = (percent == "" && mtp == "") ? "-" : $"{percent} {mtp}".Trim();
-                statText.text = $"°ø°Ý·Â {value}";
+                statText.text = $"ê³µê²©ë ¥ {value}";
             }
             else
             {
                 string value = data.hpPercent != 0 ? $"+{data.hpPercent}%" : "-";
-                statText.text = $"Ã¼·Â {value}";
+                statText.text = $"ì²´ë ¥ {value}";
             }
         }
     }
@@ -136,10 +208,11 @@ public class InventoryItemPopup : UIPopup
         if (!fromGeneral) return;
         if (slotIndex < 0) return;
 
-        //°¡¹æ ½½·Ô ÀÎµ¦½º·Î ÀåÂø
+        Debug.Log($"//InventoryItemPopup Equip slot:{slotIndex} id:{cachedData?.id}");
+
+        //ê°€ë°© ìŠ¬ë¡¯ ì¸ë±ìŠ¤ë¡œ ìž¥ì°©
         PlayerManager.Instance.EquipItem(slotIndex);
 
-        //ÀåÂøµÇ¸é ÀÎº¥ °»½Å ÀÌº¥Æ®°¡ µ¹°í UI°¡ ¹Ù²ñ(PlayerManager°¡ OnItemUpdata È£ÃâÇÔ) :contentReference[oaicite:4]{index=4}
         Close();
     }
 
@@ -149,7 +222,9 @@ public class InventoryItemPopup : UIPopup
         if (fromGeneral) return;
         if (slotIndex < 0) return;
 
-        //Àåºñ ½½·Ô ÀÎµ¦½º·Î ÇØÁ¦(0~5)
+        Debug.Log($"//InventoryItemPopup UnEquip slot:{slotIndex} id:{cachedData?.id}");
+
+        //ìž¥ë¹„ ìŠ¬ë¡¯ ì¸ë±ìŠ¤ë¡œ í•´ì œ(0~5)
         PlayerManager.Instance.UnEquipItem(slotIndex);
 
         Close();
