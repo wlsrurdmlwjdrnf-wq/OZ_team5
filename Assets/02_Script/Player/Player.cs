@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
             hpBar.gameObject.SetActive(false);
             joystick.gameObject.SetActive(false);
             gameObject.SetActive(false);
-            //GameManager.Instance.GameOver();
+            GameManager.Instance.GameOver();
         }
     }
     private void SetBaseWeapon()
@@ -104,13 +104,13 @@ public class Player : MonoBehaviour
         if (playerData.playerSkillInven[0].id == 0 || playerData.playerSkillInven[0].id == 10001)
         {
             IngameItemData temp = DataManager.Instance.GetIngameItemData(10001);
-            playerData.playerSkillInven.Add(temp);
+            playerData.playerSkillInven[0] = temp;
             kunai.gameObject.SetActive(true);
         }
         if (playerData.playerSkillInven[0].id == 10002)
         {
             IngameItemData temp = DataManager.Instance.GetIngameItemData(10002);
-            playerData.playerSkillInven.Add(temp);
+            playerData.playerSkillInven[0] = temp;
             shotgun.gameObject.SetActive(true);
         }
     }

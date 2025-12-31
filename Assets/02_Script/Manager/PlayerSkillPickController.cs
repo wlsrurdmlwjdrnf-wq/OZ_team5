@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerSkillPickController : MonoBehaviour
 {
     Player player;
     List<IngameItemData> skillList;
-    private bool hasSkill(IngameItemData item) => player.PlayerStat().playerSkillInven.Exists(x => x.id == item.id);
-    private bool hasSup(IngameItemData item) => player.PlayerStat().playerSupportInven.Exists(x => x.id == item.id);
-    private bool isMaxSkillLv(IngameItemData item) => player.PlayerStat().playerSkillInven.Exists(temp => temp.id == item.id && temp.level == 5);
-    private bool isMaxSupLv(IngameItemData item) => player.PlayerStat().playerSupportInven.Exists(temp => temp.id == item.id && temp.level == 5);
+    private bool hasSkill(int id) => player.PlayerStat().playerSkillInven.Exists(x => x.id == id);
+    private bool hasSup(int id) => player.PlayerStat().playerSupportInven.Exists(x => x.id == id);
+    private bool isMaxSkillLv(int id) => player.PlayerStat().playerSkillInven.Exists(temp => temp.id == id && temp.level == 5);
+    private bool isMaxSupLv(int id) => player.PlayerStat().playerSupportInven.Exists(temp => temp.id == id && temp.level == 5);
     private bool isFullSkillInven() => !player.PlayerStat().playerSkillInven.Exists(temp => temp.id == 0);
     private bool isFullSupInven() => !player.PlayerStat().playerSupportInven.Exists(temp => temp.id == 0);
 
@@ -27,6 +28,9 @@ public class PlayerSkillPickController : MonoBehaviour
         foreach (var item in skillList)
         {
             if (item.id == 0 || item.type == EnumData.SkillType.NONE) continue;
+            if ((item.id == 10001 && hasSkill(10002)) || item.id == 10002 && hasSkill(10001)) continue;
+            if ((item.id == 10001 && hasSkill(20002)) || item.id == 10002 && hasSkill(20001)) continue;
+            if (hasSkill(item.EvID)) continue;
 
             bool hasItem = false;
             bool maxLv = false;
@@ -34,14 +38,14 @@ public class PlayerSkillPickController : MonoBehaviour
 
             if (item.type == EnumData.SkillType.Attack)
             {
-                hasItem = hasSkill(item);
-                maxLv = isMaxSkillLv(item);
+                hasItem = hasSkill(item.id);
+                maxLv = isMaxSkillLv(item.id);
                 isFull = isFullSkillInven();
             }
             else
             {
-                hasItem = hasSup(item);
-                maxLv = isMaxSupLv(item);
+                hasItem = hasSup(item.id);
+                maxLv = isMaxSupLv(item.id);
                 isFull = isFullSupInven();
             }
             // 아이템을 가지고 있는가
