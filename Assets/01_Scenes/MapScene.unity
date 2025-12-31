@@ -564,17 +564,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab2a7d5272fdb548b0c680f075ddd5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &775197195 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6416086130154075614, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
-  m_PrefabInstance: {fileID: 1707046308}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7891c96306056440bc220c254934495, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &845461952 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9132962160212396293, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
@@ -1098,6 +1087,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61bed8ca88855aa45b82898681877393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1711366350 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8453866476071607169, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
+  m_PrefabInstance: {fileID: 1707046308}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1714527722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,7 +1474,7 @@ PrefabInstance:
     - target: {fileID: 5996973330761822324, guid: ac9f8eff9e5553c47a62cc9546cac444, type: 3}
       propertyPath: gatlingGun
       value: 
-      objectReference: {fileID: 775197195}
+      objectReference: {fileID: 1711366350}
     - target: {fileID: 5996973330761822324, guid: ac9f8eff9e5553c47a62cc9546cac444, type: 3}
       propertyPath: ghostKunai
       value: 
@@ -1491,7 +1485,7 @@ PrefabInstance:
       objectReference: {fileID: 274465887}
     - target: {fileID: 5996973330761822324, guid: ac9f8eff9e5553c47a62cc9546cac444, type: 3}
       propertyPath: testNumber
-      value: 3000
+      value: 20002
       objectReference: {fileID: 0}
     - target: {fileID: 5996973330761822324, guid: ac9f8eff9e5553c47a62cc9546cac444, type: 3}
       propertyPath: oilTicketSS
