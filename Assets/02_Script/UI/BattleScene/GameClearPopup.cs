@@ -9,51 +9,17 @@ public class GameClearPopup : UIPopup
     [Header("Result Texts")]
     [SerializeField] private TextMeshProUGUI goldText; //코인 표시(00000)
     [SerializeField] private TextMeshProUGUI killText; //처치 수 표시(00000)
-
-    private BattleHUDNumbers hud; //상시 HUD에서 처치 수 가져오기
-    private PlayerData playerData; //PlayerData에서 코인 가져오기
+    [SerializeField] Player player;
 
     private void OnEnable()
     {
         RefreshResult();
+        GameManager.Instance.AddGold(player.PlayerStat().playerGold);
     }
 
     private void RefreshResult()
     {
-        if (hud == null)
-        {
-            hud = FindObjectOfType<BattleHUDNumbers>();
-        }
-
-        if (playerData == null)
-        {
-            Player player = FindObjectOfType<Player>();
-            if (player != null)
-            {
-                playerData = player.PlayerStat();
-            }
-        }
-        //골드
-        int gold = 0;
-        if (playerData != null)
-        {
-            gold = (int)playerData.playerGold;
-        }
-
-        if (goldText != null)
-        {
-            goldText.text = $"{gold}";
-        }
-        //킬수
-        int killCount = 0;
-        if (hud != null)
-        {
-            killCount = hud.GetKillCount();
-        }
-
-        if (killText != null)
-        {
-            killText.text = $"{killCount}";
-        }
+        goldText.text = $"{player.PlayerStat().playerGold}";
+        killText.text = $"{EnemyManager.Instance.enemyKillCount}";
     }
 }

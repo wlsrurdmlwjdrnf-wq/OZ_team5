@@ -1189,6 +1189,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1365152128}
     m_Modifications:
+    - target: {fileID: 566907943284854072, guid: 1cef652a16aef654381b0fcbb0c36a0f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 93103294}
     - target: {fileID: 4717099282899122803, guid: 1cef652a16aef654381b0fcbb0c36a0f, type: 3}
       propertyPath: m_Name
       value: GameClear Popup
@@ -5724,9 +5728,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 512808359}
     m_Modifications:
+    - target: {fileID: 308551513404371107, guid: 92a985023d35a3f47bb7201ec54d6d2a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2166713695717062511, guid: 92a985023d35a3f47bb7201ec54d6d2a, type: 3}
       propertyPath: m_Name
       value: Loading Popup
+      objectReference: {fileID: 0}
+    - target: {fileID: 2166713695717062511, guid: 92a985023d35a3f47bb7201ec54d6d2a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160166930897122636, guid: 92a985023d35a3f47bb7201ec54d6d2a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7447217292114317691, guid: 92a985023d35a3f47bb7201ec54d6d2a, type: 3}
       propertyPath: m_Pivot.x

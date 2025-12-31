@@ -120,6 +120,7 @@ public class BattleUIController : MonoBehaviour
         //게임 재개
         if (GameManager.Instance != null)
         {
+            AudioManager.Instance.PlaySFX(EnumData.SFX.Button1SFX);
             GameManager.Instance.GameResume();
         }
 

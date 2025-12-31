@@ -9,12 +9,6 @@ public class PausePopup : UIPopup
     [SerializeField] private GameObject soundOnIcon;  //사운드 ON 아이콘(또는 이미지 오브젝트)
     [SerializeField] private GameObject soundOffIcon; //사운드 OFF 아이콘(또는 이미지 오브젝트)
 
-    //팝업이 처음 열릴 때 한 번만 호출
-    protected override void OnInit()
-    {
-
-    }
-
     //팝업이 열릴 때마다 호출
     protected override void OnOpen()
     {
@@ -41,24 +35,13 @@ public class PausePopup : UIPopup
             soundOffIcon.SetActive(isMuted);
         }
     }
-
-    //계속하기 버튼
-    public void OnClickResume()
-    {
-        if (GameManager.Instance == null)
-        {
-            return;
-        }
-
-        GameManager.Instance.GameResume();
-    }
-
     //로비로 나가기 요청만
     public void OnClickLobby()
     {
         BattleUIController ui = FindObjectOfType<BattleUIController>();
         if (ui != null)
         {
+            AudioManager.Instance.PlaySFX(EnumData.SFX.Button1SFX);
             ui.GoLobby();
         }
     }
@@ -66,6 +49,7 @@ public class PausePopup : UIPopup
     //소리 ON/OFF 버튼
     public void OnClickSoundToggle()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.Button1SFX);
         //전체 사운드 일괄 음소거 토글
         //AudioListener.pause = !AudioListener.pause;
 

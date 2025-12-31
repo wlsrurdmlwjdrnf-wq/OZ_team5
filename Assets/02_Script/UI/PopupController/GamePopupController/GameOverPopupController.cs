@@ -27,7 +27,7 @@ public class GameOverPopupController : UIPopup
     }
     private void GotoLooby()
     {
-
+        GameManager.Instance.AddGold(player.PlayerStat().playerGold);
     }
     
     private string FormatTimeText(float time)
