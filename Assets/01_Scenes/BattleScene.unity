@@ -456,17 +456,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31485f40d594c034b891634e14533996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &93103300 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6416086130154075614, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
-  m_PrefabInstance: {fileID: 93103293}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7891c96306056440bc220c254934495, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &93103301 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 457384716026854468, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
@@ -3752,7 +3741,7 @@ MonoBehaviour:
   football: {fileID: 93103303}
   drillShot: {fileID: 93103302}
   ghostKunai: {fileID: 93103301}
-  gatlingGun: {fileID: 93103300}
+  gatlingGun: {fileID: 1145259006}
   bulletSS: {fileID: 93103299}
   ninjaScrollSS: {fileID: 93103298}
   oilTicketSS: {fileID: 93103297}
@@ -3839,6 +3828,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7063374768528376053, guid: 795587c648d12c145bf57509f46f3fe1, type: 3}
   m_PrefabInstance: {fileID: 1141557916}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1145259006 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6373153435841747256, guid: cfc76212211bccd48ba5dad34a61b19c, type: 3}
+  m_PrefabInstance: {fileID: 93103293}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1158101815
 GameObject:
