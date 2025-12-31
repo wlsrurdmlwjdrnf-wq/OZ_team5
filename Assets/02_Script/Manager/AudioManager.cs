@@ -96,8 +96,7 @@ public class AudioManager : Singleton<AudioManager>
         if(!_BGMPlayer.ContainsKey(bgm))
         {
             return;
-        }
-
+        }       
         _currBGMSource = _BGMPlayer[bgm];
         _currBGMSource.Play();
     }

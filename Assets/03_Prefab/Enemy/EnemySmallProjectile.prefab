@@ -135,4 +135,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   lifetime: 3
-  atk: 1
+  atk: 10

@@ -1926,6 +1926,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029823134}
   m_CullTransparentMesh: 1
+--- !u!1 &1079309090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1079309091}
+  - component: {fileID: 1079309092}
+  m_Layer: 0
+  m_Name: BattleBGM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1079309091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079309090}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 269.6761, y: 653.2723, z: -0.47840613}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1079309092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079309090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442d14dab045f6c4ca7507da2ee9d173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1113226846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3458,6 +3502,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7518515468034886712, guid: 058a885ec6429a1479631031e14452e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1113226848}
+    - target: {fileID: 7518515468034886712, guid: 058a885ec6429a1479631031e14452e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7518515468034886712, guid: 058a885ec6429a1479631031e14452e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickSoundToggle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7518515468034886712, guid: 058a885ec6429a1479631031e14452e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PausePopup, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7518515468034886712, guid: 058a885ec6429a1479631031e14452e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7574852554176256006, guid: 058a885ec6429a1479631031e14452e5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3780,6 +3844,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7101559368590910651, guid: 058a885ec6429a1479631031e14452e5, type: 3}
   m_PrefabInstance: {fileID: 1113226846}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1113226848 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2900285237922360921, guid: 058a885ec6429a1479631031e14452e5, type: 3}
+  m_PrefabInstance: {fileID: 1113226846}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fec13b1d167e6c418dde15117a754bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1125424084
 GameObject:
   m_ObjectHideFlags: 0
@@ -5938,3 +6013,4 @@ SceneRoots:
   - {fileID: 3243267379049607719}
   - {fileID: 1125424086}
   - {fileID: 604084184}
+  - {fileID: 1079309091}

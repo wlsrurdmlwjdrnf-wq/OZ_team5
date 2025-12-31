@@ -41,7 +41,7 @@ public class PlayerData
     
     public PlayerData()
     {
-        playerAtk = 20;
+        playerAtk = 10;
         playerDef = 0;
         playerMaxHp = 200;
         playerCurrentHp = 200;

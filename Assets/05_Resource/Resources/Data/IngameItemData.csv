@@ -1,10 +1,10 @@
 ﻿ID,Name,Type,Damage,Level,PtCount,PtSpeed,Cooldown,LifeTime,Effect,EvID,PairID
 0,NONE,,,,,,,,,,
-3000,Firebomb,1,10,1,1,2,5,2,,,4003
+3000,Firebomb,1,10,1,1,4,5,1,,,4003
 3001,Shield,1,1,1,1,10,0.5,3,,,4004
 3002,Guardian,1,5,1,2,10,1,3,,,4004
-3003,SoccerBall,1,10,1,1,5,3,3,,,4005
-3004,DrillShot,1,5,1,1,5,3,3,,,4005
+3003,SoccerBall,1,7,1,1,8,3,4,,,4005
+3004,DrillShot,1,5,1,1,5,3,5,,,4005
 4001,Bullet,2,,1,,,,,,,10002
 4002,NinjaScroll,2,,1,,,,,,,10001
 4003,Oil,2,,1,,,,,,,3000

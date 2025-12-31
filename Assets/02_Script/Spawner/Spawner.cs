@@ -85,9 +85,9 @@ public class Spawner : MonoBehaviour
         #endregion 
 
         StartCoroutine(SpawnItemBox());
-        StartCoroutine(SpawnEnemy(zombiePrefab, 1f));
-        StartCoroutine(SpawnEnemy(bigZombiePrefab, 4f));
-        StartCoroutine(SpawnBoss(boss1Prefab, 20f));
+        StartCoroutine(SpawnEnemy(zombiePrefab, 0.5f));
+        StartCoroutine(SpawnEnemy(bigZombiePrefab, 2f));
+        StartCoroutine(SpawnBoss(boss1Prefab, 60f));
     }
     private void OnDisable()
     {
@@ -144,17 +144,17 @@ public class Spawner : MonoBehaviour
         ClearField(player.position, 30f);
         StartCoroutine(SpawnItemBox());
         StartCoroutine(SpawnEnemy(zomPlantPrefab, 2f));
-        StartCoroutine(SpawnEnemy(zomDogPrefab, 1f));
-        StartCoroutine(SpawnBoss(boss2Prefab, 20f));
+        StartCoroutine(SpawnEnemy(zomDogPrefab, 0.5f));
+        StartCoroutine(SpawnBoss(boss2Prefab, 60f));
     }
     public void KillBoss2()
     {
         ClearField(player.position, 30f);
         StartCoroutine(SpawnItemBox());
         StartCoroutine(SpawnEnemy(zomPlantPrefab, 2f));
-        StartCoroutine(SpawnEnemy(zomDogPrefab, 1f));
+        StartCoroutine(SpawnEnemy(zomDogPrefab, 0.5f));
         StartCoroutine(SpawnEnemy(suicideBomberPrefab, 3f));
-        StartCoroutine(SpawnBoss(boss3Prefab, 20f));
+        StartCoroutine(SpawnBoss(boss3Prefab, 60f));
     }
     private IEnumerator SpawnItemBox()
     {

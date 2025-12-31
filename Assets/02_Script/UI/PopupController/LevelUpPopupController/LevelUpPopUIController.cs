@@ -78,6 +78,6 @@ public class LevelUpPopUIController : UIPopup
     private void OnClickRefreshButton()
     {
         ResetUIData();
-        //refresh.gameObject.SetActive(false);
+        refresh.gameObject.SetActive(false);
     }
 }
