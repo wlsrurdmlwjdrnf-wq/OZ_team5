@@ -201,7 +201,7 @@ public class ShopPopup : UIPopup
         {
             if (itemIconImage != null)
             {
-                itemIconImage.sprite = DataManager.Instance.GetItemIcon(item);
+                itemIconImage.sprite = item.icon;
                 itemIconImage.enabled = true;
             }
 
