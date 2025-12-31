@@ -24,6 +24,7 @@ public class FireArea : MonoBehaviour
         StartCoroutine(Duration());
         GameManager.Instance.OnGameClear += ReturnPool;
         GameManager.Instance.OnGameOver += ReturnPool;
+        SceneController.Instance.OnLoadLobbyScene += ReturnPool;
     }
 
     private void OnDisable()
@@ -31,6 +32,7 @@ public class FireArea : MonoBehaviour
         StopAllCoroutines();
         GameManager.Instance.OnGameClear -= ReturnPool;
         GameManager.Instance.OnGameOver -= ReturnPool;
+        SceneController.Instance.OnLoadLobbyScene -= ReturnPool;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

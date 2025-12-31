@@ -8,6 +8,7 @@ public class DefenderProjectile : ProjectileBase
 
     protected override void OnEnable() {}
     protected override void Update() {}
+    protected override void OnDisable(){}
 
     protected override void OnTriggerEnter2D(Collider2D collision)
      {

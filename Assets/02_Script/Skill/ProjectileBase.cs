@@ -33,11 +33,16 @@ public abstract class ProjectileBase : MonoBehaviour
     }
     protected virtual void OnEnable() 
     {
+        SceneController.Instance.OnLoadLobbyScene += ReturnPool;
         spawntime = Time.time;
         if (rb != null)
         {
             rb.velocity = shootDirection * speed;
         }
+    }
+    protected virtual void OnDisable()
+    {
+        SceneController.Instance.OnLoadLobbyScene -= ReturnPool;
     }
     protected virtual void Update()
     {

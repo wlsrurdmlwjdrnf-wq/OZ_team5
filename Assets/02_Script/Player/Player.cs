@@ -54,15 +54,6 @@ public class Player : MonoBehaviour
     {
         rb.velocity = input * playerData.playerSpeed;
     }
-    private void OnDisable()
-    {
-        ProjectileBase[] pjt = FindObjectsOfType<ProjectileBase>();
-        if (pjt == null || pjt.Length == 0) return;
-        foreach (ProjectileBase p in pjt)
-        {
-            Managers.Instance.Pool.ReturnPool(p);
-        }
-    }
     private void UpdateHpBar()
     {
         hpBar.UpdateHp(playerData.playerCurrentHp, playerData.playerMaxHp);
