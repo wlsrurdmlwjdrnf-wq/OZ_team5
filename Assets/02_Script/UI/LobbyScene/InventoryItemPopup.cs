@@ -182,14 +182,12 @@ public class InventoryItemPopup : UIPopup
             if (statKind == StatKind.Attack)
             {
                 string percent = data.atkPercent != 0 ? $"+{data.atkPercent}%" : "";
-                string mtp = data.atkMtp > 0f ? $"x{data.atkMtp:0.##}" : "";
-                string value = (percent == "" && mtp == "") ? "-" : $"{percent} {mtp}".Trim();
-                statText.text = $"공격력 {value}";
+                statText.text = $"{percent}";
             }
             else
             {
                 string value = data.hpPercent != 0 ? $"+{data.hpPercent}%" : "-";
-                statText.text = $"체력 {value}";
+                statText.text = $"{value}";
             }
         }
     }
