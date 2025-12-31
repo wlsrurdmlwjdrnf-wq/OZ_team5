@@ -13,11 +13,11 @@ public class DefenderProjectile : ProjectileBase
      {
         if (collision.TryGetComponent<EnemyBase>(out EnemyBase enemy))
         {
-            DamageTextManager.Instance.ShowDamage(damage, enemy.transform.position);
+            DamageTextManager.Instance.ShowDamage(damage + player.PlayerStat().playerAtk, enemy.transform.position);
         }
         if (collision.TryGetComponent<IDamageable>(out IDamageable obj))
         {
-            obj.TakeDamage(damage);
+            obj.TakeDamage(damage + player.PlayerStat().playerAtk);
         }
         if(collision.TryGetComponent<EnemyProjectile>(out EnemyProjectile pjt))
         {

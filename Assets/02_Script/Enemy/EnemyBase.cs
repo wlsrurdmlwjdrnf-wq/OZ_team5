@@ -75,6 +75,7 @@ public class EnemyBase : ForTargeting
     }
     protected virtual IEnumerator DieCo()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.EnemyHitSFX);
         EnemyManager.Instance.enemyKillCount++;
         GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(0.2f);

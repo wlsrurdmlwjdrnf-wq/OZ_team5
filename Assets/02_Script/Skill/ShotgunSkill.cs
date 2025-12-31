@@ -43,8 +43,8 @@ public class ShotgunSkill : SkillBase
 
             for (int i = 0; i < inRange.Count; i++)
             {
-                DamageTextManager.Instance.ShowDamage(damage, inRange[i].transform.position);
-                inRange[i].TakeDamage(damage);                
+                DamageTextManager.Instance.ShowDamage(damage + player.PlayerStat().playerAtk, inRange[i].transform.position);
+                inRange[i].TakeDamage(damage + player.PlayerStat().playerAtk);                
             }
             yield return interval;
         }

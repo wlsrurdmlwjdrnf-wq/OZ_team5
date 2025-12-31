@@ -49,6 +49,7 @@ public class Boss2 : EnemyBase
             yield return chargetime;
             isCharging = true;
             yield return jumptime;
+            AudioManager.Instance.PlaySFX(EnumData.SFX.Boss2JumpSFX);
             isCharging = false;
             transform.localScale *= 1.1f;
             atk += 2;
@@ -56,8 +57,6 @@ public class Boss2 : EnemyBase
     }
     protected override IEnumerator DieCo()
     {
-        //타이머 다시 작동
-        //벽몬스터 사라지고 이어서 플레이
         Spawner.Instance.KillBoss2();
         yield return null;
         StartCoroutine(base.DieCo());

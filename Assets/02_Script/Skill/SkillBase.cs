@@ -21,7 +21,6 @@ public abstract class SkillBase : MonoBehaviour
     protected virtual void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        damage += player.PlayerStat().playerAtk;
     }
     public abstract void SkillLevelUp();
 }

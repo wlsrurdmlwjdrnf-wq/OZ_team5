@@ -49,7 +49,7 @@ public class Boss3 : EnemyBase
             isAngry = true;
             animator.SetBool(isAngryHash, isAngry);
 
-            transform.localScale *= 1.3f;
+            transform.localScale *= 1.5f;
             moveSpeed *= 2f;
             atk *= 2;
             StartCoroutine(AngryPatternCo());
@@ -60,7 +60,7 @@ public class Boss3 : EnemyBase
             isKilled = true;
             animator.SetBool(isAngryHash, isAngry);
             animator.SetBool(isKilledHash, isKilled);
-            StopCoroutine(AngryPatternCo());
+            StopAllCoroutines();
             StartCoroutine(DieCo());
         }
     }
@@ -84,6 +84,7 @@ public class Boss3 : EnemyBase
     }
     private IEnumerator AngryPatternCo()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.Boss3SFX);
         Vector2 dir;
         while (true)
         {
