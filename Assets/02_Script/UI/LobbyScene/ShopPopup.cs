@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //로비 상점 팝업
@@ -11,11 +12,11 @@ using UnityEngine.UI;
 public class ShopPopup : UIPopup
 {
     [Header("Box Prefabs (프리팹 2개 연결)")]
-    [SerializeField] private GameObject armyBoxPrefab;      //군지원상자 박스 프리팹
-    [SerializeField] private GameObject earthBoxPrefab;     //지구방위 보급품 박스 프리팹
+    [SerializeField] private GameObject normalBoxPrefab;    //일반 상자 프리팹(군지원 상자)
+    [SerializeField] private GameObject highBoxPrefab;      //고급 상자 프리팹(지구방위 보급품)
 
     [Header("Box Spawn Root (큰 박스가 표시될 자리)")]
-    [SerializeField] private Transform boxSpawnRoot;        //프리팹을 Instantiate할 부모(Panel 안 빈 오브젝트 추천)
+    [SerializeField] private Transform boxSpawnRoot;        //프리팹이 붙을 부모(빈 오브젝트 추천)
 
     [Header("Draw Result UI")]
     [SerializeField] private Image itemIconImage;           //뽑은 아이템 이미지
@@ -24,39 +25,37 @@ public class ShopPopup : UIPopup
     [SerializeField] private TextMeshProUGUI gradeText;     //뽑은 아이템 등급 텍스트
 
     [Header("Close Rule")]
-    [SerializeField] private float closeDelay = 2f;         //2초 후 닫기 허용
+    [SerializeField] private float closeDelay = 1f;         //이 시간 이후부터 배경 클릭으로 닫기 허용
 
-    private bool canClose;
-    private Coroutine delayCo;
-    private GameObject currentBox;
+    private EnumData.BoxType selectedBoxType = EnumData.BoxType.Normal; //선택된 상자 타입
 
-    //팝업이 열릴 때마다 호출
-    protected override void OnOpen()
+    private bool canClose;          //닫기 가능 여부(딜레이 이후 true)
+    private Coroutine delayCo;      //닫기 딜레이 코루틴
+    private GameObject currentBox;  //현재 표시 중인 상자 프리팹
+    private bool subscribed;        //가챠 이벤트 구독 여부
+
+    //ShopUIController에서 호출
+    //- 어떤 상자를 보여줄지 미리 세팅
+    public void ShowSelectedBox(EnumData.BoxType type)
     {
-        //열릴 때마다 닫기 딜레이 초기화
-        canClose = false;
-
-        if (delayCo != null)
-        {
-            StopCoroutine(delayCo);
-        }
-        delayCo = StartCoroutine(CoEnableClose());
-
-        //팝업을 열면 기본 박스(원하면) 하나 보여주기
-        ShowBox(armyBoxPrefab);
-
-        //이벤트 중복 구독 방지
-        if (GachaManager.Instance == null) return;
-        GachaManager.Instance.OnDrawItem -= HandleDrawItem;
-        GachaManager.Instance.OnDrawItem += HandleDrawItem;
-
-        //이전에 결과가 남아있을 수 있으니 기본 초기화
-        ClearResultUI();
+        selectedBoxType = type;
+        Debug.Log($"//ShopPopup SelectedBoxType = {type}");
     }
 
-    //팝업이 닫힐 때마다 호출
+    //팝업이 열릴 때 호출(UIManager.ShowPopup)
+    protected override void OnOpen()
+    {
+        Debug.Log("//ShopPopup Open");
+
+        SafeSetup();
+        ShowBox();
+    }
+
+    //팝업이 닫힐 때 호출(UIManager.ClosePopup)
     protected override void OnClose()
     {
+        Debug.Log("//ShopPopup Close");
+
         canClose = false;
 
         if (delayCo != null)
@@ -65,110 +64,167 @@ public class ShopPopup : UIPopup
             delayCo = null;
         }
 
-        //가챠 이벤트 해제(닫혔는데도 결과가 들어오면 UI가 꼬일 수 있음)
-        if (GachaManager.Instance != null)
-        {
-            GachaManager.Instance.OnDrawItem -= HandleDrawItem;
-        }
-
-        //박스 프리팹 인스턴스 정리(다음에 열었을 때 깔끔하게)
+        UnsubscribeGacha();
         ClearBox();
+        ClearResultUI();
     }
 
+    //팝업이 열린 상태에서 필요한 초기화 처리
+    private void SafeSetup()
+    {
+        canClose = false;
+
+        if (delayCo != null)
+        {
+            StopCoroutine(delayCo);
+        }
+
+        //닫기 딜레이 시작
+        delayCo = StartCoroutine(CoEnableClose());
+
+        ClearResultUI();
+        SubscribeGacha();
+    }
+
+    //closeDelay 이후부터 닫기 가능 상태로 전환
     private IEnumerator CoEnableClose()
     {
         yield return new WaitForSecondsRealtime(closeDelay);
+
         canClose = true;
+        Debug.Log("//ShopPopup canClose = true");
     }
 
+    //1초 이후 화면 아무 곳이나 클릭 시 팝업 닫기
     private void Update()
     {
-        //팝업이 켜져있는 동안만 입력 처리
         if (!gameObject.activeInHierarchy) return;
         if (!canClose) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            //UIManager가 Close를 호출해주는 구조라면 CloseTopPopup으로 닫는 게 제일 안전
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.CloseTopPopup();
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            Debug.Log("//ShopPopup Screen Click -> Close");
+            CloseSelf();
         }
     }
 
-    //군지원상자 버튼
-    public void OnClickArmyBox()
-    {        
-        ShowBox(armyBoxPrefab);
-
-        if (GachaManager.Instance == null) return;
-        GachaManager.Instance.DrawItemNormalBox();
-    }
-
-    //지구방위 보급품 버튼
-    public void OnClickEarthBox()
+    //자기 자신(상점 팝업) 닫기
+    private void CloseSelf()
     {
-        ShowBox(earthBoxPrefab);
-
-        if (GachaManager.Instance == null) return;
-        GachaManager.Instance.DrawItemEpicBox();
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ClosePopup(EnumData.PopupId.Shop);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
-    //뽑기 결과가 나오면 호출됨(GachaManager 이벤트)
+    //선택한 상자 프리팹을 화면에 표시
+    private void ShowBox()
+    {
+        if (boxSpawnRoot == null)
+        {
+            Debug.LogError("//ShopPopup boxSpawnRoot == null");
+            return;
+        }
+
+        GameObject prefab = null;
+
+        if (selectedBoxType == EnumData.BoxType.Normal)
+        {
+            prefab = normalBoxPrefab;
+        }
+        else if (selectedBoxType == EnumData.BoxType.High)
+        {
+            prefab = highBoxPrefab;
+        }
+
+        if (prefab == null)
+        {
+            Debug.LogError("//ShopPopup box prefab == null");
+            return;
+        }
+
+        ClearBox();
+        currentBox = Instantiate(prefab, boxSpawnRoot, false);
+
+        Debug.Log($"//ShopPopup ShowBox -> {prefab.name}");
+    }
+
+    //가챠 결과 이벤트 구독(팝업이 열려있는 동안만)
+    private void SubscribeGacha()
+    {
+        if (subscribed) return;
+        if (GachaManager.Instance == null) return;
+
+        GachaManager.Instance.OnDrawItem -= HandleDrawItem;
+        GachaManager.Instance.OnDrawItem += HandleDrawItem;
+
+        subscribed = true;
+        Debug.Log("//ShopPopup SubscribeGacha");
+    }
+
+    //가챠 결과 이벤트 해제
+    private void UnsubscribeGacha()
+    {
+        if (!subscribed) return;
+
+        if (GachaManager.Instance != null)
+        {
+            GachaManager.Instance.OnDrawItem -= HandleDrawItem;
+        }
+
+        subscribed = false;
+    }
+
+    //가챠 결과 수신 후 UI 반영
     private void HandleDrawItem(ItemData item)
     {
-        if (item == null) return;
+        if (item == null)
+        {
+            Debug.LogError("//HandleDrawItem item == null");
+            return;
+        }
 
-        //인벤토리에 저장
+        Debug.Log($"//Draw Item: {item.name} ({item.tier})");
+
+        //플레이어 인벤토리에 아이템 추가
         if (PlayerManager.Instance != null)
         {
             PlayerManager.Instance.AddItemInven(item);
         }
 
-        //아이콘 / 등급 이미지 표시
+        //아이콘 및 등급 UI 갱신
         if (DataManager.Instance != null)
         {
             if (itemIconImage != null)
             {
                 itemIconImage.sprite = DataManager.Instance.GetItemIcon(item);
-                itemIconImage.enabled = (itemIconImage.sprite != null);
+                itemIconImage.enabled = true;
             }
 
             if (gradeIconImage != null)
             {
                 gradeIconImage.sprite = DataManager.Instance.GetItemGrade(item);
-                gradeIconImage.enabled = (gradeIconImage.sprite != null);
+                gradeIconImage.enabled = true;
             }
         }
 
-        //아이템 이름
         if (itemNameText != null)
         {
             itemNameText.text = item.name;
         }
 
-        //아이템 등급 텍스트
         if (gradeText != null)
         {
-            gradeText.text = item.tier.ToString(); //Nice / Rare / Epic 등
+            gradeText.text = item.tier.ToString();
         }
     }
 
-    //박스 프리팹 표시(기존 인스턴스가 있으면 교체)
-    private void ShowBox(GameObject boxPrefab)
-    {
-        if (boxSpawnRoot == null) return;
-        if (boxPrefab == null) return;
 
-        ClearBox();
-        currentBox = Instantiate(boxPrefab, boxSpawnRoot, false);
-    }
-
+    //기존에 표시 중이던 상자 제거
     private void ClearBox()
     {
         if (currentBox == null) return;
@@ -177,6 +233,7 @@ public class ShopPopup : UIPopup
         currentBox = null;
     }
 
+    //결과 UI 초기화
     private void ClearResultUI()
     {
         if (itemIconImage != null)
