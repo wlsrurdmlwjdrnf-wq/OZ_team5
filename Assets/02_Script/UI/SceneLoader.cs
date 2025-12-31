@@ -8,7 +8,6 @@ public class SceneLoader : Singleton<SceneLoader>
 {
     protected override void Init()
     {
-        _IsDestroyOnLoad = true; //씬 넘어가도 유지
         base.Init();
     }
 

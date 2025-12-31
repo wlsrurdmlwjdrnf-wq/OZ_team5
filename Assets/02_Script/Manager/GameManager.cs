@@ -27,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     public float gameGold {  get; private set; }
     public bool isPlay { get; private set; } // 게임이 진행중인지 확인 변수
     public float gamePlayTime { get; private set; } // 게임 진행시간
+    public float bestGamePlayTime { get; private set; }
 
     [SerializeField]
     public float middleBossSpawnTime = 600.0f; // 준보스 등장시간 (10분)
@@ -46,6 +47,7 @@ public class GameManager : Singleton<GameManager>
         base.Init();
         isPlay = false;
         gamePlayTime = 0f;
+        bestGamePlayTime = 0f;
         gameGold = 50000f;
     }
 
@@ -145,5 +147,14 @@ public class GameManager : Singleton<GameManager>
             isFinalBoss = true;
             BossSpawn();
         }
+    }
+
+    public void ResetGamePlayTime()
+    {
+        gamePlayTime = 0f;
+    }
+    public void AddBestPlayTime(float time)
+    {
+        bestGamePlayTime = time;
     }
 }

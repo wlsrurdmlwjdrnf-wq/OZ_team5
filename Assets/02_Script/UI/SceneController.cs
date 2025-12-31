@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Slider loadingBar;                 //로딩 진행도 슬라이더(0~1)
     [SerializeField] private TextMeshProUGUI loadingText;       //로딩 퍼센트 텍스트
     [SerializeField] private float minLoadingShowTime = 0.2f;   //로딩 UI가 너무 빨리 꺼졌다 켜지는걸 방지
- 
+    public event Action OnLoadLobbyScene; 
     private AsyncOperation asyncOp; //현재 비동기 씬 로딩 작업
     private bool isLoading;         //중복 로드 방지용
 
@@ -39,7 +40,8 @@ public class SceneController : MonoBehaviour
     {
         //로딩중에 또 누르면 중복 실행될 수 있어서 방어
         if (isLoading) return;
-
+        GameManager.Instance.ResetGamePlayTime();
+        OnLoadLobbyScene?.Invoke();
         StartCoroutine(CoLoadSceneAuto(targetScene));
     }
 
@@ -58,10 +60,7 @@ public class SceneController : MonoBehaviour
     {
         isLoading = true;
         asyncOp = null;
-
-        //일시정지/레벨업 등으로 게임이 멈춰있을 수 있으므로 리셋
         Time.timeScale = 1f;
-
         //로딩 UI 표시
         if (loadingPanel != null)
         {
