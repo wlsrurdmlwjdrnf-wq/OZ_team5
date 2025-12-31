@@ -38,6 +38,14 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             playerData.playerEquipInven[item.type] = item;
             playerData.playerGeneralInven[slot] = empty;
+            if (item.name == "Kunai")
+            {
+                playerData.playerSkillInven[0] = DataManager.Instance.GetIngameItemData(10001);
+            }
+            if (item.name == "Shotgun")
+            {
+                playerData.playerSkillInven[0] = DataManager.Instance.GetIngameItemData(10002);
+            }
         }
         else
         {

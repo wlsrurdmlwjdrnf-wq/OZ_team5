@@ -40,5 +40,6 @@ public class BaseSkillBoxUI : MonoBehaviour
     protected void OnClickGetSkill()
     {
         SkillSystem.Instance.SelectSkill(_item.id);
+        UIManager.Instance.ClosePopup(EnumData.PopupId.LevelUp);
     }
 }

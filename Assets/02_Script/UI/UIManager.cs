@@ -164,6 +164,10 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
+        if (id == PopupId.LevelUp)
+        {
+            GameManager.Instance.GameResume();
+        }
 
         popupStack.Pop();
         top.Close();
