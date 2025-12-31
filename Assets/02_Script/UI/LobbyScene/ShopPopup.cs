@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //로비 상점 팝업
@@ -11,11 +12,11 @@ using UnityEngine.UI;
 public class ShopPopup : UIPopup
 {
     [Header("Box Prefabs (프리팹 2개 연결)")]
-    [SerializeField] private GameObject normalBoxPrefab;   //일반 상자 프리팹(군지원 상자)
-    [SerializeField] private GameObject highBoxPrefab;     //고급 상자 프리팹(지구방위 보급품)
+    [SerializeField] private GameObject normalBoxPrefab;    //일반 상자 프리팹(군지원 상자)
+    [SerializeField] private GameObject highBoxPrefab;      //고급 상자 프리팹(지구방위 보급품)
 
     [Header("Box Spawn Root (큰 박스가 표시될 자리)")]
-    [SerializeField] private Transform boxSpawnRoot;        //프리펩이 붙을 부모(빈 오브젝트 추천)
+    [SerializeField] private Transform boxSpawnRoot;        //프리팹이 붙을 부모(빈 오브젝트 추천)
 
     [Header("Draw Result UI")]
     [SerializeField] private Image itemIconImage;           //뽑은 아이템 이미지
@@ -24,36 +25,36 @@ public class ShopPopup : UIPopup
     [SerializeField] private TextMeshProUGUI gradeText;     //뽑은 아이템 등급 텍스트
 
     [Header("Close Rule")]
-    [SerializeField] private float closeDelay = 1f;         //1초 후 닫기 허용
+    [SerializeField] private float closeDelay = 1f;         //이 시간 이후부터 배경 클릭으로 닫기 허용
 
-    private bool canClose;
-    private Coroutine delayCo;
-    private GameObject currentBox;
-    private bool subscribed;
+    private EnumData.BoxType selectedBoxType = EnumData.BoxType.Normal; //선택된 상자 타입
 
-    private void OnEnable()
+    private bool canClose;          //닫기 가능 여부(딜레이 이후 true)
+    private Coroutine delayCo;      //닫기 딜레이 코루틴
+    private GameObject currentBox;  //현재 표시 중인 상자 프리팹
+    private bool subscribed;        //가챠 이벤트 구독 여부
+
+    //ShopUIController에서 호출
+    //- 어떤 상자를 보여줄지 미리 세팅
+    public void ShowSelectedBox(EnumData.BoxType type)
     {
-        Debug.Log($"//ShopPopup OnEnable active:{gameObject.activeInHierarchy}");
-
-        //UIManager를 안 거쳐도(=OnOpen 미호출) 팝업이 켜지는 케이스를 커버
-        SafeSetupIfNeeded();
+        selectedBoxType = type;
+        Debug.Log($"//ShopPopup SelectedBoxType = {type}");
     }
 
-    //팝업이 열릴 때마다 호출
+    //팝업이 열릴 때 호출(UIManager.ShowPopup)
     protected override void OnOpen()
     {
-        Debug.Log("//ShopPopup OnOpen");
+        Debug.Log("//ShopPopup Open");
 
-        SafeSetupIfNeeded();
-
-        //열릴 때 기본 박스 하나 보여주기(원하면 제거 가능)
-        ShowBox(normalBoxPrefab);
+        SafeSetup();
+        ShowBox();
     }
 
-    //팝업이 닫힐 때마다 호출
+    //팝업이 닫힐 때 호출(UIManager.ClosePopup)
     protected override void OnClose()
     {
-        Debug.Log("//ShopPopup OnClose");
+        Debug.Log("//ShopPopup Close");
 
         canClose = false;
 
@@ -65,128 +66,107 @@ public class ShopPopup : UIPopup
 
         UnsubscribeGacha();
         ClearBox();
+        ClearResultUI();
     }
 
-    //OnOpen이 안 불리는 경우를 대비해서, 여기서도 동일하게 세팅되도록 묶음
-    private void SafeSetupIfNeeded()
+    //팝업이 열린 상태에서 필요한 초기화 처리
+    private void SafeSetup()
     {
-        Debug.Log("//ShopPopup SafeSetupIfNeeded");
-
-        ValidateRefs();
-
         canClose = false;
 
         if (delayCo != null)
         {
             StopCoroutine(delayCo);
         }
+
+        //닫기 딜레이 시작
         delayCo = StartCoroutine(CoEnableClose());
 
         ClearResultUI();
-
         SubscribeGacha();
     }
 
-    private void ValidateRefs()
-    {
-        //여기서 빠진 연결이 있으면 바로 로그로 잡힘
-        if (boxSpawnRoot == null) Debug.LogError("//ShopPopup boxSpawnRoot == null (인스펙터 연결 필요)");
-        if (normalBoxPrefab == null) Debug.LogError("//ShopPopup normalBoxPrefab == null (프리팹 연결 필요)");
-        if (highBoxPrefab == null) Debug.LogError("//ShopPopup highBoxPrefab == null (프리팹 연결 필요)");
-
-        if (itemIconImage == null) Debug.LogWarning("//ShopPopup itemIconImage == null");
-        if (gradeIconImage == null) Debug.LogWarning("//ShopPopup gradeIconImage == null");
-        if (itemNameText == null) Debug.LogWarning("//ShopPopup itemNameText == null");
-        if (gradeText == null) Debug.LogWarning("//ShopPopup gradeText == null");
-    }
-
+    //closeDelay 이후부터 닫기 가능 상태로 전환
     private IEnumerator CoEnableClose()
     {
-        Debug.Log($"//ShopPopup CloseDelay Start: {closeDelay}");
-
         yield return new WaitForSecondsRealtime(closeDelay);
 
         canClose = true;
         Debug.Log("//ShopPopup canClose = true");
     }
 
+    //1초 이후 화면 아무 곳이나 클릭 시 팝업 닫기
     private void Update()
     {
-        //팝업이 켜져있는 동안만 입력 처리
         if (!gameObject.activeInHierarchy) return;
-
         if (!canClose) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("//ShopPopup Background Click -> Close");
-
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.CloseTopPopup();
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            Debug.Log("//ShopPopup Screen Click -> Close");
+            CloseSelf();
         }
     }
 
-    //일반 상자 버튼(군지원)
-    public void OnClickNormalBox()
+    //자기 자신(상점 팝업) 닫기
+    private void CloseSelf()
     {
-        Debug.Log("//ShopPopup OnClickNormalBox");
-
-        SafeSetupIfNeeded(); //혹시 OnOpen 없이 들어와도 세팅됨
-
-        ShowBox(normalBoxPrefab);
-
-        if (GachaManager.Instance == null)
+        if (UIManager.Instance != null)
         {
-            Debug.LogError("//GachaManager.Instance == null");
+            UIManager.Instance.ClosePopup(EnumData.PopupId.Shop);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    //선택한 상자 프리팹을 화면에 표시
+    private void ShowBox()
+    {
+        if (boxSpawnRoot == null)
+        {
+            Debug.LogError("//ShopPopup boxSpawnRoot == null");
             return;
         }
 
-        Debug.Log("//Call GachaManager.DrawItemNormalBox");
-        GachaManager.Instance.DrawItemNormalBox();
-    }
+        GameObject prefab = null;
 
-    //고급 상자 버튼(지구방위)
-    public void OnClickHighBox()
-    {
-        Debug.Log("//ShopPopup OnClickHighBox");
-
-        SafeSetupIfNeeded();
-
-        ShowBox(highBoxPrefab);
-
-        if (GachaManager.Instance == null)
+        if (selectedBoxType == EnumData.BoxType.Normal)
         {
-            Debug.LogError("//GachaManager.Instance == null");
+            prefab = normalBoxPrefab;
+        }
+        else if (selectedBoxType == EnumData.BoxType.High)
+        {
+            prefab = highBoxPrefab;
+        }
+
+        if (prefab == null)
+        {
+            Debug.LogError("//ShopPopup box prefab == null");
             return;
         }
 
-        Debug.Log("//Call GachaManager.DrawItemEpicBox");
-        GachaManager.Instance.DrawItemEpicBox();
+        ClearBox();
+        currentBox = Instantiate(prefab, boxSpawnRoot, false);
+
+        Debug.Log($"//ShopPopup ShowBox -> {prefab.name}");
     }
 
+    //가챠 결과 이벤트 구독(팝업이 열려있는 동안만)
     private void SubscribeGacha()
     {
         if (subscribed) return;
-
-        if (GachaManager.Instance == null)
-        {
-            Debug.LogError("//SubscribeGacha fail: GachaManager.Instance == null");
-            return;
-        }
+        if (GachaManager.Instance == null) return;
 
         GachaManager.Instance.OnDrawItem -= HandleDrawItem;
         GachaManager.Instance.OnDrawItem += HandleDrawItem;
 
         subscribed = true;
-        Debug.Log("//SubscribeGacha OK");
+        Debug.Log("//ShopPopup SubscribeGacha");
     }
 
+    //가챠 결과 이벤트 해제
     private void UnsubscribeGacha()
     {
         if (!subscribed) return;
@@ -197,9 +177,9 @@ public class ShopPopup : UIPopup
         }
 
         subscribed = false;
-        Debug.Log("//UnsubscribeGacha OK");
     }
 
+    //가챠 결과 수신 후 UI 반영
     private void HandleDrawItem(ItemData item)
     {
         if (item == null)
@@ -208,32 +188,28 @@ public class ShopPopup : UIPopup
             return;
         }
 
-        Debug.Log($"//HandleDrawItem id:{item.id} name:{item.name} tier:{item.tier}");
+        Debug.Log($"//Draw Item: {item.name} ({item.tier})");
 
-        //인벤 저장은 너가 다른쪽에서 한다면 여기 빼도 됨
+        //플레이어 인벤토리에 아이템 추가
         if (PlayerManager.Instance != null)
         {
             PlayerManager.Instance.AddItemInven(item);
-            Debug.Log("//AddItemInven OK");
         }
 
+        //아이콘 및 등급 UI 갱신
         if (DataManager.Instance != null)
         {
             if (itemIconImage != null)
             {
                 itemIconImage.sprite = DataManager.Instance.GetItemIcon(item);
-                itemIconImage.enabled = (itemIconImage.sprite != null);
+                itemIconImage.enabled = true;
             }
 
             if (gradeIconImage != null)
             {
                 gradeIconImage.sprite = DataManager.Instance.GetItemGrade(item);
-                gradeIconImage.enabled = (gradeIconImage.sprite != null);
+                gradeIconImage.enabled = true;
             }
-        }
-        else
-        {
-            Debug.LogError("//DataManager.Instance == null");
         }
 
         if (itemNameText != null)
@@ -247,42 +223,19 @@ public class ShopPopup : UIPopup
         }
     }
 
-    private void ShowBox(GameObject boxPrefab)
-    {
-        if (boxSpawnRoot == null)
-        {
-            Debug.LogError("//ShowBox fail: boxSpawnRoot == null");
-            return;
-        }
 
-        if (boxPrefab == null)
-        {
-            Debug.LogError("//ShowBox fail: boxPrefab == null");
-            return;
-        }
-
-        Debug.Log($"//ShowBox prefab:{boxPrefab.name}");
-
-        ClearBox();
-
-        currentBox = Instantiate(boxPrefab, boxSpawnRoot, false);
-        Debug.Log($"//Box Instantiated -> {currentBox.name}");
-    }
-
+    //기존에 표시 중이던 상자 제거
     private void ClearBox()
     {
         if (currentBox == null) return;
-
-        Debug.Log($"//ClearBox destroy:{currentBox.name}");
 
         Destroy(currentBox);
         currentBox = null;
     }
 
+    //결과 UI 초기화
     private void ClearResultUI()
     {
-        Debug.Log("//ClearResultUI");
-
         if (itemIconImage != null)
         {
             itemIconImage.sprite = null;

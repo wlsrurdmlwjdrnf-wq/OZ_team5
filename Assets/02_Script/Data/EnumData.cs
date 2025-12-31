@@ -72,6 +72,12 @@ public static class EnumData
         Hp
     }
 
+    public enum BoxType
+    {
+        Normal,
+        High
+    }
+
     public enum BGM
     {
         BattleBGM,

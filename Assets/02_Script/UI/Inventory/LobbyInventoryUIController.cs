@@ -1,18 +1,23 @@
+using System;
 using UnityEngine;
 
 //로비 인벤토리 UI 전체를 관리하는 컨트롤러
 // - 플레이어 인벤 데이터(PlayerManager.playerData)를 읽어서 UI에 뿌려줌
-// - 슬롯 클릭 이벤트를 받아 "아이템 팝업"을 띄우는 역할
+// - 슬롯 클릭 이벤트를 받아 "아이템 팝업 요청"만 보냄
+// - 팝업을 실제로 여는 책임은 LobbyUIController가 담당
 // - 실제 장착/해제 로직은 PlayerManager가 담당
 public class LobbyInventoryUIController : BaseInventoryUIController
 {
     [SerializeField] private InventorySlotEquipUI[] equipUI;    //장비 슬롯 UI 배열(무기, 방어구 등)
     [SerializeField] private InventorySlotGeneralUI[] generalUI;//일반 인벤 슬롯 UI 배열(가방)
-    [SerializeField] private InventoryItemPopup itemPopup;      //아이템 상세 팝업 클릭시 팝업을 열어서 장착/해제 버튼을 제공
+
+    //-변경:상위 컨트롤러에게 팝업 오픈을 요청하는 이벤트
+    //item:클릭한 아이템, slot:슬롯 번호, isEquipMode:true=가방(장착), false=장착슬롯(해제)
+    public event Action<ItemData, int, bool> OnRequestItemPopup;
 
     protected override void Start()
     {
-        //BaseInventoryUIController에서
+        //BaseInventoryUIController에서 플레이어 이벤트 구독, 초기 인벤 UI 로드
         base.Start();
 
         //각 슬롯에 "몇번 슬롯인지" 번호를 설정
@@ -23,7 +28,7 @@ public class LobbyInventoryUIController : BaseInventoryUIController
     }
 
     //슬롯 번호 설정
-    //UI 배열의 인덱스를 실제 인벤 인덱스로 사용
+    //UI 배열의 인덱스를 실제 인벤 데이터 인덱스로 사용
     protected override void SetSlotNum()
     {
         //장비 슬롯 번호 설정(0~5)
@@ -89,47 +94,43 @@ public class LobbyInventoryUIController : BaseInventoryUIController
         }
     }
 
-    //일반 인벤 슬롯 클릭 처리
-    // - 가방 아이템 클릭 시 호출
-    // - "장착" 가능한 아이템이면 아이템 팝업을 띄움
+    //일반 인벤 슬롯 클릭 처리(가방)
+    //-변경:여기서 itemPopup.Open()을 하지 않고, 이벤트로 요청만 보냄
     private void OnClickGeneralSlot(int slot)
     {
-        if (itemPopup == null) return;
+        if (PlayerManager.Instance == null) return;
+        if (PlayerManager.Instance.playerData == null) return;
 
-        ItemData item =
-            PlayerManager.Instance.playerData.playerGeneralInven[slot];
+        ItemData item = PlayerManager.Instance.playerData.playerGeneralInven[slot];
 
-        //빈 슬롯이거나 NONE 아이템이면 무시
         if (item == null) return;
         if (item.id == 0) return;
         if (item.type == EnumData.EquipmentType.NONE) return;
 
-        //가방 슬롯이므로 "장착 모드"로 팝업에 데이터 전달
-        itemPopup.Bind(item, slot, true);
-
-        //UIPopup.Open 호출
-        itemPopup.Open();
+        if (OnRequestItemPopup != null)
+        {
+            Debug.Log($"//LobbyInventoryUIController Request ItemPopup General slot:{slot} id:{item.id}");
+            OnRequestItemPopup.Invoke(item, slot, true);
+        }
     }
 
-    //장착 슬롯 클릭 처리
-    // - 이미 장착된 아이템 클릭 시 호출
-    // - "해제" 가능한 아이템이면 아이템 팝업을 띄움
+    //장착 슬롯 클릭 처리(장비칸)
+    //-변경:여기서 itemPopup.Open()을 하지 않고, 이벤트로 요청만 보냄
     private void OnClickEquipSlot(int slot)
     {
-        if (itemPopup == null) return;
+        if (PlayerManager.Instance == null) return;
+        if (PlayerManager.Instance.playerData == null) return;
 
-        ItemData item =
-            PlayerManager.Instance.playerData.playerEquipInven[(EnumData.EquipmentType)slot];
+        ItemData item = PlayerManager.Instance.playerData.playerEquipInven[(EnumData.EquipmentType)slot];
 
-        //빈 슬롯이거나 NONE 아이템이면 무시
         if (item == null) return;
         if (item.id == 0) return;
         if (item.type == EnumData.EquipmentType.NONE) return;
 
-        //장착 슬롯이므로 "해제 모드"로 팝업에 데이터 전달
-        itemPopup.Bind(item, slot, false);
-
-        //UIPopup.Open 호출
-        itemPopup.Open();
+        if (OnRequestItemPopup != null)
+        {
+            Debug.Log($"//LobbyInventoryUIController Request ItemPopup Equip slot:{slot} id:{item.id}");
+            OnRequestItemPopup.Invoke(item, slot, false);
+        }
     }
 }
