@@ -228,20 +228,22 @@ public class InventoryItemPopup : UIPopup
             iconBg = baseGrade;
         }
 
-        if (textBg == null)
+        //만약 별도 스프라이트 로드가 실패하면, 아이콘 배경만 baseGrade로 폴백
+        if (iconBg == null)
         {
-            textBg = baseGrade;
+            iconBg = baseGrade;
         }
 
+        //텍스트 배경은 없으면 숨김(중요)
         ApplyImageSprite(gradeBgForIcon, iconBg);
-        ApplyImageSprite(gradeBgForText, textBg);
+        ApplyImageSprite(gradeBgForText, textBg); //textBg가 null이면 enabled=false로 꺼짐
     }
 
     private Sprite LoadGradeSprite(string fileName)
     {
-        //Resources/Icons/Grade/Elite 같은 형태로 관리한다는 가정
+        //Resources/Icons/Elite 같은 형태로 관리한다는 가정
         //너가 폴더를 Grade로 정리했다고 했던 로그 형식과 맞춤
-        Sprite s = Resources.Load<Sprite>($"Icons/Grade/{fileName}");
+        Sprite s = Resources.Load<Sprite>($"Icons/{fileName}");
         return s;
     }
 
