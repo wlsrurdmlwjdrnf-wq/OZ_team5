@@ -9,7 +9,7 @@ public class GatlingGunSkill : SkillBase
     protected override void Awake()
     {
         base.Awake();
-        Managers.Instance.Pool.CreatePool(gatlingPjtPrefab, 30);
+        Managers.Instance.Pool.CreatePool(gatlingPjtPrefab, 50);
     }
     private void OnEnable()
     {

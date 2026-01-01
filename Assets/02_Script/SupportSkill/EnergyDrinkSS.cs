@@ -6,7 +6,7 @@ public class EnergyDrinkSS : SupportSkillBase
 {
     public override int Id { get; set; } = 4004;
     private WaitForSeconds hpRestoreInterval = new WaitForSeconds(5f);
-    private float restoreAmount = 0.01f;
+    private float restoreAmount = 0.05f;
 
     protected override void Start()
     {
@@ -33,6 +33,7 @@ public class EnergyDrinkSS : SupportSkillBase
                     player.PlayerStat().playerCurrentHp = player.PlayerStat().playerMaxHp;
                 }
             }
+            player.UpdateHpBar();
         }
     }
 }

@@ -145,20 +145,7 @@ public class PlayerManager : Singleton<PlayerManager>
         }
 
         playerData.playerMaxHp = (int)MathF.Round(playerData.playerMaxHp * (1.0f + (playerData.resultHpPer / 100.0f)));
-
-        if (playerData.playerMaxHp > oldMaxHp)
-        {
-            float temp = playerData.playerMaxHp - oldMaxHp;
-            playerData.playerCurrentHp += temp;
-        }
-        else if (playerData.playerMaxHp < oldMaxHp)
-        {
-            if (playerData.playerCurrentHp > playerData.playerMaxHp)
-            {
-                playerData.playerCurrentHp = playerData.playerMaxHp;
-            }            
-        }
-
+        playerData.playerCurrentHp = playerData.playerMaxHp; 
         playerData.playerAtk = (int)MathF.Round(playerData.playerAtk * (1.0f + (playerData.resultAtkPer / 100.0f))) * (1f + totalMtp);
     }
 }

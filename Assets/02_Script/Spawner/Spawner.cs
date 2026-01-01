@@ -53,7 +53,7 @@ public class Spawner : MonoBehaviour
         {
             Managers.Instance.Pool.CreatePool(itemBoxPrefab, 50);
 
-            Managers.Instance.Pool.CreatePool(zombiePrefab, 100);
+            Managers.Instance.Pool.CreatePool(zombiePrefab, 150);
             Managers.Instance.Pool.CreatePool(bigZombiePrefab, 30);
             Managers.Instance.Pool.CreatePool(zomPlantPrefab, 30);
             Managers.Instance.Pool.CreatePool(zomDogPrefab, 100);
@@ -143,7 +143,7 @@ public class Spawner : MonoBehaviour
     {
         ClearField(player.position, 30f);
         StartCoroutine(SpawnItemBox());
-        StartCoroutine(SpawnEnemy(zomPlantPrefab, 2f));
+        StartCoroutine(SpawnEnemy(zomPlantPrefab, 3f));
         StartCoroutine(SpawnEnemy(zomDogPrefab, 0.5f));
         StartCoroutine(SpawnBoss(boss2Prefab, 60f));
     }
@@ -151,7 +151,7 @@ public class Spawner : MonoBehaviour
     {
         ClearField(player.position, 30f);
         StartCoroutine(SpawnItemBox());
-        StartCoroutine(SpawnEnemy(zomPlantPrefab, 2f));
+        StartCoroutine(SpawnEnemy(zomPlantPrefab, 3f));
         StartCoroutine(SpawnEnemy(zomDogPrefab, 0.5f));
         StartCoroutine(SpawnEnemy(suicideBomberPrefab, 3f));
         StartCoroutine(SpawnBoss(boss3Prefab, 60f));

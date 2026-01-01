@@ -49,12 +49,13 @@ public class Player : MonoBehaviour
         anim.SetBool(isMovingHash, isMoving);
 
         PullItems();
+
     }
     private void FixedUpdate()
     {
         rb.velocity = input * playerData.playerSpeed;
     }
-    private void UpdateHpBar()
+    public void UpdateHpBar()
     {
         hpBar.UpdateHp(playerData.playerCurrentHp, playerData.playerMaxHp);
     }
