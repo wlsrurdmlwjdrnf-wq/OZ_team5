@@ -305,77 +305,41 @@ public class InventoryItemPopup : UIPopup
     }
 
     //infoTexts(5개) 채우기
-    //-0:SkillInfo(있으면) / 없으면 "설명 없음"
-    //-1:등급
-    //-2:타입
-    //-3:스탯(+수치만)
-    //-4:추가효과(임시)
     private void ApplyInfoTexts(ItemData data)
     {
         if (infoTexts == null || infoTexts.Length == 0) return;
 
+        //전부 비우고 시작(잔상 방지)
         for (int i = 0; i < infoTexts.Length; i++)
         {
-            if (infoTexts[i] != null)
-            {
-                infoTexts[i].text = "";
-            }
+            if (infoTexts[i] != null) infoTexts[i].text = "";
         }
 
-        string skillInfo = null;
+        //이 아이템이 공격형인지/체력형인지 결정
+        bool isAtk = (GetStatKind(data.type) == StatKind.Attack);
 
-        if (DataManager.Instance != null && DataManager.Instance.SkillInfo != null)
+        //표시할 값 만들기(요구사항: "+숫자"만 보이게)
+        //- atkPercent가 0이면 mtp라도 있으면 사용, 둘다 없으면 "+0%" 대신 "-" 처리
+        string value = "";
+        if (isAtk)
         {
-            if (DataManager.Instance.SkillInfo.TryGetValue(data.id, out string info))
-            {
-                skillInfo = info;
-            }
+            if (data.atkPercent != 0) value = $"+{data.atkPercent}%";
+            else if (data.atkMtp > 0f) value = $"+x{data.atkMtp:0.##}";
+            else value = "-";
+        }
+        else
+        {
+            value = (data.hpPercent != 0) ? $"+{data.hpPercent}%" : "-";
         }
 
-        if (infoTexts.Length >= 1 && infoTexts[0] != null)
+        //5줄 채우기
+        //원하면 줄 수는 infoTexts.Length만큼 자동 적용됨
+        for (int i = 0; i < infoTexts.Length; i++)
         {
-            infoTexts[0].text = string.IsNullOrEmpty(skillInfo) ? "설명 없음" : skillInfo;
-        }
+            if (infoTexts[i] == null) continue;
 
-        if (infoTexts.Length >= 2 && infoTexts[1] != null)
-        {
-            infoTexts[1].text = data.tier.ToString();
-        }
-
-        if (infoTexts.Length >= 3 && infoTexts[2] != null)
-        {
-            infoTexts[2].text = data.type.ToString();
-        }
-
-        if (infoTexts.Length >= 4 && infoTexts[3] != null)
-        {
-            StatKind statKind = GetStatKind(data.type);
-
-            if (statKind == StatKind.Attack)
-            {
-                if (data.atkPercent != 0)
-                {
-                    infoTexts[3].text = $"+{data.atkPercent}%";
-                }
-                else if (data.atkMtp > 0f)
-                {
-                    infoTexts[3].text = $"+{data.atkMtp:0.##}";
-                }
-                else
-                {
-                    infoTexts[3].text = "-";
-                }
-            }
-            else
-            {
-                infoTexts[3].text = data.hpPercent != 0 ? $"+{data.hpPercent}%" : "-";
-            }
-        }
-
-        if (infoTexts.Length >= 5 && infoTexts[4] != null)
-        {
-            //프로젝트 룰이 확정되면 여기 교체
-            infoTexts[4].text = "-";
+            if (isAtk) infoTexts[i].text = $"공격력 {value}";
+            else infoTexts[i].text = $"체력 {value}";
         }
     }
 
