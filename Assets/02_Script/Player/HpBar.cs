@@ -4,8 +4,9 @@ using UnityEngine.UI;
 public class HpBar : MonoBehaviour
 {
     [SerializeField] private Image fillImage;
+    [SerializeField] private Vector3 offset;
+
     private Transform target;
-    private Vector3 offset = new Vector3(0, -0.5f, 0);
 
     public void Init(Transform targetTransform)
     {

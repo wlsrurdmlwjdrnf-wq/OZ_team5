@@ -1,22 +1,27 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
+    //임시 스킬 정보
+    public Dictionary<int, string> SkillInfo;   
 
-    [Tooltip("아이템, 특수효과SO, 인게임무기스킬,지원폼 컨테이너")]
-    public Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
-    public Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
-    public Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
+    // 종류별 아이템 컨테이너
+    private Dictionary<int, ItemData> itemDataDic = new Dictionary<int, ItemData>();
+    private Dictionary<int, EquipmentEffectSO> equipmentEffectDic = new Dictionary<int, EquipmentEffectSO>();
+    private Dictionary<int, IngameItemData> ingameItemDataDic = new Dictionary<int, IngameItemData>();
 
-
-    [Tooltip("등급별 분류 컨테이너")]
-    public Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
-
-
+    private Dictionary<ItemData, Sprite> itemGrade = new Dictionary<ItemData, Sprite>();
+    private Dictionary<IngameItemData, Sprite> ingameItemGrade = new Dictionary<IngameItemData, Sprite>();  
+    
+    //뽑기를 위한 티어별 아이템 컨테이너
+    private Dictionary<EnumData.EquipmentTier, List<ItemData>> itemRarityDic = new Dictionary<EnumData.EquipmentTier, List<ItemData>>();
+    private PlayerData basePlayerData;
     protected override void Init()
     {
         base.Init();
@@ -24,10 +29,32 @@ public class DataManager : Singleton<DataManager>
         LoadEffectSO(); // 장비에 부여된 특수효과 데이터 로드
         LoadIngameItemData(); // 무기스킬, 지원폼 데이터 로드
         LoadRarityItemData(); // 티어별 데이터 로드
+        SetPlayerBaseData();
         // LogData(); // 테스트용 로그함수
+        SkillInfo = new Dictionary<int, string>()
+        {
+            { 3000, "화염병 투척" },
+            { 3001, "쉴드 생성" },
+            { 3002, "주위를 회전하는 수호자 소환" },
+            { 3003, "축구공을 던짐" },
+            { 3004, "드릴샷 발사" },
+            { 4001, "공격력 + 10%" },
+            { 4002, "경험치 획득량 + 8%" },
+            { 4003, "골드 획득량 + 8%" },
+            { 4004, "5초마다 최대 HP의 1% 만큼 체력 회복" },
+            { 4005, "이동속도 + 10%" },
+            { 10001, "쿠나이" },
+            { 10002, "샷건" },
+            { 20001, "쿠나이 진화" },
+            { 20002, "샷건 진화" }
+        };
     }
-
     #region 데이터 로드 함수
+    private void SetPlayerBaseData()
+    {
+        basePlayerData = new PlayerData();
+        basePlayerData.SetPlayerInven();
+    }
 
     private void LoadEffectSO()
     {
@@ -61,11 +88,12 @@ public class DataManager : Singleton<DataManager>
                     continue;
                 }
                 data.name = Convert.ToString(d["Name"]);
+                data.icon = Resources.Load<Sprite>($"Icons/{data.name}");
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.EquipmentType ety)) ? ety : EnumData.EquipmentType.NONE;
                 data.tier = (d.ContainsKey("Tier") && Enum.TryParse(d["Tier"].ToString(), out EnumData.EquipmentTier etr)) ? etr : EnumData.EquipmentTier.NONE;
                 data.atkMtp = (d.ContainsKey("AtkMtp") && float.TryParse(d["AtkMtp"].ToString(), out float atkmtp)) ? atkmtp : -1.0f;
-                data.atkPercent = (d.ContainsKey("AtkPercent") && int.TryParse(d["AtkPercent"].ToString(), out int atkper)) ? atkper : -1;
-                data.hpPercent = (d.ContainsKey("HpPercent") && int.TryParse(d["HpPercent"].ToString(), out int hpper)) ? hpper : -1;
+                data.atkPercent = (d.ContainsKey("AtkPercent") && int.TryParse(d["AtkPercent"].ToString(), out int atkper)) ? atkper : 0;
+                data.hpPercent = (d.ContainsKey("HpPercent") && int.TryParse(d["HpPercent"].ToString(), out int hpper)) ? hpper : 0;
                 data.specialEffectID = (d.ContainsKey("Effect") && int.TryParse(d["Effect"].ToString(), out int efc)) ? efc : -1;
                 data.evolutionID = (d.ContainsKey("EvID") && int.TryParse(d["EvID"].ToString(), out int eid)) ? eid : -1;
                 // 조합이 없으면 -1
@@ -105,18 +133,14 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadRarityItemData()
     {
-        itemRarityDic.Add(EnumData.EquipmentTier.Nice, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Rare, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Elite, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Epic, new List<ItemData>());
-        itemRarityDic.Add(EnumData.EquipmentTier.Legendary, new List<ItemData>());
+        foreach (EnumData.EquipmentTier tier in Enum.GetValues(typeof(EnumData.EquipmentTier)))
+        {
+            itemRarityDic[tier] = new List<ItemData>();
+        }
 
         foreach (var item  in itemDataDic.Values)
         {
-            if (itemRarityDic.ContainsKey(item.tier))
-            {
-                itemRarityDic[item.tier].Add(item);
-            }
+            itemRarityDic[item.tier].Add(item);
         }
     }
 
@@ -138,7 +162,7 @@ public class DataManager : Singleton<DataManager>
 
                 data.id = Convert.ToInt32(d["ID"]);
 
-                if (itemDataDic.ContainsKey(data.id))
+                if (ingameItemDataDic.ContainsKey(data.id))
                 {
                     //중복ID로그
                     Debug.LogError($"ID : {data.id}는 이미 존재하는 ID 입니다.");
@@ -146,11 +170,14 @@ public class DataManager : Singleton<DataManager>
                 }
 
                 data.name = Convert.ToString(d["Name"]);
+                data.icon = Resources.Load<Sprite>($"Icons/{data.name}");
                 data.type = (d.ContainsKey("Type") && Enum.TryParse(d["Type"].ToString(), out EnumData.SkillType skty)) ? skty : EnumData.SkillType.NONE;
                 data.damage = (d.ContainsKey("Damage") && int.TryParse(d["Damage"].ToString(), out int dmg)) ? dmg : -1;
                 data.level = (d.ContainsKey("Level") && int.TryParse(d["Level"].ToString(), out int lv)) ? lv : 1;
                 data.ptCount = (d.ContainsKey("PtCount") && int.TryParse(d["PtCount"].ToString(), out int ptc)) ? ptc : -1;
                 data.ptSpeed = (d.ContainsKey("PtSpeed") && int.TryParse(d["PtSpeed"].ToString(), out int pts)) ? pts : -1;
+                data.cooldown = (d.ContainsKey("Cooldown") && float.TryParse(d["Cooldown"].ToString(), out float col)) ? col : -1f;
+                data.lifeTime = (d.ContainsKey("LifeTime") && float.TryParse(d["LifeTime"].ToString(), out float ltm)) ? ltm : -1f;
                 data.specialEffectID = (d.ContainsKey("Effect") && int.TryParse(d["Effect"].ToString(), out int efso)) ? efso : -1;
                 data.EvID = (d.ContainsKey("EvID") && int.TryParse(d["EvID"].ToString(), out int ev)) ? ev : -1;
 
@@ -187,32 +214,115 @@ public class DataManager : Singleton<DataManager>
         }
         //로드완료
         Debug.Log("무기스킬 / 지원폼 데이터 로드완료");
-    }
+    }    
+   
 
 
     #endregion
 
+    #region 데이터 겟 함수
 
-    // 아이템 정보 리턴함수
+    public PlayerData GetPlayerBaseStat()
+    {
+        return basePlayerData;
+    }
+
     public ItemData GetItemData(int id)
     {
         if (itemDataDic.ContainsKey(id)) return itemDataDic[id];
-            return null;        
+        return null;
+    }
+
+    public IngameItemData GetIngameItemData(int id)
+    {
+        if (ingameItemDataDic.ContainsKey(id)) return ingameItemDataDic[id];
+        return null;
+    }
+
+    public EquipmentEffectSO GetEquipEffectData(int id)
+    {
+        if (equipmentEffectDic.ContainsKey(id)) return equipmentEffectDic[id];
+        return null;
+    }
+
+    public bool TryGetIngameItem(int id, out IngameItemData item)
+    {
+        return ingameItemDataDic.TryGetValue(id, out item);
     }
 
     // 등급별 아이템 리스트 리턴함수
     public List<ItemData> GetItemRarityList(EnumData.EquipmentTier tier)
     {
         if (itemRarityDic.ContainsKey(tier)) return itemRarityDic[tier];
-            return null;
+        return null;
+    }
+    
+    public Sprite GetItemGrade(ItemData item)
+    {
+        if (itemGrade.TryGetValue(item, out Sprite sprite))
+        {
+            return sprite;
+        }
+
+        Sprite newSprite = Resources.Load<Sprite>($"Icons/{item.tier}");
+        if (newSprite != null)
+        {
+            itemGrade.Add(item, newSprite);
+            return newSprite;
+        }
+        return null;
+    }
+    public Sprite GetIngameItemGrade(IngameItemData item)
+    {
+        if (ingameItemGrade.TryGetValue(item, out Sprite sprite))
+        {
+            return sprite;
+        }
+
+        Sprite newSprite = Resources.Load<Sprite>($"Icons/{item.level}");
+        if (newSprite != null)
+        {
+            ingameItemGrade.Add(item, newSprite);
+            return newSprite;
+        }
+        return null;
     }
 
-    //장비 특수효과 리턴함수
-    public EquipmentEffectSO GetEquipEffectData(int id)
+    public List<ItemData> GetAllItemdata()
     {
-        if (equipmentEffectDic.ContainsKey(id)) return equipmentEffectDic[id];
-            return null;        
+        return itemDataDic.Values.ToList();
     }
+
+    public List<IngameItemData> GetAllIngameItemData()
+    {
+        return ingameItemDataDic.Values.ToList();
+    }
+
+    public string GetSkillInfo(int id)
+    {
+        if (SkillInfo.TryGetValue(id, out string name))
+        {
+            return name;
+        }
+        return "Unknown Skill";
+    }
+
+    public IngameItemData[] GetPairList(IngameItemData item)
+    {       
+        if (item.pairID[0] == -1)
+        {
+            return new IngameItemData[0];
+        }
+        IngameItemData[] temp = new IngameItemData[item.pairID.Length];
+        for (int i = 0; i < item.pairID.Length; i++)
+        {
+            temp[i] = GetIngameItemData(item.pairID[i]);
+        }
+        return temp;
+    }
+
+
+#endregion
 
     //테스트용 로그함수
     public void LogData()
@@ -222,7 +332,7 @@ public class DataManager : Singleton<DataManager>
             int key = data.Key;
             var value = data.Value;
 
-            Debug.Log($"{key}번째 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}, Tier : {value.tier}, AtkMtp : {value.atkMtp}, AtkPercent : {value.atkPercent}, HpPercent : {value.hpPercent}, Effect {value.specialEffectID}, EvID : {value.evolutionID}, PairID : {value.pairID.Length}");
+            Debug.Log($"{key}번 데이터 로드... ID : {value.id}, Name : {value.name}, Type : {value.type}, Tier : {value.tier}, AtkMtp : {value.atkMtp}, AtkPercent : {value.atkPercent}, HpPercent : {value.hpPercent}, Effect {value.specialEffectID}, EvID : {value.evolutionID}, PairID : {value.pairID.Length}");
         }
     }
 }

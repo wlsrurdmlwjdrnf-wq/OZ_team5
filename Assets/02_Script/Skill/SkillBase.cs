@@ -2,29 +2,25 @@ using UnityEngine;
 
 public abstract class SkillBase : MonoBehaviour
 {
-    [Header("Common Skill Data")]
-    [SerializeField] protected float damage;
-    [SerializeField] protected int count;
-
-    [Header("Count Limit")]
-    [SerializeField] protected int minCount = 1;
-    [SerializeField] protected int maxCount = 6;
-
-    // 스킬 초기화 (처음 생성될 때 1회)
-    public virtual void Init()
+    protected IngameItemData skillData;
+    protected Player player;
+    public abstract int Id { get; set; }
+    public int Level { get { return level; } }
+    protected float damage;
+    protected int count;
+    protected int level;
+    protected WaitForSeconds interval;
+    protected virtual void Awake()
     {
-        count = Mathf.Clamp(minCount, minCount, maxCount);
-        OnChanged(); // 초기에도 배치/재계산 실행
+        skillData = DataManager.Instance.GetIngameItemData(Id);
+        damage = skillData.damage;
+        count = skillData.ptCount;
+        level = skillData.level;
+        interval = new WaitForSeconds(skillData.cooldown);
     }
-
-    // 스킬 레벨업
-    public virtual void LevelUp(float addDamage, int addCount)
+    protected virtual void Start()
     {
-        damage += addDamage;
-        count = Mathf.Clamp(count + addCount, minCount, maxCount);
-        OnChanged(); // 스탯이 변했으니 재배치/재계산
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
-
-    // 스탯이 바뀌었을 때 재배치 필요시 호출
-    protected abstract void OnChanged();
+    public abstract void SkillLevelUp();
 }

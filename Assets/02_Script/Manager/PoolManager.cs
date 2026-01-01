@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : Singleton<PoolManager>
+public class PoolManager : MonoBehaviour
 {
     public bool isCreatePool = false;
+
     private Dictionary<string, object> pools = new Dictionary<string, object>();
     public void CreatePool<T>(T prefab, int initCount, Transform parent = null) where T : MonoBehaviour
     {
@@ -28,7 +29,7 @@ public class PoolManager : Singleton<PoolManager>
 
         if (pool != null)
         {
-            return pool.Dequeque();
+            return pool.Dequeue();
         }
         else
         {
@@ -80,14 +81,14 @@ internal class ObjectPool<T> where T : MonoBehaviour
             pool.Enqueue(inst);
         }
     }
-    public T Dequeque()
+    public T Dequeue()
     {
         if (pool.Count == 0) return null;
         var inst = pool.Dequeue();
         inst.gameObject.SetActive(true);
         return inst;
     }
-
+    
     public void Enqueue(T instance)
     {
         if (instance == null) return;

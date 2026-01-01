@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c70230fcf973cd143a5de59efb128312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 20
+  maxHp: 70
   atk: 1
-  moveSpeed: 1.8
+  moveSpeed: 2
   expStone: {fileID: 6771282222054721818, guid: 248f393b24c73424bb62b3b13bcd1d05, type: 3}

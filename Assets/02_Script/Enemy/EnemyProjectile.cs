@@ -4,7 +4,7 @@ public class EnemyProjectile : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float lifetime;
-    [SerializeField] private int atk;
+    [SerializeField] private float atk;
 
     private float spawntime;
     private Vector2 shootDirection;
@@ -19,7 +19,7 @@ public class EnemyProjectile : MonoBehaviour
 
         if(Time.time - spawntime >= lifetime)
         {
-            PoolManager.Instance.ReturnPool(this);
+            Managers.Instance.Pool.ReturnPool(this);
         }
     }
     public void SetDirection(Vector2 dir)
@@ -31,7 +31,7 @@ public class EnemyProjectile : MonoBehaviour
         if (collision.TryGetComponent<Player>(out Player player))
         {
             player.TakeDamage(atk);
-            PoolManager.Instance.ReturnPool(this);
+            Managers.Instance.Pool.ReturnPool(this);
         }
     }
 }

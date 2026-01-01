@@ -44,110 +44,124 @@ public class Spawner : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        player = GameObject.FindWithTag("Player").transform;
+        player = GameObject.FindWithTag("Player").transform; 
     }
     private void Start()
     {
-        if (PoolManager.Instance.isCreatePool == false)
+        #region 필요한 풀 생성
+        if (Managers.Instance.Pool.isCreatePool == false)
         {
-            PoolManager.Instance.CreatePool(itemBoxPrefab, 50);
+            Managers.Instance.Pool.CreatePool(itemBoxPrefab, 50);
 
-            PoolManager.Instance.CreatePool(zombiePrefab, 100);
-            PoolManager.Instance.CreatePool(bigZombiePrefab, 10);
-            PoolManager.Instance.CreatePool(zomPlantPrefab, 20);
-            PoolManager.Instance.CreatePool(zomDogPrefab, 50);
-            PoolManager.Instance.CreatePool(suicideBomberPrefab, 20);
-            PoolManager.Instance.CreatePool(wallMonsterPrefab, 100);
+            Managers.Instance.Pool.CreatePool(zombiePrefab, 150);
+            Managers.Instance.Pool.CreatePool(bigZombiePrefab, 30);
+            Managers.Instance.Pool.CreatePool(zomPlantPrefab, 30);
+            Managers.Instance.Pool.CreatePool(zomDogPrefab, 100);
+            Managers.Instance.Pool.CreatePool(suicideBomberPrefab, 30);
+            Managers.Instance.Pool.CreatePool(wallMonsterPrefab, 100);
 
-            PoolManager.Instance.CreatePool(boss1Prefab, 2);
-            PoolManager.Instance.CreatePool(boss2Prefab, 2);
-            PoolManager.Instance.CreatePool(boss3Prefab, 2);
+            Managers.Instance.Pool.CreatePool(boss1Prefab, 2);
+            Managers.Instance.Pool.CreatePool(boss2Prefab, 2);
+            Managers.Instance.Pool.CreatePool(boss3Prefab, 2);
 
-            PoolManager.Instance.CreatePool(bombPrefab, 10);
-            PoolManager.Instance.CreatePool(coin10Prefab, 10);
-            PoolManager.Instance.CreatePool(coin30Prefab, 10);
-            PoolManager.Instance.CreatePool(coin100Prefab, 10);
-            PoolManager.Instance.CreatePool(magnetPrefab, 10);
-            PoolManager.Instance.CreatePool(meatPrefab, 10);
+            Managers.Instance.Pool.CreatePool(bombPrefab, 10);
+            Managers.Instance.Pool.CreatePool(coin10Prefab, 10);
+            Managers.Instance.Pool.CreatePool(coin30Prefab, 10);
+            Managers.Instance.Pool.CreatePool(coin100Prefab, 10);
+            Managers.Instance.Pool.CreatePool(magnetPrefab, 10);
+            Managers.Instance.Pool.CreatePool(meatPrefab, 10);
 
-            PoolManager.Instance.CreatePool(expStone1Prefab, 100);
-            PoolManager.Instance.CreatePool(expStone5Prefab, 100);
-            PoolManager.Instance.CreatePool(expStone10Prefab, 100);
-            PoolManager.Instance.CreatePool(expStone50Prefab, 50);
+            Managers.Instance.Pool.CreatePool(expStone1Prefab, 100);
+            Managers.Instance.Pool.CreatePool(expStone5Prefab, 100);
+            Managers.Instance.Pool.CreatePool(expStone10Prefab, 100);
+            Managers.Instance.Pool.CreatePool(expStone50Prefab, 50);
 
-            PoolManager.Instance.CreatePool(enemySmallPjtPrefab, 150);
-            PoolManager.Instance.CreatePool(enemyBigPjtPrefab, 100);
-            PoolManager.Instance.CreatePool(enemyGlowPjtPrefab, 20);
-            
-            PoolManager.Instance.isCreatePool = true;
+            Managers.Instance.Pool.CreatePool(enemySmallPjtPrefab, 150);
+            Managers.Instance.Pool.CreatePool(enemyBigPjtPrefab, 100);
+            Managers.Instance.Pool.CreatePool(enemyGlowPjtPrefab, 20);
+
+            Managers.Instance.Pool.isCreatePool = true;
         }
+        #endregion 
 
         StartCoroutine(SpawnItemBox());
-        StartCoroutine(SpawnEnemy(zombiePrefab, 1f));
-        StartCoroutine(SpawnEnemy(bigZombiePrefab, 4f));
-        StartCoroutine(SpawnBoss(boss1Prefab, 20f));
+        StartCoroutine(SpawnEnemy(zombiePrefab, 0.5f));
+        StartCoroutine(SpawnEnemy(bigZombiePrefab, 2f));
+        StartCoroutine(SpawnBoss(boss1Prefab, 60f));
+    }
+    private void OnDisable()
+    {
+        ClearField(Vector2.zero, 50f);
+        StopAllCoroutines();
     }
     private IEnumerator SpawnBoss(EnemyBase boss, float waitBossTime)
     {
         yield return new WaitForSeconds(waitBossTime);
+        AudioManager.Instance.PlaySFX(EnumData.SFX.WarningSFX);
         WarningPanel.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        ClearField();
+        yield return new WaitForSeconds(4f);
         WarningPanel.SetActive(false);
 
-        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 12f, 10f, 1f);
+        ClearField(player.position, 50f);
 
-        EnemyBase bossObj = PoolManager.Instance.GetFromPool(boss);
-        bossObj.transform.position = RandPos(4f, 4f, 4f) + player.position; 
+        WallMonsterSpawn.SpawnMonsterWall(wallMonsterPrefab, Camera.main.transform.position, 14f, 12f, 1.0f); // 벽몬스터들을 가로,세로,간격을 입력한대로 벽처럼 생성
+
+        EnemyBase bossObj = Managers.Instance.Pool.GetFromPool(boss);
+        bossObj.transform.position = RandPos(6f, 5f, 4f); 
 
         StopAllCoroutines();
-        //보스 출현 경고 후 보스와 벽몬스터 스폰, 타이머 정지, 모든 적과 아이템 풀로 리턴+모든 코루틴 stop해야함.
-        //보스를 잡은 후에 타이머 다시 작동
     }
-    private void ClearField()
+
+    //필드 정리
+    private void ClearField(Vector2 pos, float radius)
     {
-        Collider2D[] cols = Physics2D.OverlapCircleAll(player.position, 30f);
+        Collider2D[] cols = Physics2D.OverlapCircleAll(pos, radius);
+
+        if(cols == null || cols.Length == 0) return;
 
         foreach (Collider2D col in cols)
         {
             if (col.TryGetComponent<EnemyBase>(out EnemyBase target))
             {
-                PoolManager.Instance.ReturnPool(target);
+                Managers.Instance.Pool.ReturnPool(target);
             }
             if (col.TryGetComponent<ItemBox>(out ItemBox box))
             {
-                PoolManager.Instance.ReturnPool(box);
+                Managers.Instance.Pool.ReturnPool(box);
             }
             if (col.TryGetComponent<ItemBase>(out ItemBase item))
             {
-                PoolManager.Instance.ReturnPool(item);
+                Managers.Instance.Pool.ReturnPool(item);
             }
-
+            if (col.TryGetComponent<EnemyProjectile>(out EnemyProjectile projectile))
+            {
+                Managers.Instance.Pool.ReturnPool(projectile);
+            }
         }
     }
     public void KillBoss1()
     {
-        ClearField();
+        ClearField(player.position, 30f);
         StartCoroutine(SpawnItemBox());
-        StartCoroutine(SpawnEnemy(zomPlantPrefab, 2f));
-        StartCoroutine(SpawnEnemy(zomDogPrefab, 1f));
-        StartCoroutine(SpawnBoss(boss2Prefab, 20f));
+        StartCoroutine(SpawnEnemy(zomPlantPrefab, 3f));
+        StartCoroutine(SpawnEnemy(zomDogPrefab, 0.5f));
+        StartCoroutine(SpawnBoss(boss2Prefab, 60f));
     }
     public void KillBoss2()
     {
-        ClearField();
+        ClearField(player.position, 30f);
         StartCoroutine(SpawnItemBox());
-        StartCoroutine(SpawnEnemy(zomPlantPrefab, 2f));
-        StartCoroutine(SpawnEnemy(zomDogPrefab, 1f));
+        StartCoroutine(SpawnEnemy(zomPlantPrefab, 3f));
+        StartCoroutine(SpawnEnemy(zomDogPrefab, 0.5f));
         StartCoroutine(SpawnEnemy(suicideBomberPrefab, 3f));
-        StartCoroutine(SpawnBoss(boss3Prefab, 20f));
+        StartCoroutine(SpawnBoss(boss3Prefab, 60f));
     }
     private IEnumerator SpawnItemBox()
     {
         while (true)
         {
-            ItemBox itembox = PoolManager.Instance.GetFromPool(itemBoxPrefab);
-            itembox.transform.position = RandPos(6f, 6f, 5f) + player.position;
+            ItemBox itembox = Managers.Instance.Pool.GetFromPool(itemBoxPrefab);
+            itembox.transform.position = RandPos(8f, 8f, 6f);
             yield return new WaitForSeconds(10f);
         }
     }
@@ -156,17 +170,19 @@ public class Spawner : MonoBehaviour
         WaitForSeconds wfs = new WaitForSeconds(spawnInterval);
         while (true)
         {
-            EnemyBase enemy = PoolManager.Instance.GetFromPool(prefab);
-            enemy.transform.position = RandPos(4f, 5f, 3f) + player.position;
+            EnemyBase enemy = Managers.Instance.Pool.GetFromPool(prefab);
+            enemy.transform.position = RandPos(5f, 7f, 4f);
             yield return wfs;
         }
     }
+
+    //플레이어와 최소 거리를 보장하는 랜덤 좌표 리턴
     private Vector3 RandPos(float xPos, float yPos, float minDistance)
     {
         while (true)
         {
-            posX = Random.Range(-xPos, xPos);
-            posY = Random.Range(-yPos, yPos);
+            posX = Random.Range(-xPos, xPos) + player.position.x;
+            posY = Random.Range(-yPos, yPos) + player.position.y;
 
             tmpPos = new Vector3(posX, posY, 0f);
             if (Vector3.Distance(tmpPos, player.position) > minDistance) break;

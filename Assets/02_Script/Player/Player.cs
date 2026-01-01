@@ -4,16 +4,19 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private HpBar hpBarPrefab;
+    [SerializeField] private GameObject kunai;
+    [SerializeField] private GameObject shotgun;
 
     private Rigidbody2D rb;
     private Animator anim;
     private SpriteRenderer sr;
     private PlayerData playerData;
     private HpBar hpBar;
-    public PlayerData PlayerStat() => playerData;
 
     private Vector2 input;
     private bool isMoving;
+
+    public PlayerData PlayerStat() => playerData;
 
     private static readonly int isMovingHash = Animator.StringToHash("IsMoving");
     private void Awake()
@@ -23,12 +26,11 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-
-        ApplyPlayerStat();
-        playerData.playerCurrentHp = playerData.playerMaxHp;
     }
     private void Start()
     {
+        ApplyPlayerStat();
+        SetBaseWeapon();
         hpBar = Instantiate(hpBarPrefab);
         hpBar.Init(transform);
         UpdateHpBar();
@@ -47,18 +49,19 @@ public class Player : MonoBehaviour
         anim.SetBool(isMovingHash, isMoving);
 
         PullItems();
+
     }
     private void FixedUpdate()
     {
         rb.velocity = input * playerData.playerSpeed;
     }
-    private void UpdateHpBar()
+    public void UpdateHpBar()
     {
         hpBar.UpdateHp(playerData.playerCurrentHp, playerData.playerMaxHp);
     }
     private void ApplyPlayerStat()
     {
-        playerData = PlayerData.GetDefault();
+        playerData = PlayerManager.Instance.playerData;
     }
     private void PullItems()
     {
@@ -76,7 +79,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         playerData.playerCurrentHp -= damage;
         UpdateHpBar();
@@ -88,22 +91,19 @@ public class Player : MonoBehaviour
             GameManager.Instance.GameOver();
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
-    //    {
-    //        if(input == Vector2.zero)
-    //        {
-    //            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-    //            GetComponent<Collider2D>().isTrigger = false;
-    //        }
-    //        else
-    //        {
-    //            rb.constraints = RigidbodyConstraints2D.None;
-    //            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-    //            GetComponent<Collider2D>().isTrigger = true;
-    //        }
-    //    }
-    //} 플레이어 충돌판정 일단 보류
+    private void SetBaseWeapon()
+    {
+        if (playerData.playerSkillInven[0].id == 0 || playerData.playerSkillInven[0].id == 10001)
+        {
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(10001);
+            playerData.playerSkillInven[0] = temp;
+            kunai.gameObject.SetActive(true);
+        }
+        if (playerData.playerSkillInven[0].id == 10002)
+        {
+            IngameItemData temp = DataManager.Instance.GetIngameItemData(10002);
+            playerData.playerSkillInven[0] = temp;
+            shotgun.gameObject.SetActive(true);
+        }
+    }
 }

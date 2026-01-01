@@ -6,20 +6,26 @@ public class PlayerWeaponSetting : MonoBehaviour
 {
     [SerializeField] private GameObject kunai;
     [SerializeField] private GameObject shotgun;
+    [SerializeField] private GameObject drillshot;
+    [SerializeField] private GameObject football;
+    [SerializeField] private GameObject barrier;
+    [SerializeField] private GameObject fireBomb;
+    [SerializeField] private GameObject defender;
 
-    [Tooltip("임시로 무기 타입 결정을 위한 직렬화( 0 -> 쿠나이 , 1-> 샷건)")]
-    [SerializeField] private int weaponType;
-
+    [SerializeField] private Player player;
+    
     private void Start()
     {
-        switch (weaponType)
+        Debug.Log($"1234");
+        switch (player.PlayerStat().playerSkillInven[0].id)
         {
             case 0:
+            case 10001:
                 kunai.SetActive(true);
                 break;
-            case 1:
+            case 10002:
                 shotgun.SetActive(true);
-                break ;
+                break;
         }
     }
 }

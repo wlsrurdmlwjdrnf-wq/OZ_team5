@@ -7,13 +7,13 @@ public static class EnumData
     //장비 아이템 Type
     public enum EquipmentType
     {
-        Weapon = 1,
+        Weapon,
         Amor,
         Necklace,
         Belt,
         Gloves,
         Boots,
-        NONE
+        NONE = -1
     }
 
     //장비 아이템 Tier
@@ -24,7 +24,7 @@ public static class EnumData
         Elite,
         Epic,
         Legendary,
-        NONE
+        NONE = -1
            
     }
 
@@ -41,7 +41,7 @@ public static class EnumData
     {
         Attack = 1,
         Support,
-        NONE
+        NONE = -1
     }
 
     //씬 종류
@@ -50,5 +50,57 @@ public static class EnumData
         TitleScene,
         LobbyScene,
         BattleScene
+    }
+
+    //팝업 UI 식별 전용 ID
+    public enum PopupId
+    {
+        Pause,      //일시정지
+        Settings,   //설정
+        Confirm,    //확인/취소
+        GameOver,   //게임오버
+        GameClear,  //클리어
+        LevelUp,    //레벨업 알림
+        Shop,       //상점 팝업(로비)
+        Item        //아이템 팝업(로비)
+    }
+
+    //스탯 종류(아이콘 선택용)
+    public enum StatKind
+    {
+        Attack,
+        Hp
+    }
+
+    public enum BoxType
+    {
+        Normal,
+        High
+    }
+
+    public enum BGM
+    {
+        BattleBGM,
+        Battle2BGM,
+        LobbyBGM,
+        Lobby2BGM,
+        COUNT
+    }
+
+    public enum SFX
+    {
+        Boss2JumpSFX,
+        Boss3SFX,
+        Button1SFX,
+        Button2SFX,
+        Button3SFX,
+        EnemyHitSFX,
+        EnemyHit2SFX,
+        GameClearSFX,
+        GameOverSFX,
+        LevelUpSFX,
+        LevelUp2SFX,
+        WarningSFX,
+        COUNT
     }
 }

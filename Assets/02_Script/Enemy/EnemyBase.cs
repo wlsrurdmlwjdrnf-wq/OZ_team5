@@ -2,60 +2,68 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : ForTargeting, IDamageable
+public class EnemyBase : ForTargeting
 {
-    [SerializeField] protected int maxHp;
-    [SerializeField] protected int atk;
+    [SerializeField] protected float maxHp;
+    [SerializeField] protected float atk;
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected ItemBase expStone;
 
     protected Transform player;
     protected SpriteRenderer spriteRenderer;
     protected Animator animator;
+    protected Rigidbody2D rb;
 
     protected bool isKilled = false;
     protected bool isOverlapped = false;
-    protected int hp;
-    protected int initAtk;
+    protected float hp;
+    protected float initAtk;
     protected float initSpeed;
     protected Vector3 initScale;
-    protected WaitForSeconds damageInterval;
+    protected WaitForSeconds damageInterval = new WaitForSeconds(0.5f);
 
     protected static readonly int isKilledHash = Animator.StringToHash("IsKilled");
+
+    public float Speed { get { return moveSpeed; } set { moveSpeed = value; } }
     protected void Awake()
     {
-        player = GameObject.FindWithTag("Player").transform;
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+
         initAtk = atk;
         initSpeed = moveSpeed;
         initScale = transform.localScale;
-        damageInterval = new WaitForSeconds(0.5f);
     }
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
+        player = GameObject.FindWithTag("Player").transform;
+
         animator.SetBool(isKilledHash, isKilled);
+
         hp = maxHp;
         atk = initAtk;
         moveSpeed = initSpeed;
         transform.localScale = initScale;
+
         if (EnemyManager.Instance != null && EnemyManager.Instance.enemies != null)
         {
             EnemyManager.Instance.enemies.Add(this);
         }
     }
-    protected void OnDisable()
+    protected virtual void OnDisable()
     {
+        StopAllCoroutines();
         if (EnemyManager.Instance != null && EnemyManager.Instance.enemies != null)
         {
             EnemyManager.Instance.enemies.Remove(this);
         }
     }
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         MoveToPlayer();
     }
-    public virtual void TakeDamage(int amount)
+    public override void TakeDamage(float amount)
     {
         hp -= amount;
         if (hp <= 0)
@@ -67,9 +75,11 @@ public class EnemyBase : ForTargeting, IDamageable
     }
     protected virtual IEnumerator DieCo()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.EnemyHitSFX);
+        EnemyManager.Instance.enemyKillCount++;
         GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(0.2f);
-        ItemBase tmpStone = PoolManager.Instance.GetFromPool(expStone);
+        ItemBase tmpStone = Managers.Instance.Pool.GetFromPool(expStone);
         tmpStone.transform.position = transform.position;
         ReturnPool();
     }
@@ -77,19 +87,21 @@ public class EnemyBase : ForTargeting, IDamageable
     {
         isKilled = false;
         GetComponent<Collider2D>().enabled = true;
-        PoolManager.Instance.ReturnPool(this);
+        Managers.Instance.Pool.ReturnPool(this);
     }
     protected void MoveToPlayer()
     {
         if (player == null || isKilled) return;
 
-        transform.position = Vector3.MoveTowards(
-                    transform.position,
-                    player.position,
-                    moveSpeed * Time.deltaTime
-                    );
+        Vector3 newPosition = Vector3.MoveTowards(
+            rb.position,
+            player.position,
+            moveSpeed * Time.fixedDeltaTime
+        );
 
-        if (player.position.x < transform.position.x)
+        rb.MovePosition(newPosition);
+
+        if (player.position.x < rb.position.x)
         {
             spriteRenderer.flipX = true;
         }
@@ -98,6 +110,7 @@ public class EnemyBase : ForTargeting, IDamageable
             spriteRenderer.flipX = false;
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Player>(out Player player))

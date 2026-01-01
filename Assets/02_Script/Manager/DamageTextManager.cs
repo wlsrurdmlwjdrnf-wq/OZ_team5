@@ -4,30 +4,39 @@ using System.Collections;
 
 public class DamageTextManager : Singleton<DamageTextManager>
 {
-    public TextMeshProUGUI damageTextPrefab;
-    public Transform canvasTransform; // UI Äµ¹ö½º ÂüÁ¶
+    protected override void Init()
+    {
+        _IsDestroyOnLoad = false;
+        base.Init();
+    }
+    [SerializeField] private TextMeshProUGUI damageTextPrefab;
+    [SerializeField] private Transform canvasTransform; // UI Äµ¹ö½º ÂüÁ¶
 
     private void Start()
     {
-        PoolManager.Instance.CreatePool(damageTextPrefab, 100);
+        Managers.Instance.Pool.CreatePool(damageTextPrefab, 200);
     }
-    public void ShowDamage(int damage, Vector3 worldPosition)
+    private void OnEnable()
+    {
+        canvasTransform = GameObject.Find("DamageTextManager").transform;
+    }
+    public void ShowDamage(float damage, Vector3 worldPosition)
     {
         // ¿ùµå ÁÂÇ¥ ¡æ È­¸é ÁÂÇ¥ º¯È¯
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
 
-        TextMeshProUGUI textObj = PoolManager.Instance.GetFromPool(damageTextPrefab); 
+        TextMeshProUGUI textObj =  Managers.Instance.Pool.GetFromPool(damageTextPrefab); 
         textObj.transform.SetParent(canvasTransform, false);
 
         textObj.transform.position = screenPos;
-        textObj.text = damage.ToString();
+        textObj.text = ((int)damage).ToString();
 
         StartCoroutine(FadeOut(textObj));
     }
 
     private IEnumerator FadeOut(TextMeshProUGUI text)
     {
-        float duration = 0.5f;
+        float duration = 1.0f;
         float elapsed = 0f;
         Color startColor = text.color;
 
@@ -45,6 +54,6 @@ public class DamageTextManager : Singleton<DamageTextManager>
             yield return null;
         }
 
-        PoolManager.Instance.ReturnPool(text);
+        Managers.Instance.Pool.ReturnPool(text);
     }
 }

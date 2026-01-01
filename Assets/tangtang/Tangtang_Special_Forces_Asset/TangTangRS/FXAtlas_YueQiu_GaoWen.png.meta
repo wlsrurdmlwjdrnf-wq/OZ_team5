@@ -1,0 +1,954 @@
+fileFormatVersion: 2
+guid: 3687d710261297f4a9b080791c86f6d6
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1016
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b703caf6f9f32e4c93869d989eb0150
+      internalID: -1156297934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_1
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 1016
+        width: 13
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9240855145e3a4a459e47f2a18003045
+      internalID: 1539399801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_2
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 1016
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 067e1a11a6134b44585cd170829b148c
+      internalID: -1086992525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_3
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 1016
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8714d581fbd55e543ac48ef538395bdb
+      internalID: -7433221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_4
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 852
+        width: 277
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c2f0c3a2f8e69141810dead36d555b4
+      internalID: -886652877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_5
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 852
+        width: 272
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfb31d7014456464ca1accbd124e3d82
+      internalID: 2047476192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_6
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 852
+        width: 308
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c5358ee5d459274d9cff89c5225eed3
+      internalID: -42955104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_7
+      rect:
+        serializedVersion: 2
+        x: 996
+        y: 900
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90e616a442ed57f4f9e95557c02b8dff
+      internalID: 810238614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 844
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1895aa1baea3a9e4c99e6511206471e4
+      internalID: -375128839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_9
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 684
+        width: 319
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d74c454e118921449004c227a2aba92
+      internalID: 1941615536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_10
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 844
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5061ad413c167b94f9fa2e68420632d9
+      internalID: -1220893083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_11
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 844
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e214d6d217511d43b476fb352a9759d
+      internalID: 1584846193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_12
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 844
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bf867345c7ba744086e6f08d7fa9606
+      internalID: -1688361851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_13
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 684
+        width: 313
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4afdf4e6209a4a449a5002d37263a2a9
+      internalID: 801767724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_14
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 684
+        width: 309
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 218f85d8973515443ad8043ffab391e1
+      internalID: -718945301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_15
+      rect:
+        serializedVersion: 2
+        x: 1009
+        y: 708
+        width: 15
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4b082cccd44968498e6526ac072c4c6
+      internalID: 1670755434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_16
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 696
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5966e447d860b14e83c33c41c985132
+      internalID: -1840372734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 676
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fce3e118d53db494fa9b039e0ac7f9a4
+      internalID: 646267509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_18
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 676
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8a95b3468cee0d46971408f4a449bad
+      internalID: -163423458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_19
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 676
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 199e1d070df091d47aac1d5ce0ab3af5
+      internalID: -1541832136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_20
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 676
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5df6c60f28048743a88f9d71265c570
+      internalID: 845360277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 504
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00f86d9dd7260554293dd651f237d811
+      internalID: -1965752736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_22
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 512
+        width: 302
+        height: 143
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5423b8028e50b4441aa114126d4e6df1
+      internalID: -1150335566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_23
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 504
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 068f836394d0cca4fb1adff536839ceb
+      internalID: -990754367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_24
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 512
+        width: 286
+        height: 153
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0c0cb1fb5a4fd04dba3de39da5b407d
+      internalID: 320701557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_25
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 512
+        width: 13
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d65957c5e12d20f4ca8f00a655e0e355
+      internalID: 1472532366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_26
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 512
+        width: 282
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7148d771bb0f72945a3a35cd9d9e0261
+      internalID: -1918055256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_27
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 512
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f811fca76d7f24941bd11c452f722483
+      internalID: -1416883630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 336
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f692295d3929fc40b4689e55aed7bcb
+      internalID: 1444996685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_29
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 344
+        width: 310
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74e71af8884b7994985f2355a523c810
+      internalID: -264064196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_30
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 336
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51f981ab209dc7c4a95d905f519d753f
+      internalID: -2101731300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_31
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 164
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f84460b5c1de7a4cb426174d527b8da
+      internalID: 574449338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_32
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 172
+        width: 315
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc3b579e1d0bd744eb6295fe6306e903
+      internalID: -307483086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_33
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 164
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9eed801f3c121c14bbae76a3282b8d2a
+      internalID: 1882468323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_34
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 010c0d9e4ef25214f89f226557132752
+      internalID: -314421798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_35
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 4
+        width: 291
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81c62438b32a34f438569490613653cc
+      internalID: 1524616898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FXAtlas_YueQiu_GaoWen_36
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 4
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85e655f9150df6942b9485bbb23bbc06
+      internalID: -1521042608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      FXAtlas_YueQiu_GaoWen_0: -1156297934
+      FXAtlas_YueQiu_GaoWen_1: 1539399801
+      FXAtlas_YueQiu_GaoWen_10: -1220893083
+      FXAtlas_YueQiu_GaoWen_11: 1584846193
+      FXAtlas_YueQiu_GaoWen_12: -1688361851
+      FXAtlas_YueQiu_GaoWen_13: 801767724
+      FXAtlas_YueQiu_GaoWen_14: -718945301
+      FXAtlas_YueQiu_GaoWen_15: 1670755434
+      FXAtlas_YueQiu_GaoWen_16: -1840372734
+      FXAtlas_YueQiu_GaoWen_17: 646267509
+      FXAtlas_YueQiu_GaoWen_18: -163423458
+      FXAtlas_YueQiu_GaoWen_19: -1541832136
+      FXAtlas_YueQiu_GaoWen_2: -1086992525
+      FXAtlas_YueQiu_GaoWen_20: 845360277
+      FXAtlas_YueQiu_GaoWen_21: -1965752736
+      FXAtlas_YueQiu_GaoWen_22: -1150335566
+      FXAtlas_YueQiu_GaoWen_23: -990754367
+      FXAtlas_YueQiu_GaoWen_24: 320701557
+      FXAtlas_YueQiu_GaoWen_25: 1472532366
+      FXAtlas_YueQiu_GaoWen_26: -1918055256
+      FXAtlas_YueQiu_GaoWen_27: -1416883630
+      FXAtlas_YueQiu_GaoWen_28: 1444996685
+      FXAtlas_YueQiu_GaoWen_29: -264064196
+      FXAtlas_YueQiu_GaoWen_3: -7433221
+      FXAtlas_YueQiu_GaoWen_30: -2101731300
+      FXAtlas_YueQiu_GaoWen_31: 574449338
+      FXAtlas_YueQiu_GaoWen_32: -307483086
+      FXAtlas_YueQiu_GaoWen_33: 1882468323
+      FXAtlas_YueQiu_GaoWen_34: -314421798
+      FXAtlas_YueQiu_GaoWen_35: 1524616898
+      FXAtlas_YueQiu_GaoWen_36: -1521042608
+      FXAtlas_YueQiu_GaoWen_4: -886652877
+      FXAtlas_YueQiu_GaoWen_5: 2047476192
+      FXAtlas_YueQiu_GaoWen_6: -42955104
+      FXAtlas_YueQiu_GaoWen_7: 810238614
+      FXAtlas_YueQiu_GaoWen_8: -375128839
+      FXAtlas_YueQiu_GaoWen_9: 1941615536
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

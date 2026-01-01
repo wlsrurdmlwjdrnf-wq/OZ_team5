@@ -156,12 +156,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84905d4b8316224db3c1f6279173842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
+  maxHp: 5000
   atk: 2
   moveSpeed: 0.5
   expStone: {fileID: 6277145758167594058, guid: d23b4aa6273bc66439651eaf7d59db8d, type: 3}
   smallPjt: {fileID: 2171676869689184288, guid: b9f1f9091fe1b7a4f8b52bafc83406cc, type: 3}
   bigPjt: {fileID: 4826377625875770024, guid: 1bb2d1ccee85603428957bcc920973d5, type: 3}
+  hpBarPrefab: {fileID: 6933861538974871527, guid: 612b86b3f6411054fa543a2ec933afe0, type: 3}
   pattern1Interval: 4
   pattern2Interval: 2
   shootInterval: 0.5

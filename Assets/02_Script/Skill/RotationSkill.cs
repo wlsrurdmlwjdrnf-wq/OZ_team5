@@ -2,6 +2,29 @@ using UnityEngine;
 
 public class RotationSkill : SkillBase
 {
+    public override int Id { get; set; } = 3002;
+
+    [Header("Count Limit")]
+    [SerializeField] protected int minCount = 1;
+    [SerializeField] protected int maxCount = 6;
+
+    // 스킬 초기화 (처음 생성될 때 1회)
+    public virtual void Init()
+    {
+        count = Mathf.Clamp(minCount, minCount, maxCount);
+        OnChanged(); // 초기에도 배치/재계산 실행
+    }
+
+    // 스킬 레벨업
+    public override void SkillLevelUp()
+    {
+        level += 1;
+        damage += 2;
+        count = Mathf.Clamp(count + 1, minCount, maxCount);
+        orbiterPrefab.ProjectileStatUp();
+        OnChanged(); // 스탯이 변했으니 재배치/재계산
+
+    }
     [Header("Rotation Settings")]
     // 부모 오브젝트의 회전 속도 (음수면 시계/반시계 반전)
     [SerializeField] private float rotateSpeed = -150f;
@@ -12,7 +35,7 @@ public class RotationSkill : SkillBase
     [Header("Prefab Spawn")]
     // 회전 링에 배치될 프리팹
     // 콜라이더/피격 스크립트가 포함된 프리팹 권장
-    [SerializeField] private GameObject orbiterPrefab;
+    [SerializeField] private ProjectileBase orbiterPrefab;
 
     // 생성된 오브젝트들을 모아둘 부모
     // 비워두면 이 스크립트가 붙은 오브젝트(transform)를 사용
@@ -25,15 +48,16 @@ public class RotationSkill : SkillBase
     // 콜라이더를 트리거 방식으로 강제할지 여부
     [SerializeField] private bool forceTriggerCollider = true;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         // orbiterRoot를 지정하지 않았다면 자기 자신을 루트로 사용
         // 인스펙터 설정 실수로 인한 NullReference 방지
         if (orbiterRoot == null)
             orbiterRoot = transform;
     }
 
-    private void Start()
+    protected override void Start()
     {
         // 최대 개수(maxCount)만큼 미리 프리팹을 생성해둠
         // (레벨업 시 새로 Instantiate 하지 않기 위함)
@@ -52,7 +76,7 @@ public class RotationSkill : SkillBase
     }
 
     // count나 스탯이 변경되었을 때 호출됨
-    protected override void OnChanged()
+    protected void OnChanged()
     {
         // maxCount 변경이나 프리팹 교체 상황 대비
         EnsureOrbiters();
@@ -73,13 +97,13 @@ public class RotationSkill : SkillBase
         // 자식 수가 maxCount보다 적으면 계속 생성
         while (orbiterRoot.childCount < maxCount)
         {
-            GameObject go = Instantiate(orbiterPrefab, orbiterRoot);
+            ProjectileBase go = Instantiate(orbiterPrefab, orbiterRoot);
 
             // 구분용 이름 (Hierarchy 정리용)
             go.name = $"{orbiterPrefab.name}_{orbiterRoot.childCount - 1}";
 
             // 실제 사용 개수(count) 전까지는 비활성화
-            go.SetActive(false);
+            go.gameObject.SetActive(false);
 
             // 로컬 트랜스폼 초기화
             Transform t = go.transform;
@@ -89,7 +113,7 @@ public class RotationSkill : SkillBase
 
             // 충돌 인식 안정성을 위한 물리 설정 보정
             if (autoFixPhysics)
-                FixPhysics(go);
+                FixPhysics(go.gameObject);
         }
     }
 

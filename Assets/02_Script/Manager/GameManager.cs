@@ -24,9 +24,10 @@ public class GameManager : Singleton<GameManager>
     public event Action OnLevelUp;  // 레벨업시 호출 할 함수
     public event Action OnBossSpawn; //보스스폰시 호출 할 함수
 
-
+    public float gameGold {  get; private set; }
     public bool isPlay { get; private set; } // 게임이 진행중인지 확인 변수
     public float gamePlayTime { get; private set; } // 게임 진행시간
+    public float bestGamePlayTime { get; private set; }
 
     [SerializeField]
     public float middleBossSpawnTime = 600.0f; // 준보스 등장시간 (10분)
@@ -37,8 +38,7 @@ public class GameManager : Singleton<GameManager>
     public bool isFinalBoss { get; private set; } = false;
     
     /// <summary>
-    /// 승문추가
-    ///(플레이어가 이동하는거에 따라 맵을 재생성할거라 플레이어 정보를 받아야함)
+    /// 승문추가 (플레이어가 이동하는거에 따라 맵을 재생성할거라 플레이어 정보를 받아야함)
     public Player player;
     /// </summary>
 
@@ -47,6 +47,8 @@ public class GameManager : Singleton<GameManager>
         base.Init();
         isPlay = false;
         gamePlayTime = 0f;
+        bestGamePlayTime = 0f;
+        gameGold = 50000f;
     }
 
     private void Update()
@@ -70,6 +72,7 @@ public class GameManager : Singleton<GameManager>
     //OnGameOver에 구독된 함수들이 모두 실행됩니다
     public void GameOver()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.GameOverSFX);
         Time.timeScale = 0f;
         isPlay = false;
         OnGameOver?.Invoke();
@@ -79,6 +82,7 @@ public class GameManager : Singleton<GameManager>
     //OnGameClear에 구독된 함수들이 모두 실행됩니다
     public void GameClear()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.GameClearSFX);
         Time.timeScale = 0f;
         isPlay = false;
         OnGameClear?.Invoke();
@@ -106,9 +110,20 @@ public class GameManager : Singleton<GameManager>
     //OnLevelUp에 구독된 함수들이 모두 실행됩니다
     public void LevelUp()
     {
+        AudioManager.Instance.PlaySFX(EnumData.SFX.LevelUpSFX);
         Time.timeScale = 0f;
         isPlay = false;
         OnLevelUp?.Invoke();
+    }
+
+    public void AddGold(float num)
+    {
+        gameGold += num;
+    }
+
+    public void RemoveGold(float num)
+    {
+        gameGold -= num;
     }
 
     //보스스폰 함수
@@ -132,5 +147,14 @@ public class GameManager : Singleton<GameManager>
             isFinalBoss = true;
             BossSpawn();
         }
+    }
+
+    public void ResetGamePlayTime()
+    {
+        gamePlayTime = 0f;
+    }
+    public void AddBestPlayTime(float time)
+    {
+        bestGamePlayTime = time;
     }
 }

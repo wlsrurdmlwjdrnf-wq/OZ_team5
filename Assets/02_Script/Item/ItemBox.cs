@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using UnityEngine;
 
-public class ItemBox : ForTargeting, IDamageable
+public class ItemBox : ForTargeting
 {
     [SerializeField] private ItemBase[] itemPrefabs;
 
-    private int hp;
+    private float hp;
     private void OnEnable()
     {
         hp = 1;
@@ -23,19 +22,19 @@ public class ItemBox : ForTargeting, IDamageable
             EnemyManager.Instance.enemies.Remove(this);
         }
     }
-    public void TakeDamage(int amount)
+    public override void TakeDamage(float amount)
     {
         hp -= amount;
         if (hp <= 0) Broken();
     }
     private void Broken()
     {
-        ItemBase tmpItem = PoolManager.Instance.GetFromPool(itemPrefabs[Random.Range(0, itemPrefabs.Length)]);
+        ItemBase tmpItem = Managers.Instance.Pool.GetFromPool(itemPrefabs[Random.Range(0, itemPrefabs.Length)]);
         tmpItem.transform.position = transform.position;
         ReturnPool();
     }
     private void ReturnPool()
     {
-        PoolManager.Instance.ReturnPool(this);
+        Managers.Instance.Pool.ReturnPool(this);
     }
 }

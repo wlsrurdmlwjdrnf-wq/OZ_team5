@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Coin : ItemBase
 {
-    [SerializeField] private int amount;
+    [SerializeField] private float amount;
 
     public override void Activate(Player player)
     {
-        //player.PlayerStat().playerGold += amount;
-        PoolManager.Instance.ReturnPool(this);
+        player.PlayerStat().playerGold += amount * ((100+player.PlayerStat().playerGoldPt)*0.01f);
+        Managers.Instance.Pool.ReturnPool(this);
     }
 
     //게임클리어나 오버 시 모은 골드 영구적으로 반영해야 함
