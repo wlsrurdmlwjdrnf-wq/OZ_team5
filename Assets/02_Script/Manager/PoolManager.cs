@@ -29,7 +29,7 @@ public class PoolManager : MonoBehaviour
 
         if (pool != null)
         {
-            return pool.Dequeque();
+            return pool.Dequeue();
         }
         else
         {
@@ -81,14 +81,14 @@ internal class ObjectPool<T> where T : MonoBehaviour
             pool.Enqueue(inst);
         }
     }
-    public T Dequeque()
+    public T Dequeue()
     {
         if (pool.Count == 0) return null;
         var inst = pool.Dequeue();
         inst.gameObject.SetActive(true);
         return inst;
     }
-
+    
     public void Enqueue(T instance)
     {
         if (instance == null) return;

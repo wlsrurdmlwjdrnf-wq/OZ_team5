@@ -14,7 +14,11 @@ public class DamageTextManager : Singleton<DamageTextManager>
 
     private void Start()
     {
-        Managers.Instance.Pool.CreatePool(damageTextPrefab, 150);
+        Managers.Instance.Pool.CreatePool(damageTextPrefab, 200);
+    }
+    private void OnEnable()
+    {
+        canvasTransform = GameObject.Find("DamageTextManager").transform;
     }
     public void ShowDamage(float damage, Vector3 worldPosition)
     {
