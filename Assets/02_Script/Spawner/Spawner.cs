@@ -54,10 +54,10 @@ public class Spawner : MonoBehaviour
             Managers.Instance.Pool.CreatePool(itemBoxPrefab, 50);
 
             Managers.Instance.Pool.CreatePool(zombiePrefab, 100);
-            Managers.Instance.Pool.CreatePool(bigZombiePrefab, 10);
-            Managers.Instance.Pool.CreatePool(zomPlantPrefab, 20);
-            Managers.Instance.Pool.CreatePool(zomDogPrefab, 50);
-            Managers.Instance.Pool.CreatePool(suicideBomberPrefab, 20);
+            Managers.Instance.Pool.CreatePool(bigZombiePrefab, 30);
+            Managers.Instance.Pool.CreatePool(zomPlantPrefab, 30);
+            Managers.Instance.Pool.CreatePool(zomDogPrefab, 100);
+            Managers.Instance.Pool.CreatePool(suicideBomberPrefab, 30);
             Managers.Instance.Pool.CreatePool(wallMonsterPrefab, 100);
 
             Managers.Instance.Pool.CreatePool(boss1Prefab, 2);
